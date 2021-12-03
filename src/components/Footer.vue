@@ -1,6 +1,6 @@
 <template>
     <footer class="footer">
-        <h2 class="slogan">Incredible convenient</h2>
+        <h2 class="footer__slogan">Incredible convenient</h2>
         <div>
             <a class="footer__link" href="https://www.ubisoft.com/ru-ru/">
                 <img src="@/assets/ubisoft.png" alt="ubisoft">
@@ -15,7 +15,6 @@
                  <img src="@/assets/crytek.png" alt="crytek">
             </a>
         </div>
-        
     </footer>
 </template>
 
@@ -30,16 +29,20 @@ export default class App extends Vue {}
         display: flex;
         justify-content: space-around;
         align-items: center;
-        background: #212223;
+        background: $dark-gray;
         padding: 10px;
         position: fixed;
         bottom:0;
         right: 0;
         left:0;
 
+        &__slogan {
+            color: $white;
+        }
+
         &__link {
             text-decoration: none;
-            color: #8c8d8e;
+            color: $gray;
             margin: 0 20px;
             opacity: 1;
 
@@ -56,9 +59,5 @@ export default class App extends Vue {}
                 }
             }
         }
-
-    }
-    .slogan {
-        color: #FBFBFB;
     }
 </style>

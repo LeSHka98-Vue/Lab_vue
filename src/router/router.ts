@@ -25,6 +25,7 @@ const routes:Array<RouteRecordRaw> = [
 
 const router = createRouter({ 
   history: createWebHashHistory(),
+  linkActiveClass: 'header__router-link--active',
   routes
 })
 

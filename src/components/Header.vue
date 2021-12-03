@@ -22,32 +22,31 @@ export default class App extends Vue {}
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #212223;
-        padding: 10px;
+        background: $dark-gray;
     }
     .header__name {
         text-decoration: none;
         margin-left: 3%;
 
         h1 {
-          color: #FBFBFB;
+          color: $white;
         }
     }
     .header__router-link {
         text-decoration: none;
-        color: #8c8d8e;
+        color: $gray;
         margin: 0 20px;
 
         &:hover {
-            border-bottom: 1px solid #fff;
-            color: #fff;
+            border-bottom: 1px solid $white;
+            color: $white;
         }
         &:active {
-            color: #D3CAFF;
+            color: $light-purple;
         }
-    }
-    .router-link-active {
-        color: #fff;
-        font-weight: 600;
+        &--active {
+            color: $white;
+            font-weight: 600;
+        }
     }
 </style>

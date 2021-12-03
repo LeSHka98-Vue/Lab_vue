@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { Prop } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator';
 import { Vue } from 'vue-class-component';
 
 export default class IndexPage extends Vue {
