@@ -46,17 +46,17 @@ export default class ApiDemoPage extends Vue {
     const requestInit: any = {
       method,
       headers: { 'Content-Type': 'application/json' }
-    }
+    };
 
     if (body) {
-      requestInit.body = JSON.stringify(body)
+      requestInit.body = JSON.stringify(body);
     }
 
     return fetch(`http://localhost:3000/api/${path}`, requestInit)
       .then((response) => response.json())
       .catch((error) => {
         console.log('REQUEST FAILED', error.message);
-      })
+      });
   }
 
   /*  Simple generation of new demo category with random data */
@@ -68,7 +68,7 @@ export default class ApiDemoPage extends Vue {
       description: lorem.generateSentences(random()),
       createdAt: new Date().getTime().toString(),
       updatedAt: new Date().getTime().toString()
-    }
+    };
   }
 
   mounted() {
@@ -85,13 +85,13 @@ export default class ApiDemoPage extends Vue {
         ...category,
         createdAt: `${createdAt.toDateString()} - ${createdAt.toLocaleTimeString()}`,
         updatedAt: `${updatedAt.toDateString()} - ${updatedAt.toLocaleTimeString()}`
-      }
-    })
+      };
+    });
   }
 
   /*  How to get all demo categories  */
   async updateDemoCategoriesList() {
-    this.demoCategories = await this.request('demo-categories', null, 'GET')
+    this.demoCategories = await this.request('demo-categories', null, 'GET');
   }
 
   /*  How to create new demo category  */
@@ -108,7 +108,7 @@ export default class ApiDemoPage extends Vue {
     const categoryData = {
       ...this.generateRandomDemoCategoryData(),
       createdAt: lastCategory.createdAt
-    }
+    };
 
     await this.request(`demo-categories/${lastCategory.id}`, categoryData, 'PATCH');
     this.updateDemoCategoriesList();
