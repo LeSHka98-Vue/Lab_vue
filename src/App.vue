@@ -1,8 +1,10 @@
 <template>
   <Header/>
-  <!-- <IndexPage :title="userFullName" />
-  <ApiDemoPage /> -->
-  <router-view></router-view>
+  <!-- <IndexPage :title="userFullName" /> -->
+  <!-- <ApiDemoPage />  -->
+  <ErrorBoundary>
+    <router-view></router-view>
+  </ErrorBoundary>
   <Footer/>
 </template>
 
@@ -12,6 +14,8 @@ import IndexPage from '@/pages/IndexPage.vue';
 import ApiDemoPage from '@/pages/ApiDemoPage.vue';
 import Footer from '@/components/Footer.vue';
 import Header from '@/components/Header.vue';
+import Alert from '@/ui/Alert.vue'
+import ErrorBoundary from '@/errorBoundaries/ErrorBoundary.vue'
 import '@/assets/main-styles.scss'
 import '@/assets/colors.scss'
 import 'normalize.css'
@@ -21,11 +25,14 @@ import 'normalize.css'
     IndexPage,
     ApiDemoPage,
     Header,
-    Footer
+    Footer,
+    Alert,
+    ErrorBoundary
   },
 })
 export default class App extends Vue {
   user: any = null;
+  amigo:any = null;
 
   async mounted(): Promise<void> {
     const resp = await fetch('http://localhost:3000/users/1').then((response) => response.json());

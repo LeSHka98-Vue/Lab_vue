@@ -3,16 +3,16 @@
         <h2 class="footer__slogan">Incredible convenient</h2>
         <div>
             <a class="footer__link" href="https://www.ubisoft.com/ru-ru/">
-                <img src="@/assets/ubisoft.png" alt="ubisoft">
+                <img src="@/assets/images/ubisoft.png" alt="ubisoft">
             </a>
             <a class="footer__link" href="https://www.ea.com/ru-ru">
-                 <img src="@/assets/ea-sports.png" alt="ea-arts">
+                 <img src="@/assets/images/ea-sports.png" alt="ea-arts">
             </a>
             <a class="footer__link" href="https://www.sega.com/">
-                 <img src="@/assets/sega.png" alt="sega">
+                 <img src="@/assets/images/sega.png" alt="sega">
             </a>
             <a class="footer__link" href="https://www.crytek.com/">
-                 <img src="@/assets/crytek.png" alt="crytek">
+                 <img src="@/assets/images/crytek.png" alt="crytek">
             </a>
         </div>
     </footer>
