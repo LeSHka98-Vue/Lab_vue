@@ -3,6 +3,9 @@ import NotFoundPage from '@/pages/NotFoundPage.vue'
 import Products from '@/pages/Products.vue'
 import About from '@/pages/About.vue'
 import HelloWorldPage from '@/pages/HelloWorldPage.vue'
+import PC from '@/pages/products/PC.vue'
+import Xbox from '@/pages/products/Xbox.vue'
+import PS5 from '@/pages/products/PS5.vue'
 
 const routes:Array<RouteRecordRaw> = [
   {
@@ -10,12 +13,24 @@ const routes:Array<RouteRecordRaw> = [
     component: HelloWorldPage
   },
   {
+    path: '/about',
+    component: About
+  },
+  {
     path: '/products',
     component: Products
   },
   {
-    path: '/about',
-    component: About
+    path: '/products/pc',
+    component: PC
+  },
+  {
+    path: '/products/ps5',
+    component: PS5
+  },
+  {
+    path: '/products/xbox',
+    component: Xbox
   },
   {
     path: '/:pathMatch(.*)*',
