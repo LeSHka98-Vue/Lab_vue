@@ -14,7 +14,7 @@ import IndexPage from '@/pages/IndexPage.vue';
 import ApiDemoPage from '@/pages/ApiDemoPage.vue';
 import Footer from '@/components/Footer.vue';
 import Header from '@/components/Header.vue';
-import Alert from '@/ui/Alert.vue'
+import Alert from '@/alerts/Alert.vue'
 import ErrorBoundary from '@/errorBoundaries/ErrorBoundary.vue'
 import '@/assets/main-styles.scss'
 import '@/assets/colors.scss'

@@ -7,8 +7,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-
-type AlertType = 'success'| 'warning' | 'info' | 'error' ;
+import { AlertType } from '@/types/types';
 
 @Options({
   props: {
