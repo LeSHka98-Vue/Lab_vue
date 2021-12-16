@@ -1,3 +1,9 @@
 interface Category {
-  platform: string
+  id: number,
+  image: string,
+  signature: string,
+  category: string,
+  platform?: string
 }
+
+export type CategoryArray = Array<Category>

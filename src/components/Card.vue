@@ -1,6 +1,6 @@
 <template>
   <router-link class="card__router-link" :to="path">
-      <img :src="require(`@/assets/images/categories/${this.image}.png`)" :alt="category">
+      <img :src="require(`@/assets/images/categories/${this.image}`)" :alt="category">
       <h3>{{ signature }}</h3>
   </router-link>
 </template>
@@ -27,7 +27,7 @@ export default class Card extends Vue {
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    box-shadow: 2px 10px 16px 2px rgba(0,0,0,0.7);
+    box-shadow: $box-shadow-card;
     text-decoration: none;
 
     width: 200px;

@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <h2>{{ caption }}</h2>
+    <h2 class="section__caption">{{ caption }}</h2>
     <div class="section__content">
       <slot></slot>
     </div>
@@ -31,7 +31,7 @@ export default class Section extends Vue {
       gap: 4%;
     }
 
-    h2 {
+    .section__caption {
       color:$white;
     }
   }
