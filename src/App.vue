@@ -16,9 +16,9 @@ import Footer from '@/components/Footer.vue';
 import Header from '@/components/Header.vue';
 import Alert from '@/alerts/Alert.vue'
 import ErrorBoundary from '@/errorBoundaries/ErrorBoundary.vue'
+import 'normalize.css'
 import '@/assets/main-styles.scss'
 import '@/assets/colors.scss'
-import 'normalize.css'
 
 @Options({
   components: {

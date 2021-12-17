@@ -7,3 +7,8 @@ interface Category {
 }
 
 export type CategoryArray = Array<Category>
+
+interface Product {
+  genre: string,
+  rating: number
+}
