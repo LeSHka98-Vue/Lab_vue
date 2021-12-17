@@ -3,7 +3,7 @@
       <div class="product-card">
         <div class="product-card__front">
           <div class="product-card__image">
-            <img :src="require(`@/assets/images/games/${this.image}.jpg`)" :alt="image">
+            <img :src="require(`@/assets/images/games/${this.image}`)" :alt="image">
           </div>
           <div class="product-card__name">
             <div>
@@ -33,7 +33,7 @@ export default class ProductCard extends Vue {
   @Prop(String) name: string|undefined;
   @Prop(String) genre: string|undefined;
   @Prop(String) description: string|undefined;
-  @Prop(String) rating: number|undefined;
+  @Prop(Number) rating: number|undefined;
 }
 </script>
 
@@ -43,7 +43,7 @@ export default class ProductCard extends Vue {
     justify-content: center;
     align-items: center;
     width: 200px;
-    height: 250px;
+    height: 260px;
     // overflow: hidden;
     perspective: 1000px;
 

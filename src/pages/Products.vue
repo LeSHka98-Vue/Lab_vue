@@ -11,6 +11,8 @@
 import { Options, Vue } from 'vue-class-component'
 import Card from '@/components/Card.vue'
 import Section from '@/components/Section.vue'
+import { Category } from '@/types/interfaces'
+import { Categories } from '@/dataFile'
 
 @Options({
   components: {
@@ -18,5 +20,7 @@ import Section from '@/components/Section.vue'
     Section
   }
 })
-export default class Products extends Vue {}
+export default class Products extends Vue {
+  categories:Category[] = Categories ;
+}
 </script>

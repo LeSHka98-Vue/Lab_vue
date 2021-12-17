@@ -18,5 +18,31 @@
       "updatedAt": "1636182462043",
       "id": 1
     }
+  ],
+  "products" : [
+    {
+      "id": 1,
+      "image": "crysis.jpg",
+      "name": "Crysis",
+      "genre": "shooter",
+      "rating": 9,
+      "description": "Crysis"
+    },
+    {
+      "id": 2,
+      "image": "nfs.jpg",
+      "name":"NFS",
+      "genre": "racing",
+      "rating": 8,
+      "description": "NFS"
+    },
+    {
+      "id": 3,
+      "image": "assasin.jpg",
+      "name":"Assasin's Creed",
+      "genre": "RPG",
+      "rating": 9,
+      "description": "Assasin;s Creed"
+    }
   ]
 }
