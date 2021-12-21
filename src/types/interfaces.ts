@@ -9,6 +9,15 @@ interface Category {
 export type CategoryArray = Array<Category>
 
 interface Product {
+  id: number,
+  image: string,
+  name:string,
   genre: string,
-  rating: number
+  rating: number,
+  description: string
+}
+
+export {
+  Category,
+  Product
 }

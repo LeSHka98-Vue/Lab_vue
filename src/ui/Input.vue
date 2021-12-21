@@ -1,23 +1,18 @@
 <template>
   <div class="myInput">
-      <input :type="type" v-model="input" >
-      <img src="@/assets/close.png" @click="clear()">
+      <input :type="type" :value="search" @input="$emit('update:search', $event.target.value)">
+      <img src="@/assets/close.png" @click="$emit('update:search', '')">
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Vue } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { InputType } from '@/types/types';
+import { InputType } from '@/types/types'
 
 export default class Input extends Vue {
 @Prop(String as () => InputType) type:InputType| undefined;
-
-  input:any = null;
-
-  clear() {
-    this.input = '';
-  }
+@Prop(String) search:string| undefined;
 }
 </script>
 
@@ -27,7 +22,7 @@ export default class Input extends Vue {
     justify-content: space-between;
     padding: 10px;
     margin: 10px auto;
-    width: 300px;
+    width: 350px;
     border-radius: 10px;
     border: 2px solid $dark-gray;
     background: $white;

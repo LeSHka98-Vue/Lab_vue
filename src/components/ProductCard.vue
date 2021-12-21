@@ -3,7 +3,7 @@
       <div class="product-card">
         <div class="product-card__front">
           <div class="product-card__image">
-            <img :src="require(`@/assets/images/games/${this.image}.jpg`)" :alt="image">
+            <img :src="require(`@/assets/images/games/${this.image}`)" :alt="image">
           </div>
           <div class="product-card__name">
             <div>
@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="product-card__back">
-          <p>
+          <p class="product-card__description">
             {{ description }}<br>
             <a href="#">more</a>
           </p>
@@ -33,7 +33,7 @@ export default class ProductCard extends Vue {
   @Prop(String) name: string|undefined;
   @Prop(String) genre: string|undefined;
   @Prop(String) description: string|undefined;
-  @Prop(String) rating: number|undefined;
+  @Prop(Number) rating: number|undefined;
 }
 </script>
 
@@ -43,8 +43,7 @@ export default class ProductCard extends Vue {
     justify-content: center;
     align-items: center;
     width: 200px;
-    height: 250px;
-    // overflow: hidden;
+    height: 260px;
     perspective: 1000px;
 
     &:hover .product-card{
@@ -55,14 +54,12 @@ export default class ProductCard extends Vue {
     position: relative;
     width: 100%;
     height: 100%;
-    box-shadow: 2px 10px 16px 2px rgba(0,0,0,0.7);
+    box-shadow: $box-shadow-card;
     transition: transform 1s;
     transform-style: preserve-3d;
 
     %both-sides {
       position: absolute;
-      // width: 100%;
-      // height: 100%;
       backface-visibility: hidden;
       overflow: hidden;
       border-radius: 7px;
@@ -81,6 +78,10 @@ export default class ProductCard extends Vue {
       height: 100%;
       background: $white;
     }
+    &__description {
+        padding: 7px;
+        text-align: justify;
+    }
 
     &__image {
       width: 200px;
@@ -96,11 +97,8 @@ export default class ProductCard extends Vue {
       }
     }
     &__genre {
-      color:$gray;
+      color: $gray;
       font-size: 14px;
-    }
-    &:active {
-        background: $light-purple;
     }
     img {
       width: 100%;

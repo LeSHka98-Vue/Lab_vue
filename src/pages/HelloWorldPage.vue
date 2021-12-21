@@ -1,46 +1,43 @@
 <template>
-    <Section caption="Search">
-      <Input type="email"></Input>
-    </Section>
+    <Search />
     <Section caption="Categories">
       <Card v-for="category of categories"
-        :key="category.id" 
+        :key="category.id"
         :image="category.image" 
         :signature="category.signature" 
-        :category="category.category"
-      />
+        :category="category.category"/>
     </Section>
     <Section caption="Recently added">
-      <ProductCard name="Crysis" image="crysis" genre="shooter" rating="8" description="Crysis"/>
-      <ProductCard name="NFS" image="nfs" genre="racing" rating="9" description="NFS"/>
-      <ProductCard 
-        name="Assasin's Creed" 
-        image="assasin" 
-        genre="RPG" 
-        rating="9" 
-        description="Assasin's Creed"
+      <ProductCard v-for="product of products"
+        :key="product.id"
+        :name="product.name" 
+        :image="product.image" 
+        :genre="product.genre" 
+        :rating="product.rating" 
+        :description="product.description"
       />
     </Section>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue } from 'vue-class-component'
 import Section from '@/components/Section.vue'
 import Card from '@/components/Card.vue'
-import { CategoryArray } from '@/types/interfaces'
-import Categories from '@/categories'
+import { Category, Product } from '@/types/interfaces'
+import { Categories, Products } from '@/dataFile'
 import ProductCard from '@/components/ProductCard.vue'
-import Input from '@/ui/Input.vue'
+import Search from '@/components/Search.vue'
 
 @Options({
   components: {
     Section,
     Card,
     ProductCard,
-    Input
+    Search
   }
 })
 export default class HelloWorldPage extends Vue {
-  categories:CategoryArray = Categories ;
+  categories:Category[] = Categories;
+  products:Product[] = Products;
 }
 </script>

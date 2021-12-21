@@ -1,12 +1,11 @@
 <template>
     <h1>Products</h1>
-    <Section caption='Categories'>
+    <Section caption="Categories">
       <Card v-for="category of categories"
-        :key="category.id" 
+        :key="category.id"
         :image="category.image" 
         :signature="category.signature" 
-        :category="category.category"
-      />
+        :category="category.category"/>
     </Section>
 </template>
 
@@ -14,8 +13,8 @@
 import { Options, Vue } from 'vue-class-component'
 import Card from '@/components/Card.vue'
 import Section from '@/components/Section.vue'
-import { CategoryArray } from '@/types/interfaces'
-import Categories from '@/categories'
+import { Category } from '@/types/interfaces'
+import { Categories } from '@/dataFile'
 
 @Options({
   components: {
@@ -24,6 +23,6 @@ import Categories from '@/categories'
   }
 })
 export default class Products extends Vue {
-  categories:CategoryArray = Categories ;
+  categories:Category[] = Categories ;
 }
 </script>
