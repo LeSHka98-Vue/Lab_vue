@@ -27,7 +27,7 @@ export default class Card extends Vue {
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    box-shadow: 2px 10px 16px 2px rgba(0,0,0,0.7);
+    box-shadow: $box-shadow-card;
     text-decoration: none;
 
     width: 200px;
