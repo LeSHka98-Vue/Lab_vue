@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="product-card__back">
-          <p>
+          <p class="product-card__description">
             {{ description }}<br>
             <a href="#">more</a>
           </p>
@@ -44,7 +44,6 @@ export default class ProductCard extends Vue {
     align-items: center;
     width: 200px;
     height: 260px;
-    // overflow: hidden;
     perspective: 1000px;
 
     &:hover .product-card{
@@ -78,11 +77,10 @@ export default class ProductCard extends Vue {
       width: 100%;
       height: 100%;
       background: $white;
-
-      p {
+    }
+    &__description {
         padding: 7px;
         text-align: justify;
-      }
     }
 
     &__image {

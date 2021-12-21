@@ -5,7 +5,6 @@ interface Category {
   category: string,
   platform?: string
 }
-// export type CategoryArray = Array<Category>
 
 interface Product {
   id: number,

@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue } from 'vue-class-component'
 import Section from '@/components/Section.vue'
 import Card from '@/components/Card.vue'
 import { Category, Product } from '@/types/interfaces'
