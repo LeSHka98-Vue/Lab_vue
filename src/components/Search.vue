@@ -43,7 +43,7 @@ export default class Search extends Vue {
     this.request('products', value);
   }
 
-  request(param:string, value:string) {
+  request(param:string, value:string):void {
     fetch(`http://localhost:3000/api/${param}?name_like=${value}`)
       .then((response) => response.json())
       .then((data) => { this.products = data })

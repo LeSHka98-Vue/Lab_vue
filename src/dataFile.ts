@@ -28,7 +28,7 @@ const Products: Product[] = [
     name: 'Crysis',
     genre: 'shooter',
     rating: 9,
-    description: 'Crysis'
+    description: 'Crysis is a first-person shooter video game series created by German developer Crytek.'
   },
   {
     id: 2,
@@ -36,7 +36,7 @@ const Products: Product[] = [
     name: 'NFS',
     genre: 'racing',
     rating: 8,
-    description: 'NFS'
+    description: 'Need for Speed (NFS) is a racing video game franchise published by Electronic Arts.'
   },
   {
     id: 3,
@@ -44,7 +44,7 @@ const Products: Product[] = [
     name: "Assasin's Creed",
     genre: 'RPG',
     rating: 9,
-    description: "Assasin's Creed"
+    description: "Assassin's Creed series depicts a fictional millennia-old struggle between the Assassins, who fight for peace and free will, and the Templars, who desire peace through order and control."
   }
 ];
 

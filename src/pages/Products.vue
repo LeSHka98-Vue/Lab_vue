@@ -1,9 +1,11 @@
 <template>
     <h1>Products</h1>
     <Section caption="Categories">
-      <Card image="computer" signature="PC" category="pc"/>
-      <Card image="playstation" signature="PS5" category="ps5"/>
-      <Card image="xbox" signature="XBox" category="xbox"/>
+      <Card v-for="category of categories"
+        :key="category.id"
+        :image="category.image" 
+        :signature="category.signature" 
+        :category="category.category"/>
     </Section>
 </template>
 

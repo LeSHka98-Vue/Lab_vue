@@ -1,9 +1,11 @@
 <template>
     <Search />
     <Section caption="Categories">
-      <Card image="computer" signature="PC" category="pc"/>
-      <Card image="playstation" signature="PS5" category="ps5"/>
-      <Card image="xbox" signature="XBox" category="xbox"/>
+      <Card v-for="category of categories"
+        :key="category.id"
+        :image="category.image" 
+        :signature="category.signature" 
+        :category="category.category"/>
     </Section>
     <Section caption="Recently added">
       <ProductCard v-for="product of products"

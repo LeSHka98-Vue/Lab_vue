@@ -1,6 +1,6 @@
 <template>
   <router-link class="card__router-link" :to="path">
-      <img :src="require(`@/assets/images/categories/${this.image}.png`)" :alt="category">
+      <img :src="require(`@/assets/images/categories/${this.image}`)" :alt="category">
       <h3>{{ signature }}</h3>
   </router-link>
 </template>

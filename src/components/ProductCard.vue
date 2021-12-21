@@ -61,8 +61,6 @@ export default class ProductCard extends Vue {
 
     %both-sides {
       position: absolute;
-      // width: 100%;
-      // height: 100%;
       backface-visibility: hidden;
       overflow: hidden;
       border-radius: 7px;
@@ -80,6 +78,11 @@ export default class ProductCard extends Vue {
       width: 100%;
       height: 100%;
       background: $white;
+
+      p {
+        padding: 7px;
+        text-align: justify;
+      }
     }
 
     &__image {
@@ -96,11 +99,8 @@ export default class ProductCard extends Vue {
       }
     }
     &__genre {
-      color:$gray;
+      color: $gray;
       font-size: 14px;
-    }
-    &:active {
-        background: $light-purple;
     }
     img {
       width: 100%;

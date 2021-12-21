@@ -22,7 +22,7 @@ export default class Input extends Vue {
     justify-content: space-between;
     padding: 10px;
     margin: 10px auto;
-    width: 300px;
+    width: 350px;
     border-radius: 10px;
     border: 2px solid $dark-gray;
     background: $white;
