@@ -54,7 +54,7 @@ export default class ProductCard extends Vue {
     position: relative;
     width: 100%;
     height: 100%;
-    box-shadow: 2px 10px 16px 2px rgba(0,0,0,0.7);
+    box-shadow: $box-shadow-card;
     transition: transform 1s;
     transform-style: preserve-3d;
 
