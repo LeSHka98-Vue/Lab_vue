@@ -3,11 +3,11 @@
         <router-link class="header__name" to="/">
           <h1>Game Market</h1>
         </router-link> 
-        <div class="header__navBlock">
+        <div class="header__nav-block">
             <router-link class="header__router-link" to="/"> Home</router-link>
             <div class="header__dropdown">
                 <router-link class="header__router-link" to="/products" >Products</router-link>
-                <div class="header__dropdownMenu" >
+                <div class="header__dropdown-menu" >
                     <router-link class="header__router-link" to="/products/pc">PC</router-link>
                     <router-link class="header__router-link" to="/products/xbox">PS 5</router-link>
                     <router-link class="header__router-link" to="/products/ps5">XBox</router-link>
@@ -39,7 +39,7 @@ export default class App extends Vue {}
           color: $white;
         }
     }
-    .header__navBlock {
+    .header__nav-block {
         display: flex;
         
     }
@@ -53,22 +53,22 @@ export default class App extends Vue {}
             }
         }
     }
-    .header__dropdownMenu {
+    .header__dropdown-menu {
         display: none;
-        position:absolute;
+        position: absolute;
         right:-15px;
         left:-15px;
         top: 30px;
         z-index: 1;
         flex-direction: column;
         background: $dark-gray;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        box-shadow: $box-shadow-menu;
 
         .header__router-link {
             padding: 10px 0;
 
             &:hover {
-                background: #151616;
+                background: $super-gray;
                 border: none;
             }
         }

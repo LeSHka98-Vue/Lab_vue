@@ -7,6 +7,8 @@ interface Category {
 }
 // export type CategoryArray = Array<Category>
 
+export type CategoryArray = Array<Category>
+
 interface Product {
   id: number,
   image: string,
