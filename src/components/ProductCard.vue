@@ -3,7 +3,11 @@
       <div class="product-card">
         <div class="product-card__front">
           <div class="product-card__image">
-            <img :src="require(`@/assets/images/games/${this.image}`)" :alt="image">
+            <img 
+              :src="URL"
+              :alt="image" 
+              @error="onImageLoadFailure"
+            >
           </div>
           <div class="product-card__name">
             <div>
@@ -34,6 +38,20 @@ export default class ProductCard extends Vue {
   @Prop(String) genre: string|undefined;
   @Prop(String) description: string|undefined;
   @Prop(Number) rating: number|undefined;
+
+  get URL() {
+    try {
+      return require(`@/assets/images/games/${this.image}`);
+    } catch (error) {
+      console.warn(`image '${this.image}' hasn't been found`);
+      return require('@/assets/images/default.png');
+    }
+  }
+
+  onImageLoadFailure(e) {
+    console.log('some text');
+    e.target.src = '@/assets/images/default.jpg';
+  }
 }
 </script>
 

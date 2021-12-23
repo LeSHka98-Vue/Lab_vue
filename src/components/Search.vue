@@ -22,6 +22,7 @@ import Input from '@/ui/Input.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import Section from '@/components/Section.vue'
 import { Product } from '@/types/interfaces'
+import debounce from '@/utils/Debounce'
 
 @Options({
   components: {
@@ -33,23 +34,25 @@ import { Product } from '@/types/interfaces'
 export default class Search extends Vue {
   search = '';
   products:Product[] = [];
+  debouncedWatch!: (...args: any) => void
 
   created() {
     this.request('products', this.search);
+    this.debouncedWatch = debounce(this.request);
   }
 
   @Watch('search')
   onSearchChanged(value:string) {
-    this.request('products', value);
+    this.debouncedWatch('products', value)
   }
 
-  request(param:string, value:string):void {
+  request(param:string, value:string) {
     fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}?name_like=${value}`)
       .then((response) => response.json())
       .then((data) => { this.products = data })
       .catch((error) => {
         console.error(error.message);
-      });
+      })
   }
 }
 </script>

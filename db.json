@@ -22,7 +22,7 @@
   "products" : [
     {
       "id": 1,
-      "image": "crysis.jpg",
+      "image": "crysis.jp",
       "name": "Crysis",
       "genre": "shooter",
       "rating": 9,
