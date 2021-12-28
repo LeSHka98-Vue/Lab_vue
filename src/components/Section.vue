@@ -30,8 +30,8 @@ export default class Section extends Vue {
       align-items: center;
       gap: 4%;
     }
-
-    .section__caption {
+    
+    &__caption {
       color:$white;
     }
   }

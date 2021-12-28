@@ -1,7 +1,16 @@
 <template>
-  <div class="myInput">
-      <input :type="type" :value="search" @input="$emit('update:search', $event.target.value)">
-      <img src="@/assets/close.png" @click="$emit('update:search', '')">
+  <div class="block">
+      <input 
+        class="block__input"
+        :type="type" 
+        :value="search" 
+        @input="$emit('update:search', $event.target.value)"
+      >
+      <img 
+        class="block__img"
+        src="@/assets/images/close.png" 
+        @click="$emit('update:search', '')"
+      >
   </div>
 </template>
 
@@ -17,7 +26,7 @@ export default class Input extends Vue {
 </script>
 
 <style lang="scss" scoped>
- .myInput {
+ .block {
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -27,15 +36,15 @@ export default class Input extends Vue {
     border: 2px solid $dark-gray;
     background: $white;
 
-    input {
+    &__input {
       border: none;
       outline: none;
       width: 100%;
     }
-    img {
+    &__img {
       margin-left: 5px;
     }
-    img:hover {
+    &__img:hover {
       cursor:pointer;
     }
  }

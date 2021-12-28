@@ -4,13 +4,14 @@
         <div class="product-card__front">
           <div class="product-card__image">
             <img 
-              :src="URL"
+              class="product-card__picture"
+              :src="`/images/games/${this.image}`"
               :alt="image" 
               @error="onImageLoadFailure"
             >
           </div>
           <div class="product-card__name">
-            <div>
+            <div class="product-card__left-block">
               <span>{{ name }}</span><br>
               <span class="product-card__genre">{{ genre }}</span>
             </div>
@@ -39,18 +40,8 @@ export default class ProductCard extends Vue {
   @Prop(String) description: string|undefined;
   @Prop(Number) rating: number|undefined;
 
-  get URL() {
-    try {
-      return require(`@/assets/images/games/${this.image}`);
-    } catch (error) {
-      console.warn(`image '${this.image}' hasn't been found`);
-      return require('@/assets/images/default.png');
-    }
-  }
-
   onImageLoadFailure(e) {
-    console.log('some text');
-    e.target.src = '@/assets/images/default.jpg';
+    e.target.src = '/images/default.png';
   }
 }
 </script>
@@ -109,16 +100,15 @@ export default class ProductCard extends Vue {
       display: flex;
       justify-content: space-between;
       padding: 8px;
-
-      div {
+    }
+    &__left-block {
         text-align: left;
-      }
     }
     &__genre {
       color: $gray;
       font-size: 14px;
     }
-    img {
+    &__picture {
       width: 100%;
       height: 100%;
       object-fit: cover;
