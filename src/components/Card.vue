@@ -19,7 +19,7 @@ export default class Card extends Vue {
   }
 
   onImageLoadFailure(e) {
-    e.target.src = '/images/default.png';
+    e.target.src = '/images/default2.png';
   }
 }
 </script>
@@ -33,6 +33,7 @@ export default class Card extends Vue {
     border-radius: 8px;
     box-shadow: $box-shadow-card;
     text-decoration: none;
+    overflow: hidden;
 
     width: 200px;
     height: 170px;

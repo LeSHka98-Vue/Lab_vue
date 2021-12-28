@@ -8,8 +8,9 @@
       >
       <img 
         class="block__img"
-        src="@/assets/images/close.png" 
+        src="/images/close.png" 
         @click="$emit('update:search', '')"
+        @error="onImageLoadFailure"
       >
   </div>
 </template>
@@ -20,8 +21,12 @@ import { Prop } from 'vue-property-decorator'
 import { InputType } from '@/types/types'
 
 export default class Input extends Vue {
-@Prop(String as () => InputType) type:InputType| undefined;
-@Prop(String) search:string| undefined;
+  @Prop(String as () => InputType) type:InputType| undefined;
+  @Prop(String) search:string| undefined;
+
+  onImageLoadFailure(e) {
+    e.target.src = '/images/default_cross.png';
+  }
 }
 </script>
 
