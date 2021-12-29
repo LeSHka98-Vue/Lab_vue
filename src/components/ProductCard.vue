@@ -21,7 +21,7 @@
         <div class="product-card__back">
           <p class="product-card__description">
             {{ description }}<br>
-            <a href="#">more</a>
+            <router-link :to="`/products/${id}`">more</router-link>
           </p>
           <button>Add to cart</button>
         </div>
@@ -30,10 +30,12 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 
+@Options({})
 export default class ProductCard extends Vue {
+  @Prop(Number) id: number|undefined;
   @Prop(String) image: string|undefined;
   @Prop(String) name: string|undefined;
   @Prop(String) genre: string|undefined;

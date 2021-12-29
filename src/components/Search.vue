@@ -4,6 +4,7 @@
     <div class="search-result" v-if="products.length">
       <ProductCard v-for="product of products"
         :key="product.id"
+        :id="product.id"
         :name="product.name" 
         :image="product.image" 
         :genre="product.genre" 

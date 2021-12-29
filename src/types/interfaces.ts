@@ -14,7 +14,14 @@ interface Product {
   name:string,
   genre: string,
   rating: number,
-  description: string
+  description: string,
+  publisher?: string,
+  country?: string,
+  edition?:string,
+  releaseDate?: Date,
+  announcementDate?: Date,
+  tages?: string,
+  systemRequirements?: string
 }
 
 export {
