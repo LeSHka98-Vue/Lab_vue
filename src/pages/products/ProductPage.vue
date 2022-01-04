@@ -1,24 +1,35 @@
 <template>
   <div class="main-block">
-    <img :src="SRC" :alt="product.name">
-    <div>
+    <img :src="SRC" :alt="product.name" class="img">
+    <div class="table-block">
       <table class="table">
         <colgroup>
-          <col style="background:#C7DAF0;">
+          <col class="table__first-column">
         </colgroup>
         <tr>
           <th class="table__th">Name</th>
-          <th class="table__th">Characteristic</th>
+          <th class="table__th">Characteristics</th>
         </tr>
-        <tr v-for="(item, index) of tableSystemReqs" :key="index">
-          <td class="table__cell">{{ item[0] }}</td>
-          <td class="table__cell">{{ item[1] }}</td>
+        <tr v-for="(value, name) in product.systemRequirements" :key="name">
+          <td class="table__cell">{{ name }}</td>
+          <td class="table__cell">{{ value }}</td>
         </tr>
       </table>
-      <Button type="info">Add to cart</Button>
-      <Button type="info">
-        <router-link class="next-page" :to="`/products/${+$route.params.id + 1}`">Next</router-link>
-      </Button>
+      <div class="table-block__buttons-block">
+        <Button type="info">Add to cart</Button>
+        <router-link v-if="+$route.params.id > 1"
+          class="page-link" 
+          :to="`/products/${+$route.params.id - 1}`"
+          >
+            <Button type="info">Previous</Button>
+        </router-link>
+        <router-link v-if="+$route.params.id < pagesAmount"
+          class="page-link" 
+          :to="`/products/${+$route.params.id + 1}`"
+          >
+            <Button type="info">Next</Button>
+        </router-link>
+      </div>
     </div>
     <p class="description">{{ product.description }}</p>
   </div>
@@ -42,21 +53,14 @@ export default class ProductPage extends Vue {
     genre: '',
     rating: 0,
     description: '',
-    systemRequirements: ''
+    systemRequirements: {
+      CPU: "",
+      RAM: "",
+      VIDEO_CARD: ""
+    }
   }; 
   
-  tableSystemReqs:string[][] = [];
-
-  getSystemRequirements() {
-    let systemReqsByType:string[]|undefined = [];
-    systemReqsByType = this.product.systemRequirements?.split('; ') ?? [];
-
-    for (let i = 0; i < systemReqsByType.length; i += 1) {
-      const index = systemReqsByType[i].indexOf(':');
-      const stringArr:string[] = [systemReqsByType[i].slice(0, index), systemReqsByType[i].slice(index + 1)];
-      this.tableSystemReqs[i] = stringArr;
-    }
-  }
+  pagesAmount = 0
 
   get SRC() {
     return `/images/games/${this.product.image}`
@@ -64,18 +68,27 @@ export default class ProductPage extends Vue {
 
   async created() {
     await this.request('products', +this.$route.params.id);
-    this.getSystemRequirements();
+    this.pagesAmount = await this.request('products');
   }
 
-  async beforeRouteUpdate(to, from) {
+  async beforeRouteUpdate(to) {
     await this.request('products', to.params.id);
-    this.getSystemRequirements();
   }
 
-  request(param:string, page:number|string[] = +this.$route.params.id) {
-    return fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}/${page}`)
+  request(param:string, page?:number|string[]):Promise<any> {
+    const query:string = page
+      ? `${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}/${page}`
+      : `${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}`;
+    return fetch(query)
       .then((response) => response.json())
-      .then((data) => { this.product = data })
+      .then((data) => { 
+        if (page) {
+          this.product = data;
+          return this.product;
+        }
+        this.pagesAmount = data.length;
+        return this.pagesAmount;
+      })
       .catch((error) => {
         console.error(error.message);
       })
@@ -86,42 +99,55 @@ export default class ProductPage extends Vue {
 <style lang="scss" scoped>
   .main-block {
     display: flex;
+    margin: 0 auto;
     justify-content: center;
+    width: 70%;
     flex-wrap: wrap;
     padding: 10px;
-    gap: 10px;
+    gap: 1.5%;
+  }
+  .table-block {
+    &__buttons-block {
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+  }
+  .img {
+    min-height: 400px;
+    max-height: 400px;
   }
   .table {
-     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-     border-collapse:collapse;
-     color: #3E4347;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    border-collapse:collapse;
 
-     &__th:first-child,
-     &__cell:first-child {
-       color: #F5F6F6;
-       border-left: none;
-     }
+    &__first-column {
+      background: $table-first-column;
+    }
+
+    &__th:first-child,
+    &__cell:first-child {
+      color: $table-first-column-text;
+      border-left: none;
+    }
     &__th {
       font-weight: normal;
-      border-bottom: 2px solid #F5E1A6;
-      // border-right: 20px solid white;
-      // border-left: 20px solid white;
+      border-bottom: 2px solid $table-yellow-line;
       padding: 8px 10px;
       text-align: left;
     }
     &__cell {
-      // border-right: 20px solid white;
-      // border-left: 20px solid white;
       padding: 12px 10px;
-      color: #8b8e91;
+      color: $table-color;
       text-align: left;
     }
   }
   .description {
-    max-width: 60%;
-    text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+    max-width: 70%;
+    text-shadow: 2px 4px 3px $descryption-text;
   }
-  .next-page {
+  .page-link {
     text-decoration: none;
   }
 </style>

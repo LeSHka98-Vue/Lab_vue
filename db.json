@@ -33,7 +33,10 @@
       "releaseDate": "2007-11-13",
       "announcementDate": "2006-01-23",
       "tages": "crysis",
-      "systemRequirements": "CPU: Core 2 Duo 2.2 GHz/Athlon X2 4400+ or better; RAM: 2 GB; VIDEO CARD: Supported chipsets: NVIDIA GeForce 8800 GTS with 640MB RAM or similar"
+      "systemRequirements": { 
+              "CPU": "Core 2 Duo 2.2 GHz/Athlon X2 4400+ or better",
+              "RAM": "2 GB",
+              "VIDEO_CARD": "Supported chipsets: NVIDIA GeForce 8800 GTS with 640MB RAM or similar" }
     },
     {
       "id": 2,
@@ -48,7 +51,10 @@
       "releaseDate": "2004-11-09",
       "announcementDate": "2004-04-23",
       "tages": "nfs",
-      "systemRequirements": "CPU: Pentium III or Athlon XP; RAM: 256 MB; VIDEO CARD: AGP Video Card with 32 MB and a DirectX 8.1 compatible driver (GeForce2+ /Radeon 7500+)"
+      "systemRequirements": { 
+              "CPU": "Pentium III or Athlon XP",
+              "RAM": "256 MB",
+              "VIDEO_CARD": "AGP Video Card with 32 MB and a DirectX 8.1 compatible driver (GeForce2+ /Radeon 7500+)" }
     },
     {
       "id": 3,
@@ -63,7 +69,10 @@
       "releaseDate": "2009-11-17",
       "announcementDate": "2009-04-07",
       "tages": "assasin",
-      "systemRequirements": "CPU: 1.8 GHz Intel Core2 Duo, 2.4 GHz AMD Athlon 64 X2 or better; RAM 2 GB; VIDEO CARD: 256 MB DirectX 9.0 compliant video card with Shader Model 3.0 or better"
+      "systemRequirements": {
+              "CPU": "1.8 GHz Intel Core2 Duo, 2.4 GHz AMD Athlon 64 X2 or better",
+              "RAM": "2 GB",
+              "VIDEO_CARD": "256 MB DirectX 9.0 compliant video card with Shader Model 3.0 or better" }
     }
   ]
 }
