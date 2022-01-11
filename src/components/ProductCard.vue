@@ -3,10 +3,15 @@
       <div class="product-card">
         <div class="product-card__front">
           <div class="product-card__image">
-            <img :src="require(`@/assets/images/games/${this.image}`)" :alt="image">
+            <img 
+              class="product-card__picture"
+              :src="`/images/games/${this.image}`"
+              :alt="image" 
+              @error="onImageLoadFailure"
+            >
           </div>
           <div class="product-card__name">
-            <div>
+            <div class="product-card__left-block">
               <span>{{ name }}</span><br>
               <span class="product-card__genre">{{ genre }}</span>
             </div>
@@ -16,7 +21,7 @@
         <div class="product-card__back">
           <p class="product-card__description">
             {{ description }}<br>
-            <a href="#">more</a>
+            <router-link :to="`/products/${id}`">more</router-link>
           </p>
           <button>Add to cart</button>
         </div>
@@ -25,15 +30,21 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 
+@Options({})
 export default class ProductCard extends Vue {
+  @Prop(Number) id: number|undefined;
   @Prop(String) image: string|undefined;
   @Prop(String) name: string|undefined;
   @Prop(String) genre: string|undefined;
   @Prop(String) description: string|undefined;
   @Prop(Number) rating: number|undefined;
+
+  onImageLoadFailure(e) {
+    e.target.src = '/images/default.png';
+  }
 }
 </script>
 
@@ -91,16 +102,15 @@ export default class ProductCard extends Vue {
       display: flex;
       justify-content: space-between;
       padding: 8px;
-
-      div {
+    }
+    &__left-block {
         text-align: left;
-      }
     }
     &__genre {
       color: $gray;
       font-size: 14px;
     }
-    img {
+    &__picture {
       width: 100%;
       height: 100%;
       object-fit: cover;

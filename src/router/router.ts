@@ -2,10 +2,11 @@ import { createRouter, RouteRecordRaw, createWebHashHistory } from 'vue-router'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 import Products from '@/pages/Products.vue'
 import About from '@/pages/About.vue'
-import HelloWorldPage from '@/pages/HelloWorldPage.vue'
+import HelloWorldPage from '@/pages/HomePage.vue'
 import PC from '@/pages/products/PC.vue'
 import Xbox from '@/pages/products/Xbox.vue'
 import PS5 from '@/pages/products/PS5.vue'
+import ProductPage from '@/pages/products/ProductPage.vue'
 
 const routes:Array<RouteRecordRaw> = [
   {
@@ -31,6 +32,10 @@ const routes:Array<RouteRecordRaw> = [
   {
     path: '/products/xbox',
     component: Xbox
+  },
+  {
+    path: '/products/:id',
+    component: ProductPage
   },
   {
     path: '/:pathMatch(.*)*',

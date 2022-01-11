@@ -32,7 +32,6 @@ import '@/assets/colors.scss'
 })
 export default class App extends Vue {
   user: any = null;
-  amigo:any = null;
 
   async mounted(): Promise<void> {
     const resp = await fetch('http://localhost:3000/users/1').then((response) => response.json());

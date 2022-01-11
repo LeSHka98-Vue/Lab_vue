@@ -22,7 +22,9 @@ module.exports = {
     'class-methods-use-this': 0,
     'no-trailing-spaces': 0,
     'lines-between-class-members': 0,
-    '@typescript-eslint/explicit-module-boundary-types': 'off'
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'no-param-reassign': 0,
+    'max-len': 0
   },
   overrides: [
     {

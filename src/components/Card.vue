@@ -1,7 +1,7 @@
 <template>
-  <router-link class="card__router-link" :to="path">
-      <img :src="require(`@/assets/images/categories/${this.image}`)" :alt="category">
-      <h3>{{ signature }}</h3>
+  <router-link class="card" :to="path">
+      <img :src="`/images/categories/${this.image}`" :alt="category" @error="onImageLoadFailure">
+      <h3 class="card__signature">{{ signature }}</h3>
   </router-link>
 </template>
 
@@ -17,11 +17,15 @@ export default class Card extends Vue {
   get path() {
     return `/products/${this.category?.toLowerCase()}`  
   }
+
+  onImageLoadFailure(e) {
+    e.target.src = '/images/default2.png';
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  .card__router-link {
+  .card {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,6 +33,7 @@ export default class Card extends Vue {
     border-radius: 8px;
     box-shadow: $box-shadow-card;
     text-decoration: none;
+    overflow: hidden;
 
     width: 200px;
     height: 170px;
@@ -40,7 +45,7 @@ export default class Card extends Vue {
     &:active {
         background: $light-purple;
     }
-    h3 {
+    &__signature {
       color: $dark-gray;
       font-weight: 100;
     }

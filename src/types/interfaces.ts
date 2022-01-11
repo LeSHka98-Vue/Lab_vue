@@ -6,7 +6,11 @@ interface Category {
   platform?: string
 }
 
-export type CategoryArray = Array<Category>
+interface systemRequirements {
+  CPU: string,
+  RAM: string,
+  VIDEO_CARD: string
+}
 
 interface Product {
   id: number,
@@ -14,7 +18,14 @@ interface Product {
   name:string,
   genre: string,
   rating: number,
-  description: string
+  description: string,
+  publisher?: string,
+  country?: string,
+  edition?:string,
+  releaseDate?: Date,
+  announcementDate?: Date,
+  tages?: string,
+  systemRequirements?: systemRequirements
 }
 
 export {
