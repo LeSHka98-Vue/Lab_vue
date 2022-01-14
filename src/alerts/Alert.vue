@@ -27,13 +27,13 @@ export default class Alert extends Vue {}
 
 <style lang="scss" scoped>
     .alert {
-        position: absolute;
-        top: 90px;
+        // position: absolute;
+        top: 1%;
         left: 0;
         right:0;
         z-index: 1000;
         margin: auto;
-        width: 60%;
+        max-width: 100%;
         padding: 20px;
         border: {
             width:1px;

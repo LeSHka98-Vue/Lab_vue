@@ -1,5 +1,5 @@
 <template>
-  <Header/>
+  <Header :isAuthorized="isAuthorized" @authorize="authorize"/>
   <!-- <IndexPage :title="userFullName" /> -->
   <!-- <ApiDemoPage />  -->
   <ErrorBoundary>
@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import IndexPage from '@/pages/IndexPage.vue';
-import ApiDemoPage from '@/pages/ApiDemoPage.vue';
-import Footer from '@/components/Footer.vue';
-import Header from '@/components/Header.vue';
+import { Options, Vue } from 'vue-class-component'
+import IndexPage from '@/pages/IndexPage.vue'
+import ApiDemoPage from '@/pages/ApiDemoPage.vue'
+import Footer from '@/components/Footer.vue'
+import Header from '@/components/Header.vue'
 import Alert from '@/alerts/Alert.vue'
 import ErrorBoundary from '@/errorBoundaries/ErrorBoundary.vue'
 import 'normalize.css'
@@ -32,6 +32,12 @@ import '@/assets/colors.scss'
 })
 export default class App extends Vue {
   user: any = null;
+  isAuthorized = false;
+
+  authorize(value:boolean) {
+    this.isAuthorized = value;
+    console.log("isAuthorized ", this.isAuthorized);
+  }
 
   async mounted(): Promise<void> {
     const resp = await fetch('http://localhost:3000/users/1').then((response) => response.json());

@@ -2,7 +2,8 @@
   <div class="block">
       <input 
         class="block__input"
-        :type="type" 
+        :type="type"
+        :placeholder="placeholder" 
         :value="search" 
         @input="$emit('update:search', $event.target.value)"
       >
@@ -23,6 +24,7 @@ import { InputType } from '@/types/types'
 export default class Input extends Vue {
   @Prop(String as () => InputType) type:InputType| undefined;
   @Prop(String) search:string| undefined;
+  @Prop(String) placeholder:string| undefined;
 
   onImageLoadFailure(e) {
     e.target.src = '/images/default_cross.png';

@@ -14,14 +14,35 @@
                 </div>
             </div>
             <router-link class="header__router-link" to="/about">About</router-link>
+            <ModalButton type="info-outline" 
+              mode="signin" 
+              :isAuthorized="isAuthorized"
+              @authorize="this.$emit('authorize', true)">
+                SignIn
+            </ModalButton>
+            <ModalButton type="info-outline" 
+              mode="signup"
+              :isAuthorized="isAuthorized"
+              @authorize="this.$emit('authorize', true)">
+                SignUp
+            </ModalButton>
         </div>
     </header>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Vue, Options } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
+import ModalButton from '@/components/ModalButton.vue'
 
-export default class App extends Vue {}
+@Options({
+  components: {
+    ModalButton
+  }
+})
+export default class App extends Vue {
+  @Prop(Boolean)isAuthorized:boolean | undefined;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -41,6 +62,8 @@ export default class App extends Vue {}
     }
     .header__nav-block {
         display: flex;
+        justify-content: space-around;
+        width: 35%;
         
     }
     .header__dropdown {
