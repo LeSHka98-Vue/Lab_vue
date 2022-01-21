@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
-import { Product } from '@/types/interfaces'
+import { Product } from '@/store/types/interfaces'
 import Button from '@/ui/Button.vue'
 
 @Options({

@@ -22,7 +22,7 @@ import { Watch } from 'vue-property-decorator'
 import Input from '@/ui/Input.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import Section from '@/components/Section.vue'
-import { Product } from '@/types/interfaces'
+import { Product } from '@/store/types/interfaces'
 import debounce from '@/utils/Debounce'
 
 @Options({

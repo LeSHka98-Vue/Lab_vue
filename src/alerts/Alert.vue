@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { AlertType } from '@/types/types';
+import { AlertType } from '@/store/types/types';
 
 @Options({
   props: {

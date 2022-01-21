@@ -61,13 +61,14 @@ export default class SignUpForm extends Vue {
   async submit() {
     if (this.users.find((item) => item.email === this.email)) { 
       this.success = true;
-      this.$emit('authorize', true);
+      this.$store.commit('setAuthorization', true);
       setTimeout(() => { 
         this.success = false;
         this.$emit('showModal', false);
       }, 2000);
       return;
     }
+    console.log('kjbj');
     this.error = true;
     setTimeout(() => { this.error = false; }, 2000);
   }

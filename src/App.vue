@@ -1,5 +1,5 @@
 <template>
-  <Header :isAuthorized="isAuthorized" @authorize="authorize"/>
+  <Header/>
   <!-- <IndexPage :title="userFullName" /> -->
   <!-- <ApiDemoPage />  -->
   <ErrorBoundary>
@@ -32,12 +32,12 @@ import '@/assets/colors.scss'
 })
 export default class App extends Vue {
   user: any = null;
-  isAuthorized = false;
+  // isAuthorized = false;
 
-  authorize(value:boolean) {
-    this.isAuthorized = value;
-    console.log("isAuthorized ", this.isAuthorized);
-  }
+  // authorize(value:boolean) {
+  //   this.isAuthorized = value;
+  //   console.log("isAuthorized ", this.isAuthorized);
+  // }
 
   async mounted(): Promise<void> {
     const resp = await fetch('http://localhost:3000/users/1').then((response) => response.json());

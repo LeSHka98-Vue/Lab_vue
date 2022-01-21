@@ -1,5 +1,5 @@
 <template>
-  <Button :type="type" @click="showModal('true')">
+  <Button :type="type" @click="showModal(true)">
     <slot></slot>
   </Button>
   <teleport to="#modals">
@@ -10,13 +10,9 @@
       </template>
       <template v-slot:default>
         <SignUpForm v-if="mode == 'signup'" 
-          @show-modal="showModal" 
-          :isAuthorized="isAuthorized" 
-          @authorize="this.$emit('authorize', true)"/>
+          @show-modal="showModal" />
         <SignInForm v-if="mode == 'signin'" 
-          @show-modal="showModal" 
-          :isAuthorized="isAuthorized" 
-          @authorize="this.$emit('authorize', true)"/>
+          @show-modal="showModal"  />
       </template>
       <template v-slot:footer>
         <!-- <Button :type="type" @click="this.$emit('showModal', false)">Cancel</Button> -->
@@ -28,7 +24,7 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { ButtonType } from '@/types/types'
+import { ButtonType } from '@/store/types/types'
 import Button from '@/ui/Button.vue'
 import Modal from '@/components/Modal.vue'
 import SignUpForm from '@/components/SignUpForm.vue'

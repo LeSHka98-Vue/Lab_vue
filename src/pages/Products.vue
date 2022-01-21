@@ -13,7 +13,7 @@
 import { Options, Vue } from 'vue-class-component'
 import Card from '@/components/Card.vue'
 import Section from '@/components/Section.vue'
-import { Category } from '@/types/interfaces'
+import { Category } from '@/store/types/interfaces'
 import { Categories } from '@/dataFile'
 
 @Options({

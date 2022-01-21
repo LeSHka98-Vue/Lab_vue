@@ -23,7 +23,7 @@
 import { Options, Vue } from 'vue-class-component'
 import Section from '@/components/Section.vue'
 import Card from '@/components/Card.vue'
-import { Category, Product } from '@/types/interfaces'
+import { Category, Product } from '@/store/types/interfaces'
 import { Categories, Products } from '@/dataFile'
 import ProductCard from '@/components/ProductCard.vue'
 import Search from '@/components/Search.vue'

@@ -16,16 +16,15 @@
             <router-link class="header__router-link" to="/about">About</router-link>
             <ModalButton type="info-outline" 
               mode="signin" 
-              :isAuthorized="isAuthorized"
-              @authorize="this.$emit('authorize', true)">
+              v-if="!this.$store.state.isAuthorized">
                 SignIn
             </ModalButton>
             <ModalButton type="info-outline" 
               mode="signup"
-              :isAuthorized="isAuthorized"
-              @authorize="this.$emit('authorize', true)">
+              v-if="!this.$store.state.isAuthorized">
                 SignUp
             </ModalButton>
+            <Button v-else type="info-outline" @click="logout">Log out</Button>
         </div>
     </header>
 </template>
@@ -34,14 +33,18 @@
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 import ModalButton from '@/components/ModalButton.vue'
+import Button from '@/ui/Button.vue'
 
 @Options({
   components: {
-    ModalButton
+    ModalButton,
+    Button
   }
 })
 export default class App extends Vue {
-  @Prop(Boolean)isAuthorized:boolean | undefined;
+  logout() {
+    this.$store.commit('setAuthorization', false)
+  }
 }
 </script>
 

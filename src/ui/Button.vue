@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { ButtonType } from '@/types/types';
+import { ButtonType } from '@/store/types/types';
 
 @Options({
   props: {
