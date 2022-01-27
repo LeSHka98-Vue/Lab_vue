@@ -17,6 +17,7 @@ import Header from '@/components/Header.vue'
 import Alert from '@/alerts/Alert.vue'
 import ErrorBoundary from '@/errorBoundaries/ErrorBoundary.vue'
 import 'normalize.css'
+import "../node_modules/vue-select/dist/vue-select.css";
 import '@/assets/main-styles.scss'
 import '@/assets/colors.scss'
 
@@ -32,12 +33,6 @@ import '@/assets/colors.scss'
 })
 export default class App extends Vue {
   user: any = null;
-  // isAuthorized = false;
-
-  // authorize(value:boolean) {
-  //   this.isAuthorized = value;
-  //   console.log("isAuthorized ", this.isAuthorized);
-  // }
 
   async mounted(): Promise<void> {
     const resp = await fetch('http://localhost:3000/users/1').then((response) => response.json());

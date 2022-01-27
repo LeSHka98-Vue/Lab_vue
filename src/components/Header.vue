@@ -1,8 +1,11 @@
 <template>
     <header class="header">
+      <div class="header__nav-left">
         <router-link class="header__name" to="/">
           <h1>Game Market</h1>
-        </router-link> 
+        </router-link>
+        <router-link class="header__router-link" to="/user" v-if="this.$store.state.isAuthorized">{{ this.$store.state.user.login }}</router-link>
+      </div>
         <div class="header__nav-block">
             <router-link class="header__router-link" to="/"> Home</router-link>
             <div class="header__dropdown">
@@ -14,15 +17,23 @@
                 </div>
             </div>
             <router-link class="header__router-link" to="/about">About</router-link>
-            <ModalButton type="info-outline" 
-              mode="signin" 
-              v-if="!this.$store.state.isAuthorized">
-                SignIn
+            <ModalButton 
+              type="info-outline"  
+              v-if="!this.$store.state.isAuthorized" 
+              buttonName="SignUp"
+              :id="1">
+                <template #aim>
+                  <SignUpForm/>
+                </template>
             </ModalButton>
-            <ModalButton type="info-outline" 
-              mode="signup"
-              v-if="!this.$store.state.isAuthorized">
-                SignUp
+            <ModalButton 
+              type="info-outline" 
+              v-if="!this.$store.state.isAuthorized" 
+              buttonName="SignIn"
+              :id="2">
+                <template #aim>
+                    <SignInForm />
+                </template>  
             </ModalButton>
             <Button v-else type="info-outline" @click="logout">Log out</Button>
         </div>
@@ -31,19 +42,23 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
 import ModalButton from '@/components/ModalButton.vue'
 import Button from '@/ui/Button.vue'
+import SignInForm from '@/components/SignInForm.vue'
+import SignUpForm from '@/components/SignUpForm.vue'
 
 @Options({
   components: {
     ModalButton,
-    Button
+    Button,
+    SignInForm,
+    SignUpForm
   }
 })
 export default class App extends Vue {
   logout() {
     this.$store.commit('setAuthorization', false)
+    this.$router.push('/')
   }
 }
 </script>
@@ -55,9 +70,13 @@ export default class App extends Vue {
         align-items: center;
         background: $dark-gray;
     }
+    .header__nav-left {
+      display: flex;
+      align-items: center;
+      margin-left: 3%;
+    }
     .header__name {
         text-decoration: none;
-        margin-left: 3%;
 
         h1 {
           color: $white;

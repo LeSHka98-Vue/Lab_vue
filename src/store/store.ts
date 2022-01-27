@@ -1,11 +1,7 @@
 import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
-
-interface RootState {
-  isAuthorized:boolean | undefined,
-  errorLogger:any[],
-  warningLogger:any[]
-}
+import { RootState } from '@/store/types/interfaces'
+import user from '@/store/user/state'
 
 const vuexLocal = new VuexPersistence<RootState>({
   storage: window.localStorage
@@ -14,12 +10,16 @@ const vuexLocal = new VuexPersistence<RootState>({
 const store = createStore<RootState>({
   state: {
     isAuthorized: false,
+    modalShown: 0,
     errorLogger: [],
     warningLogger: []
   },
   mutations: {
-    setAuthorization(state, payload) {
+    setAuthorization(state, payload:boolean) {
       state.isAuthorized = payload
+    },
+    showModal(state, id:number) {
+      state.modalShown = id
     },
     setErrorLogger(state, payload:any[]) {
       state.errorLogger = payload
@@ -30,7 +30,7 @@ const store = createStore<RootState>({
   },
   actions: {},
   getters: {},
-  modules: {},
+  modules: { user },
   plugins: [vuexLocal.plugin]
 })
 

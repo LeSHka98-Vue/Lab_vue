@@ -32,6 +32,7 @@ export default class Alert extends Vue {}
         left: 0;
         right:0;
         z-index: 1000;
+        box-sizing: border-box;
         margin: auto;
         max-width: 100%;
         padding: 20px;

@@ -14,7 +14,7 @@ import { Options, Vue } from 'vue-class-component'
 import Card from '@/components/Card.vue'
 import Section from '@/components/Section.vue'
 import { Category } from '@/store/types/interfaces'
-import { Categories } from '@/dataFile'
+import request from '@/utils/serverRequest'
 
 @Options({
   components: {
@@ -23,6 +23,10 @@ import { Categories } from '@/dataFile'
   }
 })
 export default class Products extends Vue {
-  categories:Category[] = Categories ;
+  categories:Category[] = []
+
+  async created() {
+    this.categories = await request('categories');
+  }
 }
 </script>

@@ -1,15 +1,11 @@
 <template>
-  <div class="modal" v-if="modalShown">
+  <div class="modal" v-if="this.$store.state.modalShown === id">
     <div class="modal__content">
       <div class="modal__header">
-        <slot name="header"></slot>
-        <span class="close" @click="this.$emit('showModal', false)">&times;</span>
+        <span class="close" @click="this.$store.commit('showModal', 0)">&times;</span>
       </div>
       <div>
-        <slot></slot>
-      </div>
-      <div>
-        <slot name="footer"></slot>
+        <slot name="aim"></slot>
       </div>
     </div>
   </div>
@@ -20,7 +16,7 @@ import { Vue } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 
 export default class Modal extends Vue {
-  @Prop(Boolean)modalShown:boolean | undefined;
+  @Prop(Number) id: number | undefined;
 }
 </script>
 
@@ -46,7 +42,7 @@ export default class Modal extends Vue {
 
     &__header {
       display: flex;
-      justify-content: space-between;
+      justify-content: end;
     }
   }
   .close {

@@ -1,9 +1,10 @@
 <template>
   <form>
+    <p class="caption">SignUp</p>
       <Alert type="success" :message="successMessage" v-if="success"/>
       <Alert type="error" :message="errorMessage" v-if="error"/>
       <Alert type="error" :message="emailErrorMessage" v-if="emailError"/>
-    <Input type="email" placeholder="Email" v-model:search="email"/>
+    <Input type="email" placeholder="Email" v-model:search="login"/>
       <Alert type="error" :message="passwordErrorMessage" v-if="passwordError"/>
     <Input type="password" placeholder="Password" v-model:search="password"/>
       <Alert type="error" :message="confirmPasswordErrorMessage" v-if="confirmPasswordError"/>
@@ -18,6 +19,7 @@ import { Watch } from 'vue-property-decorator'
 import Input from '@/ui/Input.vue'
 import Button from '@/ui/Button.vue'
 import Alert from '@/alerts/Alert.vue'
+import request from '@/utils/serverRequest'
 
 @Options({
   components: {
@@ -27,7 +29,7 @@ import Alert from '@/alerts/Alert.vue'
   }
 })
 export default class SignUpForm extends Vue {
-  email = '';
+  login = '';
   password = '';
   confirmPassword = '';
   
@@ -45,15 +47,15 @@ export default class SignUpForm extends Vue {
   users:Array<any> = [];
 
   async created() {
-    this.users = await this.request('users');
+    this.users = await request('users');
   }
 
   get isDisabled() {
-    if (!this.email || !this.password || !this.confirmPassword) return true;
+    if (!this.login || !this.password || !this.confirmPassword) return true;
     return this.emailError || this.passwordError || this.confirmPasswordError
   }
 
-  @Watch('email')
+  @Watch('login')
   onEmailChange() {
     this.checkLogin();
   }
@@ -69,14 +71,16 @@ export default class SignUpForm extends Vue {
     this.checkConfirmPassword();
   }
   async submit() {
-    if (this.users.find((item) => item.email === this.email)) { 
+    if (this.users.find((item) => item.login === this.login)) { 
       this.error = true;
       setTimeout(() => { this.error = false; }, 2000);
       return;
     }
-    await this.request('users', { email: this.email, password: this.password }, 'POST');
+    const user = { login: this.login, password: this.password }
+    await request('users', user, 'POST');
     this.success = true;
-    this.$emit('authorize', true);
+    this.$store.commit('setAuthorization', true);
+    this.$store.commit('user/setUser', { ...user, id: this.users.length });
     setTimeout(() => { 
       this.success = false;
       this.$emit('showModal', false);
@@ -87,7 +91,7 @@ export default class SignUpForm extends Vue {
     // Doesn't allow numbers in the domain name and doesn't allow for top level domains that are less than 2 or more than 3 letters 
     // (which is fine until they allow more). Doesn't handle multiple &quot;.&quot; in the domain (joe@abc.co.uk)
     const sample = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    if (this.email.search(sample) !== -1 || this.email.length === 0) {
+    if (this.login.search(sample) !== -1 || this.login.length === 0) {
       this.emailError = false;
       return true;
     }
@@ -112,24 +116,16 @@ export default class SignUpForm extends Vue {
     this.confirmPasswordError = false;
     return true;
   }
-
-  request(list, body?, method = 'GET'): Promise<any> {
-    const requestInit: any = {
-      method,
-      headers: { 'Content-Type': 'application/json' }
-    };
-
-    if (body) {
-      requestInit.body = JSON.stringify(body);
-    }
-
-    return fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${list}`, requestInit)
-      .then((response) => response.json())
-      .catch((error) => {
-        console.log('REQUEST FAILED', error.message);
-      });
-  }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.caption {
+  margin: 0;
+  text-align: left;
+  font: {
+    weight:bold;
+    size:20px;
+  }
+}
+</style>

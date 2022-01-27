@@ -1,21 +1,11 @@
 <template>
-  <Button :type="type" @click="showModal(true)">
-    <slot></slot>
+  <Button :type="type" @click="showModal(id)">
+    {{ buttonName }}
   </Button>
   <teleport to="#modals">
-    <Modal :modalShown="modalShown" @show-modal="showModal">
-      <template v-slot:header>
-        <h3 v-if="mode == 'signin'">SignIn</h3>
-        <h3 v-if="mode == 'signup'">SignUp</h3>
-      </template>
-      <template v-slot:default>
-        <SignUpForm v-if="mode == 'signup'" 
-          @show-modal="showModal" />
-        <SignInForm v-if="mode == 'signin'" 
-          @show-modal="showModal"  />
-      </template>
-      <template v-slot:footer>
-        <!-- <Button :type="type" @click="this.$emit('showModal', false)">Cancel</Button> -->
+    <Modal :id="id">
+      <template #aim>
+        <slot name="aim"></slot>
       </template>
     </Modal>
   </teleport>
@@ -41,12 +31,14 @@ import SignInForm from '@/components/SignInForm.vue'
 export default class ModalButton extends Vue {
   @Prop(Boolean) isAuthorized: boolean | undefined;
   @Prop(String as () => ButtonType) type: string | undefined;
-  @Prop(String) mode: string | undefined;
+  @Prop(Number) id: number | undefined;
+  @Prop(String) buttonName: string|undefined;
 
-  modalShown = false;
+  // modalShown = false;
 
-  showModal(value:boolean) {
-    this.modalShown = value;
+  showModal(id:number) {
+    console.log('showModal ', id);
+    this.$store.commit('showModal', id)
   }
 }
 </script>
