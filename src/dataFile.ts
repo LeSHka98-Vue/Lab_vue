@@ -1,4 +1,4 @@
-import { Category, Product } from '@/types/interfaces';
+import { Category, Product } from '@/store/types/interfaces';
 
 const Categories: Category[] = [
   {

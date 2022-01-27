@@ -2,12 +2,23 @@
   "users": [
     {
       "id": 1,
+      "email": "admin@gmail.com",
       "login": "Admin",
       "role": "ADMIN",
       "first_name": "Bob",
       "last_name": "Marley",
       "password": "232323",
       "sex": "MALE"
+    },
+    {
+      "email": "qqq@qq.qq",
+      "password": "qqqqq",
+      "id": 2
+    },
+    {
+      "email": "eee@qq.qq",
+      "password": "qqqqq",
+      "id": 3
     }
   ],
   "demo-categories": [
@@ -19,7 +30,7 @@
       "id": 1
     }
   ],
-  "products" : [
+  "products": [
     {
       "id": 1,
       "image": "crysis.jpg",
@@ -29,50 +40,53 @@
       "description": "Crysis is a first-person shooter video game series created by German developer Crytek.",
       "publisher": "Crytek",
       "country": "Germany",
-      "edition":"regular",
+      "edition": "regular",
       "releaseDate": "2007-11-13",
       "announcementDate": "2006-01-23",
       "tages": "crysis",
-      "systemRequirements": { 
-              "CPU": "Core 2 Duo 2.2 GHz/Athlon X2 4400+ or better",
-              "RAM": "2 GB",
-              "VIDEO_CARD": "Supported chipsets: NVIDIA GeForce 8800 GTS with 640MB RAM or similar" }
+      "systemRequirements": {
+        "CPU": "Core 2 Duo 2.2 GHz/Athlon X2 4400+ or better",
+        "RAM": "2 GB",
+        "VIDEO_CARD": "Supported chipsets: NVIDIA GeForce 8800 GTS with 640MB RAM or similar"
+      }
     },
     {
       "id": 2,
       "image": "nfs.jpg",
-      "name":"NFS",
+      "name": "NFS",
       "genre": "racing",
       "rating": 8,
       "description": "Need for Speed (NFS) is a racing video game franchise published by Electronic Arts.",
       "publisher": "Electronic Arts",
       "country": "USA",
-      "edition":"gold",
+      "edition": "gold",
       "releaseDate": "2004-11-09",
       "announcementDate": "2004-04-23",
       "tages": "nfs",
-      "systemRequirements": { 
-              "CPU": "Pentium III or Athlon XP",
-              "RAM": "256 MB",
-              "VIDEO_CARD": "AGP Video Card with 32 MB and a DirectX 8.1 compatible driver (GeForce2+ /Radeon 7500+)" }
+      "systemRequirements": {
+        "CPU": "Pentium III or Athlon XP",
+        "RAM": "256 MB",
+        "VIDEO_CARD": "AGP Video Card with 32 MB and a DirectX 8.1 compatible driver (GeForce2+ /Radeon 7500+)"
+      }
     },
     {
       "id": 3,
       "image": "assasin.jpg",
-      "name":"Assasin's Creed",
+      "name": "Assasin's Creed",
       "genre": "RPG",
       "rating": 9,
       "description": "Assassin's Creed series depicts a fictional millennia-old struggle between the Assassins, who fight for peace and free will, and the Templars, who desire peace through order and control.",
       "publisher": "Ubisoft",
       "country": "France",
-      "edition":"regular",
+      "edition": "regular",
       "releaseDate": "2009-11-17",
       "announcementDate": "2009-04-07",
       "tages": "assasin",
       "systemRequirements": {
-              "CPU": "1.8 GHz Intel Core2 Duo, 2.4 GHz AMD Athlon 64 X2 or better",
-              "RAM": "2 GB",
-              "VIDEO_CARD": "256 MB DirectX 9.0 compliant video card with Shader Model 3.0 or better" }
+        "CPU": "1.8 GHz Intel Core2 Duo, 2.4 GHz AMD Athlon 64 X2 or better",
+        "RAM": "2 GB",
+        "VIDEO_CARD": "256 MB DirectX 9.0 compliant video card with Shader Model 3.0 or better"
+      }
     }
   ]
 }

@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
-import { Product } from '@/types/interfaces'
+import { Product } from '@/store/types/interfaces'
 import Button from '@/ui/Button.vue'
 
 @Options({
@@ -54,9 +54,9 @@ export default class ProductPage extends Vue {
     rating: 0,
     description: '',
     systemRequirements: {
-      CPU: "",
-      RAM: "",
-      VIDEO_CARD: ""
+      CPU: '',
+      RAM: '',
+      VIDEO_CARD: ''
     }
   }; 
   
@@ -75,10 +75,10 @@ export default class ProductPage extends Vue {
     await this.request('products', to.params.id);
   }
 
-  request(param:string, page?:number|string[]):Promise<any> {
+  request(list:string, page?:number|string[]):Promise<any> {
     const query:string = page
-      ? `${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}/${page}`
-      : `${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}`;
+      ? `${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${list}/${page}`
+      : `${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${list}`;
     return fetch(query)
       .then((response) => response.json())
       .then((data) => { 
@@ -107,6 +107,7 @@ export default class ProductPage extends Vue {
     gap: 1.5%;
   }
   .table-block {
+    max-width: 70%;
     &__buttons-block {
       margin: 10px auto;
       display: flex;

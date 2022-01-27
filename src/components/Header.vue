@@ -14,14 +14,38 @@
                 </div>
             </div>
             <router-link class="header__router-link" to="/about">About</router-link>
+            <ModalButton type="info-outline" 
+              mode="signin" 
+              v-if="!this.$store.state.isAuthorized">
+                SignIn
+            </ModalButton>
+            <ModalButton type="info-outline" 
+              mode="signup"
+              v-if="!this.$store.state.isAuthorized">
+                SignUp
+            </ModalButton>
+            <Button v-else type="info-outline" @click="logout">Log out</Button>
         </div>
     </header>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Vue, Options } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
+import ModalButton from '@/components/ModalButton.vue'
+import Button from '@/ui/Button.vue'
 
-export default class App extends Vue {}
+@Options({
+  components: {
+    ModalButton,
+    Button
+  }
+})
+export default class App extends Vue {
+  logout() {
+    this.$store.commit('setAuthorization', false)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -41,6 +65,8 @@ export default class App extends Vue {}
     }
     .header__nav-block {
         display: flex;
+        justify-content: space-around;
+        width: 35%;
         
     }
     .header__dropdown {

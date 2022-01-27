@@ -6,12 +6,12 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { AlertType } from '@/types/types';
+import { ButtonType } from '@/store/types/types';
 
 @Options({
   props: {
     type: {
-      type: String as () => AlertType,
+      type: String as () => ButtonType,
       required: true
     }
   }
@@ -29,25 +29,44 @@ export default class Button extends Vue {}
         }
       &:hover {
         cursor: pointer;
+      }
+      &:disabled {
+        text-decoration:line-through;
       }  
     }
 
-    @mixin buttonStyle($background, $color) {
+    @mixin buttonRegular($background, $color) {
         background:$background;
         color: $color;
         border-color: $color;
     }
-
+    @mixin buttonOutline($color) {
+        background:none;
+        color: $color;
+        border-color: $color;
+    }
     .success {
-        @include buttonStyle($alert-success, $alert-success-border);
+        @include buttonRegular($alert-success, $alert-success-border);
+    }
+    .success-outline {
+        @include buttonOutline($alert-success);
     }
     .error {
-        @include buttonStyle($alert-error, $alert-error-border);
+        @include buttonRegular($alert-error, $alert-error-border);
+    }
+    .error-outline {
+        @include buttonOutline($alert-error);
     }
     .warning {
-        @include buttonStyle($alert-warning, $alert-warning-border);
+        @include buttonRegular($alert-warning, $alert-warning-border);
+    }
+    .warning-outline {
+        @include buttonOutline($alert-warning);
     }
     .info {
-        @include buttonStyle($alert-info, $alert-info-border);
+        @include buttonRegular($alert-info, $alert-info-border);
+    }
+    .info-outline {
+        @include buttonOutline($gray);
     }
 </style>
