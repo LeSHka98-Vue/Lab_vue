@@ -11,6 +11,7 @@
         :genre="product.genre" 
         :rating="product.rating" 
         :description="product.description"
+        :price="product.price"
       />
     </div>
     <h2 class="alt-search-result" v-else>No results</h2>

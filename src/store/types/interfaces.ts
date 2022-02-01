@@ -26,6 +26,7 @@ interface Product {
   genre: string,
   rating: number,
   description: string,
+  price: number,
   publisher?: string,
   country?: string,
   edition?:string,
