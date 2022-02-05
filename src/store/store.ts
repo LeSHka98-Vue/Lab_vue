@@ -10,6 +10,7 @@ import user from '@/store/user/state'
 const store = createStore<RootState>({
   state: {
     isAuthorized: false,
+    isLoading: false,
     modalShown: 0,
     errorLogger: [],
     warningLogger: []
@@ -17,6 +18,9 @@ const store = createStore<RootState>({
   mutations: {
     setAuthorization(state, payload:boolean) {
       state.isAuthorized = payload
+    },
+    setLoading(state, payload:boolean) {
+      state.isLoading = payload
     },
     showModal(state, id:number) {
       state.modalShown = id
@@ -28,7 +32,11 @@ const store = createStore<RootState>({
       state.warningLogger = payload
     }
   },
-  actions: {},
+  actions: {
+    LoaderAction({ commit }, payload:boolean) {
+      commit('setLoading', payload)
+    }
+  },
   getters: {},
   modules: { user },
   // plugins: [vuexLocal.plugin]

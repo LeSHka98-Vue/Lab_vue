@@ -1,4 +1,7 @@
+// import store from "@/store/store";
+
 export default function request(path:string, body?, method = 'GET'): Promise<any> {
+  // store.commit('setLoading', true)
   const requestInit: any = {
     method,
     headers: { 'Content-Type': 'application/json' }
