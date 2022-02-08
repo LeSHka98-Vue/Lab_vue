@@ -15,7 +15,11 @@
               <span>{{ name }}</span><br>
               <span class="product-card__genre">{{ genre }}</span>
             </div>
-            <span>Rating: {{rating}}</span>
+            <div class="product-card__right-block">
+              <span>Rating: {{rating}}</span><br>
+              <span>{{ price }}$</span>
+            </div>
+            
           </div>
         </div>
         <div class="product-card__back">
@@ -41,6 +45,7 @@ export default class ProductCard extends Vue {
   @Prop(String) genre: string|undefined;
   @Prop(String) description: string|undefined;
   @Prop(Number) rating: number|undefined;
+  @Prop(Number) price: number|undefined;
 
   onImageLoadFailure(e) {
     e.target.src = '/images/default.png';
@@ -105,6 +110,9 @@ export default class ProductCard extends Vue {
     }
     &__left-block {
         text-align: left;
+    }
+    &__right-block {
+        text-align: right;
     }
     &__genre {
       color: $gray;

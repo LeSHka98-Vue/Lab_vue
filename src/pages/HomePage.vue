@@ -17,6 +17,7 @@
         :genre="product.genre" 
         :rating="product.rating" 
         :description="product.description"
+        :price="product.price"
       />
     </Section>
   </main> 

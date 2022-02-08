@@ -53,6 +53,7 @@ export default class ProductPage extends Vue {
     genre: '',
     rating: 0,
     description: '',
+    price: 0,
     systemRequirements: {
       CPU: '',
       RAM: '',

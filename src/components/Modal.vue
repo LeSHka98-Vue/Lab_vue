@@ -42,7 +42,7 @@ export default class Modal extends Vue {
 
     &__header {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
     }
   }
   .close {

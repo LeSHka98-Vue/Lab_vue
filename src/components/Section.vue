@@ -16,12 +16,12 @@ export default class Section extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .section {
     padding: 1% 1% 3%;
     background-color: $section-background;
     width:50%;
-    margin: 1% auto;
+    // margin: 1% auto;
     border-radius: 10px;
 
     &__content {
