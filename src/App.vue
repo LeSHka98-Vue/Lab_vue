@@ -1,11 +1,10 @@
 <template>
   <Header/>
-  <!-- <IndexPage :title="userFullName" /> -->
-  <!-- <ApiDemoPage />  -->
   <ErrorBoundary>
     <router-view></router-view>
   </ErrorBoundary>
   <Footer/>
+  <Loader/>
 </template>
 
 <script lang="ts">
@@ -15,6 +14,7 @@ import ApiDemoPage from '@/pages/ApiDemoPage.vue'
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 import Alert from '@/alerts/Alert.vue'
+import Loader from '@/components/Loader.vue'
 import ErrorBoundary from '@/errorBoundaries/ErrorBoundary.vue'
 import 'normalize.css'
 import "../node_modules/vue-select/dist/vue-select.css";
@@ -28,21 +28,9 @@ import '@/assets/colors.scss'
     Header,
     Footer,
     Alert,
-    ErrorBoundary
+    ErrorBoundary,
+    Loader
   },
 })
-export default class App extends Vue {
-  user: any = null;
-
-  async mounted(): Promise<void> {
-    const resp = await fetch('http://localhost:3000/users/1').then((response) => response.json());
-    this.user = resp || null;
-  }
-
-  get userFullName() {
-    return this.user
-      ? `Default user: ${this.user.first_name} ${this.user.last_name}`
-      : '';
-  }
-}
+export default class App extends Vue {}
 </script>

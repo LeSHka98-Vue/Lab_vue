@@ -3,13 +3,14 @@ import VuexPersistence from 'vuex-persist'
 import { RootState } from '@/store/types/interfaces'
 import user from '@/store/user/state'
 
-// const vuexLocal = new VuexPersistence<RootState>({
-//   storage: window.localStorage
-// })
+const vuexLocal = new VuexPersistence<RootState>({
+  storage: window.localStorage
+})
 
 const store = createStore<RootState>({
   state: {
     isAuthorized: false,
+    isLoading: false,
     modalShown: 0,
     errorLogger: [],
     warningLogger: []
@@ -17,6 +18,9 @@ const store = createStore<RootState>({
   mutations: {
     setAuthorization(state, payload:boolean) {
       state.isAuthorized = payload
+    },
+    setLoading(state, payload:boolean) {
+      state.isLoading = payload
     },
     showModal(state, id:number) {
       state.modalShown = id
@@ -31,7 +35,7 @@ const store = createStore<RootState>({
   actions: {},
   getters: {},
   modules: { user },
-  // plugins: [vuexLocal.plugin]
+  plugins: [vuexLocal.plugin]
 })
 
 export default store;

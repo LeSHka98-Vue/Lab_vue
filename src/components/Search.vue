@@ -1,21 +1,22 @@
 <template>
-<section class="main">
-  <Input type="text" v-model:search="search"/>
-  <Section caption="Search results">
-    <div class="search-result" v-if="products.length">
-      <ProductCard v-for="product of products"
-        :key="product.id"
-        :id="product.id"
-        :name="product.name" 
-        :image="product.image" 
-        :genre="product.genre" 
-        :rating="product.rating" 
-        :description="product.description"
-        :price="product.price"
-      />
-    </div>
-    <h2 class="alt-search-result" v-else>No results</h2>
-  </Section>
+  <section section class="main">
+    <Input type="text" v-model:search="search"/>
+    <div class="break"></div>
+    <Section caption="Search results">
+      <div class="search-result" v-if="products.length">
+        <ProductCard v-for="product of products"
+          :key="product.id"
+          :id="product.id"
+          :name="product.name" 
+          :image="product.image" 
+          :genre="product.genre" 
+          :rating="product.rating" 
+          :description="product.description"
+          :price="product.price"
+        />
+      </div>
+      <h2 class="alt-search-result" v-else>No results</h2>
+    </Section>
   </section>
 </template>
 
@@ -40,8 +41,8 @@ export default class Search extends Vue {
   products:Product[] = [];
   debouncedWatch!: (...args: any) => void
 
-  created() {
-    this.request('products', this.search);
+  async created() {
+    await this.request('products', this.search);
     this.debouncedWatch = debounce(this.request);
   }
 
@@ -50,13 +51,15 @@ export default class Search extends Vue {
     this.debouncedWatch('products', value)
   }
 
-  request(param:string, value:string) {
-    fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}?name_like=${value}`)
+  async request(param:string, value:string) {
+    this.$store.commit('setLoading', true)
+    await fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}?name_like=${value}`)
       .then((response) => response.json())
       .then((data) => { this.products = data })
       .catch((error) => {
         console.error(error.message);
       })
+    this.$store.commit('setLoading', false)
   }
 }
 </script>
@@ -64,8 +67,9 @@ export default class Search extends Vue {
 <style lang="scss" scoped>
   .main {
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
   }
     .search-result {
       display: flex;
@@ -76,5 +80,8 @@ export default class Search extends Vue {
     }
     .alt-search-result {
       color: $white;
+    }
+    .break {
+      width: 100%;
     }
 </style>

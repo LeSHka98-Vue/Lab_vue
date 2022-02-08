@@ -1,21 +1,20 @@
 <template>
-    <h1>Products</h1>
-    <main class="main">
-      <SideBar @sort-products="sortProducts" @filtration="filtration"/>
-      <Section>
-        <ProductCard v-for="product of productsCopy"
-          :key="product.id"
-          :id="product.id"
-          :name="product.name" 
-          :image="product.image" 
-          :genre="product.genre" 
-          :rating="product.rating" 
-          :description="product.description"
-          :price="product.price"
-        />
-      </Section>
-    </main>
-
+      <h1>Products</h1>
+      <main class="main">
+        <SideBar @sort-products="sortProducts" @filtration="filtration"/>
+          <Section>
+            <ProductCard v-for="product of productsCopy"
+              :key="product.id"
+              :id="product.id"
+              :name="product.name" 
+              :image="product.image" 
+              :genre="product.genre" 
+              :rating="product.rating" 
+              :description="product.description"
+              :price="product.price"
+            />
+          </Section>
+      </main>
 </template>
 
 <script lang="ts">
@@ -39,22 +38,38 @@ export default class Products extends Vue {
   copy1:Product[] = []
   copy2:Product[] = [] 
 
-  async created() {
+  async mounted() {
+    this.$store.commit('setLoading', true)
+    // request('products')
+    //   .then((products) => { this.products = products; })
+    //   .then(() => {
+    //     this.productsCopy = this.products
+    //     this.copy1 = this.products
+    //     this.copy2 = this.products
+    //   })
+    //   .then(() => {
+    //     this.$store.commit('setLoading', false)
+    //   })
     this.products = await request('products');
     this.productsCopy = this.products
     this.copy1 = this.products
     this.copy2 = this.products
+    this.$store.commit('setLoading', false)
   }
 
   sortProducts(criteria:string, type:string) {
-    function byField(a, b) {
+    this.$store.commit('setLoading', true)
+    function byField(a, b):number {
       if (type === 'direct') return a[criteria] > b[criteria] ? 1 : -1
       return a[criteria] < b[criteria] ? 1 : -1
     }
     this.productsCopy.sort(byField)
+    this.$store.commit('setLoading', false)
   }
 
   filtration(criteria:string, field:number|string) {
+    this.$store.commit('setLoading', true)
+
     this.productsCopy = this.products
 
     if (criteria === 'genre') {
@@ -66,6 +81,8 @@ export default class Products extends Vue {
       else this.copy2 = this.products.filter((product) => product[criteria] > field)
     } 
     this.productsCopy = this.copy1.filter((elem) => this.copy2.includes(elem))  
+
+    this.$store.commit('setLoading', false)
   }
 }
 </script>

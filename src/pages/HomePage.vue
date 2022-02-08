@@ -1,5 +1,5 @@
 <template>
-  <main >
+  <main class="mainpage">
     <Search />
     <Section caption="Categories">
       <Card v-for="category of categories"
@@ -42,16 +42,22 @@ import request from '@/utils/serverRequest'
 })
 export default class HelloWorldPage extends Vue {
   categories: Category[] = []
-  products:Product[] = [] 
+  products: Product[] = [] 
 
   async mounted() {
+    this.$store.commit('setLoading', true)
     this.categories = await request('categories');
     this.products = await request('products');
-    console.log(this.products);
+    this.$store.commit('setLoading', false)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+  .mainpage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
 </style>

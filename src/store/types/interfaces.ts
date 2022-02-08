@@ -1,5 +1,6 @@
 interface RootState {
   isAuthorized:boolean | undefined,
+  isLoading:boolean | undefined,
   modalShown:number | undefined,
   errorLogger:any[],
   warningLogger:any[]

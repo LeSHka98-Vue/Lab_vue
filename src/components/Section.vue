@@ -16,7 +16,7 @@ export default class Section extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .section {
     padding: 1% 1% 3%;
     background-color: $section-background;
