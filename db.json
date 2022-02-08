@@ -2,8 +2,7 @@
   "users": [
     {
       "id": 1,
-      "email": "admin@gmail.com",
-      "login": "Admin",
+      "login": "admin@gmail.com",
       "role": "ADMIN",
       "first_name": "Bob",
       "last_name": "Marley",
@@ -11,14 +10,27 @@
       "sex": "MALE"
     },
     {
-      "email": "qqq@qq.qq",
-      "password": "qqqqq",
-      "id": 2
+      "login": "qqq@qq.qq",
+      "password": "qqqqqq",
+      "age": 21,
+      "firstName": "Bob",
+      "lastName": "Marley",
+      "id": 2,
+      "sex": "female",
+      "address": "qweqweqwe",
+      "shipping_address": "",
+      "payment_card": "0000111122223333"
     },
     {
-      "email": "eee@qq.qq",
-      "password": "qqqqq",
-      "id": 3
+      "login": "www@ww.ww",
+      "password": "wwwww",
+      "id": 3,
+      "firstName": "asdsaf",
+      "lastName": "safsaf",
+      "sex": "male",
+      "address": "safaf",
+      "shipping_address": "",
+      "age": "7"
     }
   ],
   "demo-categories": [
@@ -87,6 +99,26 @@
         "RAM": "2 GB",
         "VIDEO_CARD": "256 MB DirectX 9.0 compliant video card with Shader Model 3.0 or better"
       }
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "image": "computer.png",
+      "signature": "PC",
+      "category": "pc"
+    },
+    {
+      "id": 2,
+      "image": "playstation.png",
+      "signature": "PS5",
+      "category": "ps5"
+    },
+    {
+      "id": 3,
+      "image": "xbox.png",
+      "signature": "XBox",
+      "category": "xbox"
     }
   ]
 }

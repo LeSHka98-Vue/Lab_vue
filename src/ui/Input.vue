@@ -9,7 +9,7 @@
       >
       <img 
         class="block__img"
-        src="/images/close.png" 
+        src="/images/cancel.png" 
         @click="$emit('update:search', '')"
         @error="onImageLoadFailure"
       >
@@ -36,8 +36,9 @@ export default class Input extends Vue {
  .block {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
-    margin: 10px auto;
+    margin: 10px 0;
     width: 350px;
     border-radius: 10px;
     border: 2px solid $dark-gray;
@@ -50,6 +51,7 @@ export default class Input extends Vue {
     }
     &__img {
       margin-left: 5px;
+      height: 16px;
     }
     &__img:hover {
       cursor:pointer;

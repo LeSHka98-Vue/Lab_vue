@@ -7,6 +7,7 @@ import PC from '@/pages/products/PC.vue'
 import Xbox from '@/pages/products/Xbox.vue'
 import PS5 from '@/pages/products/PS5.vue'
 import ProductPage from '@/pages/products/ProductPage.vue'
+import UserPage from '@/pages/UserPage.vue'
 
 const routes:Array<RouteRecordRaw> = [
   {
@@ -36,6 +37,10 @@ const routes:Array<RouteRecordRaw> = [
   {
     path: '/products/:id',
     component: ProductPage
+  },
+  {
+    path: '/user',
+    component: UserPage
   },
   {
     path: '/:pathMatch(.*)*',

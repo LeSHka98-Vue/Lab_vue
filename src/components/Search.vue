@@ -1,4 +1,5 @@
 <template>
+<section class="main">
   <Input type="text" v-model:search="search"/>
   <Section caption="Search results">
     <div class="search-result" v-if="products.length">
@@ -14,6 +15,7 @@
     </div>
     <h2 class="alt-search-result" v-else>No results</h2>
   </Section>
+  </section>
 </template>
 
 <script lang="ts">
@@ -59,6 +61,11 @@ export default class Search extends Vue {
 </script>
 
 <style lang="scss" scoped>
+  .main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
     .search-result {
       display: flex;
       justify-content: center;

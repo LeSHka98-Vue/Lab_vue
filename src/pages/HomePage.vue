@@ -1,4 +1,5 @@
 <template>
+  <main >
     <Search />
     <Section caption="Categories">
       <Card v-for="category of categories"
@@ -10,6 +11,7 @@
     <Section caption="Recently added">
       <ProductCard v-for="product of products"
         :key="product.id"
+        :id="product.id"
         :name="product.name" 
         :image="product.image" 
         :genre="product.genre" 
@@ -17,6 +19,7 @@
         :description="product.description"
       />
     </Section>
+  </main> 
 </template>
 
 <script lang="ts">
@@ -24,9 +27,9 @@ import { Options, Vue } from 'vue-class-component'
 import Section from '@/components/Section.vue'
 import Card from '@/components/Card.vue'
 import { Category, Product } from '@/store/types/interfaces'
-import { Categories, Products } from '@/dataFile'
 import ProductCard from '@/components/ProductCard.vue'
 import Search from '@/components/Search.vue'
+import request from '@/utils/serverRequest'
 
 @Options({
   components: {
@@ -37,7 +40,17 @@ import Search from '@/components/Search.vue'
   }
 })
 export default class HelloWorldPage extends Vue {
-  categories:Category[] = Categories;
-  products:Product[] = Products;
+  categories: Category[] = []
+  products:Product[] = [] 
+
+  async mounted() {
+    this.categories = await request('categories');
+    this.products = await request('products');
+    console.log(this.products);
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

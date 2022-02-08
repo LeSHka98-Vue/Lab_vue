@@ -1,3 +1,10 @@
+interface RootState {
+  isAuthorized:boolean | undefined,
+  modalShown:number | undefined,
+  errorLogger:any[],
+  warningLogger:any[]
+}
+
 interface Category {
   id: number,
   image: string,
@@ -30,5 +37,6 @@ interface Product {
 
 export {
   Category,
-  Product
+  Product,
+  RootState
 }
