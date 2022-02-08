@@ -39,13 +39,21 @@ export default class Products extends Vue {
   copy2:Product[] = [] 
 
   async mounted() {
-    // this.$store.commit('setLoading', true)
+    this.$store.commit('setLoading', true)
+    // request('products')
+    //   .then((products) => { this.products = products; })
+    //   .then(() => {
+    //     this.productsCopy = this.products
+    //     this.copy1 = this.products
+    //     this.copy2 = this.products
+    //   })
+    //   .then(() => {
+    //     this.$store.commit('setLoading', false)
+    //   })
     this.products = await request('products');
     this.productsCopy = this.products
     this.copy1 = this.products
     this.copy2 = this.products
-    // await new Promise((resolve) => setTimeout(resolve, 1000))
-    // this.$store.dispatch('LoaderAction', false)
     this.$store.commit('setLoading', false)
   }
 

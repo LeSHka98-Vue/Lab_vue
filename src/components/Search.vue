@@ -52,15 +52,14 @@ export default class Search extends Vue {
   }
 
   async request(param:string, value:string) {
-    // this.$store.commit('setLoading', true)
-    // await new Promise((resolve) => setTimeout(resolve, 1000))
+    this.$store.commit('setLoading', true)
     await fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}?name_like=${value}`)
       .then((response) => response.json())
       .then((data) => { this.products = data })
       .catch((error) => {
         console.error(error.message);
       })
-    // this.$store.commit('setLoading', false)
+    this.$store.commit('setLoading', false)
   }
 }
 </script>

@@ -30,7 +30,6 @@ import Card from '@/components/Card.vue'
 import { Category, Product } from '@/store/types/interfaces'
 import ProductCard from '@/components/ProductCard.vue'
 import Search from '@/components/Search.vue'
-// import Loader from '@/components/Loader.vue'
 import request from '@/utils/serverRequest'
 
 @Options({
@@ -46,10 +45,10 @@ export default class HelloWorldPage extends Vue {
   products: Product[] = [] 
 
   async mounted() {
-    // this.$store.commit('setLoading', true)
+    this.$store.commit('setLoading', true)
     this.categories = await request('categories');
     this.products = await request('products');
-    // this.$store.commit('setLoading', false)
+    this.$store.commit('setLoading', false)
   }
 }
 </script>

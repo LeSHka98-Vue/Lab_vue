@@ -1,7 +1,7 @@
-// import store from "@/store/store";
+import store from '@/store/store';
 
-export default function request(path:string, body?, method = 'GET'): Promise<any> {
-  // store.commit('setLoading', true)
+export default async function request(path:string, body?, method = 'GET'): Promise<any> {
+  store.commit('setLoading', true)
   const requestInit: any = {
     method,
     headers: { 'Content-Type': 'application/json' }
@@ -11,9 +11,9 @@ export default function request(path:string, body?, method = 'GET'): Promise<any
     requestInit.body = JSON.stringify(body);
   }
 
-  return fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${path}`, requestInit)
-    .then((response) => response.json())
-    .catch((error) => {
-      console.log('REQUEST FAILED', error.message);
-    });
+  const response = await fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${path}`, requestInit)
+    .then((r) => r.json())
+    .catch((error) => console.log('REQUEST FAILED', error.message))
+    .finally(() => store.commit('setLoading', false));
+  return response;
 }

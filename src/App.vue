@@ -1,11 +1,10 @@
 <template>
-  <Loader>
-    <Header/>
-    <!-- <ErrorBoundary> -->
-      <router-view></router-view>
-    <!-- </ErrorBoundary> -->
-    <Footer/>
-  </Loader>
+  <Header/>
+  <ErrorBoundary>
+    <router-view></router-view>
+  </ErrorBoundary>
+  <Footer/>
+  <Loader/>
 </template>
 
 <script lang="ts">
