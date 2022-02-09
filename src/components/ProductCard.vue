@@ -27,7 +27,8 @@
             {{ description }}<br>
             <router-link :to="`/products/${id}`">more</router-link>
           </p>
-          <button>Add to cart</button>
+          <button @click="addToCart">{{ buttonName }}</button>
+          <Alert v-if="note" :type="type" :message="message"/>
         </div>
       </div>
     </div>
@@ -36,8 +37,13 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
+import Alert from '@/alerts/Alert.vue'
 
-@Options({})
+@Options({
+  components: {
+    Alert
+  }
+})
 export default class ProductCard extends Vue {
   @Prop(Number) id: number|undefined;
   @Prop(String) image: string|undefined;
@@ -47,8 +53,32 @@ export default class ProductCard extends Vue {
   @Prop(Number) rating: number|undefined;
   @Prop(Number) price: number|undefined;
 
+  note = false
+  message = ''
+  type = 'error'
+
   onImageLoadFailure(e) {
     e.target.src = '/images/default.png';
+  }
+
+  get buttonName() {
+    if (this.$store.state.cart.products.includes(this.id)) return 'Remove from cart'
+    return 'Add to cart'
+  }
+
+  addToCart() {
+    if (this.$store.state.isAuthorized) {
+      if (this.$store.state.cart.products.includes(this.id)) this.$store.commit('cart/RemoveProduct', this.id)
+      else this.$store.commit('cart/AddProduct', this.id)
+      this.alert('success', 'Success !')
+    } else this.alert('error', 'Log in first !')
+  }
+
+  alert(type:string, message:string) {
+    this.note = true
+    this.type = type
+    this.message = message
+    setTimeout(() => { this.note = false }, 2000)
   }
 }
 </script>

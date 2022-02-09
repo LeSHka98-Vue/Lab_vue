@@ -8,6 +8,7 @@ import Xbox from '@/pages/products/Xbox.vue'
 import PS5 from '@/pages/products/PS5.vue'
 import ProductPage from '@/pages/products/ProductPage.vue'
 import UserPage from '@/pages/UserPage.vue'
+import Cart from '@/pages/Cart.vue'
 
 const routes:Array<RouteRecordRaw> = [
   {
@@ -41,6 +42,10 @@ const routes:Array<RouteRecordRaw> = [
   {
     path: '/user',
     component: UserPage
+  },
+  {
+    path: '/cart',
+    component: Cart
   },
   {
     path: '/:pathMatch(.*)*',

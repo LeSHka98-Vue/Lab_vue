@@ -17,6 +17,10 @@
                 </div>
             </div>
             <router-link class="header__router-link" to="/about">About</router-link>
+            <router-link class="header__router-link" to="/cart">
+              <span class="header__cart-amount">{{ this.$store.state.cart.products.length }}</span>
+              <img src="/images/shopping.png" alt="cart">
+            </router-link>
             <ModalButton 
               type="info-outline"  
               v-if="!this.$store.state.isAuthorized" 
@@ -77,7 +81,7 @@ export default class App extends Vue {
     }
     .header__name {
         text-decoration: none;
-
+        margin-right: 15px;
         h1 {
           color: $white;
         }
@@ -85,6 +89,7 @@ export default class App extends Vue {
     .header__nav-block {
         display: flex;
         justify-content: space-around;
+        align-items: center;
         width: 35%;
         
     }
@@ -122,7 +127,7 @@ export default class App extends Vue {
     .header__router-link {
         text-decoration: none;
         color: $gray;
-        padding: 8px 30px;
+        // padding: 8px 30px;
 
         &:hover {
             border-bottom: 1px solid $white;
@@ -135,5 +140,8 @@ export default class App extends Vue {
             color: $white;
             font-weight: 600;
         }
+    }
+    .header__cart-amount {
+      font-size: 13px;
     }
 </style>

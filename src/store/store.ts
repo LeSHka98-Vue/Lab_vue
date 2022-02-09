@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import { RootState } from '@/store/types/interfaces'
 import user from '@/store/user/state'
+import cart from '@/store/cart/state'
 
 const vuexLocal = new VuexPersistence<RootState>({
   storage: window.localStorage
@@ -34,7 +35,7 @@ const store = createStore<RootState>({
   },
   actions: {},
   getters: {},
-  modules: { user },
+  modules: { user, cart },
   plugins: [vuexLocal.plugin]
 })
 

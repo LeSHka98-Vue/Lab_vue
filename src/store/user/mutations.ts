@@ -17,7 +17,6 @@ const mutations: MutationTree<UserState> = {
   },
   setFirstName(state, payload: string) {
     state.firstName = payload
-    console.log(state.firstName)
   },
   setLastname(state, payload: string) {
     state.lastName = payload
