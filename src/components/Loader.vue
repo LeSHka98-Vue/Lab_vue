@@ -1,13 +1,21 @@
 <template>
-  <teleport to="#loader" v-if="this.$store.state.isLoading">
+  <teleport to="#loader" v-if="isLoading">
     <div class="lds-ring"><div class="lds-ring__circle"></div><div></div><div></div><div></div></div> 
   </teleport>
 </template>
 
-<script>
-import { Vue } from 'vue-class-component'
+<script lang="ts">
+import { Vue, Options } from 'vue-class-component'
+import { mapState } from 'vuex'
 
-export default class Loader extends Vue {}
+@Options({
+  computed: {
+    ...mapState({ isLoading: 'isLoading' })
+  }
+})
+export default class Loader extends Vue {
+  isLoading?:boolean
+}
 </script>
 
 <style lang="scss">
@@ -20,6 +28,7 @@ export default class Loader extends Vue {}
   position: fixed;
   width: 100%;
   background: $section-background;
+  z-index: 1;
 
   &__circle {
     left: 47%;

@@ -4,7 +4,7 @@
         <router-link class="header__name" to="/">
           <h1>Game Market</h1>
         </router-link>
-        <router-link class="header__router-link" to="/user" v-if="this.$store.state.isAuthorized">{{ this.$store.state.user.login }}</router-link>
+        <router-link class="header__router-link" to="/user" v-if="isAuthorized">{{ login }}</router-link>
       </div>
         <div class="header__nav-block">
             <router-link class="header__router-link" to="/"> Home</router-link>
@@ -18,12 +18,12 @@
             </div>
             <router-link class="header__router-link" to="/about">About</router-link>
             <router-link class="header__router-link" to="/cart">
-              <span class="header__cart-amount">{{ this.$store.state.cart.products.length }}</span>
+              <span class="header__cart-amount">{{ products.length }}</span>
               <img src="/images/shopping.png" alt="cart">
             </router-link>
             <ModalButton 
               type="info-outline"  
-              v-if="!this.$store.state.isAuthorized" 
+              v-if="!isAuthorized" 
               buttonName="SignUp"
               :id="1">
                 <template #aim>
@@ -32,7 +32,7 @@
             </ModalButton>
             <ModalButton 
               type="info-outline" 
-              v-if="!this.$store.state.isAuthorized" 
+              v-if="!isAuthorized" 
               buttonName="SignIn"
               :id="2">
                 <template #aim>
@@ -46,6 +46,7 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
+import { mapState } from 'vuex'
 import ModalButton from '@/components/ModalButton.vue'
 import Button from '@/ui/Button.vue'
 import SignInForm from '@/components/SignInForm.vue'
@@ -57,9 +58,18 @@ import SignUpForm from '@/components/SignUpForm.vue'
     Button,
     SignInForm,
     SignUpForm
+  },
+  computed: {
+    ...mapState({ isAuthorized: 'isAuthorized' }),
+    ...mapState('user', ['login']),
+    ...mapState('cart', ['products'])
   }
 })
 export default class App extends Vue {
+  isAuthorized?:boolean;
+  login?:string;
+  products?: number[]
+
   logout() {
     this.$store.commit('setAuthorization', false)
     this.$router.push('/')
@@ -98,7 +108,7 @@ export default class App extends Vue {
         position: relative;
 
             &:hover {
-            .header__dropdownMenu {
+            .header__dropdown-menu {
                 display: flex;
             }
         }

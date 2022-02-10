@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import UserState from './interface';
+import UserState from '@/store/user/interface';
 import { Sex } from '@/store/types/types'
 
 const mutations: MutationTree<UserState> = {

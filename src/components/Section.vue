@@ -20,8 +20,7 @@ export default class Section extends Vue {
   .section {
     padding: 1% 1% 3%;
     background-color: $section-background;
-    width:50%;
-    // margin: 1% auto;
+    width:60%;
     border-radius: 10px;
 
     &__content {

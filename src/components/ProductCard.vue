@@ -27,7 +27,7 @@
             {{ description }}<br>
             <router-link :to="`/products/${id}`">more</router-link>
           </p>
-          <button @click="addToCart">{{ buttonName }}</button>
+          <Button type="info-outline" @click="addToCart">{{ buttonName }}</Button>
           <Alert v-if="note" :type="type" :message="message"/>
         </div>
       </div>
@@ -37,21 +37,31 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
+import { mapState } from 'vuex'
 import Alert from '@/alerts/Alert.vue'
+import Button from '@/ui/Button.vue'
 
 @Options({
   components: {
-    Alert
+    Alert,
+    Button
+  },
+  computed: {
+    ...mapState('cart', ['products']),
+    ...mapState({ isAuthorized: 'isAuthorized' })
   }
 })
 export default class ProductCard extends Vue {
-  @Prop(Number) id: number|undefined;
-  @Prop(String) image: string|undefined;
-  @Prop(String) name: string|undefined;
-  @Prop(String) genre: string|undefined;
-  @Prop(String) description: string|undefined;
-  @Prop(Number) rating: number|undefined;
-  @Prop(Number) price: number|undefined;
+  @Prop(Number) id!: number
+  @Prop(String) image: string|undefined
+  @Prop(String) name: string|undefined
+  @Prop(String) genre: string|undefined
+  @Prop(String) description: string|undefined
+  @Prop(Number) rating: number|undefined
+  @Prop(Number) price: number|undefined
+
+  isAuthorized?:boolean
+  products?: number[]
 
   note = false
   message = ''
@@ -62,13 +72,13 @@ export default class ProductCard extends Vue {
   }
 
   get buttonName() {
-    if (this.$store.state.cart.products.includes(this.id)) return 'Remove from cart'
+    if (this.products?.includes(this.id)) return 'Remove from cart'
     return 'Add to cart'
   }
 
   addToCart() {
-    if (this.$store.state.isAuthorized) {
-      if (this.$store.state.cart.products.includes(this.id)) this.$store.commit('cart/RemoveProduct', this.id)
+    if (this.isAuthorized) {
+      if (this.products?.includes(this.id)) this.$store.commit('cart/RemoveProduct', this.id)
       else this.$store.commit('cart/AddProduct', this.id)
       this.alert('success', 'Success !')
     } else this.alert('error', 'Log in first !')
@@ -88,8 +98,8 @@ export default class ProductCard extends Vue {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
-    height: 260px;
+    width: 220px;
+    height: 285px;
     perspective: 1000px;
 
     &:hover .product-card{
@@ -130,8 +140,8 @@ export default class ProductCard extends Vue {
     }
 
     &__image {
-      width: 200px;
-      height: 213px;
+      width: 220px;
+      height: 235px;
     }
     &__name {
       display: flex;

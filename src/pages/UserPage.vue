@@ -43,6 +43,7 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
+import { mapState } from 'vuex'
 import vSelect from 'vue-select'
 import Input from '@/ui/Input.vue'
 import Alert from '@/alerts/Alert.vue'
@@ -52,6 +53,7 @@ import user from '@/store/user/state'
 import UserState from '@/store/user/interface'
 import ConfirmPassword from '@/components/ConfPassword.vue'
 import request from '@/utils/serverRequest'
+import { loginSample } from '@/constants'
 
 @Options({
   components: {
@@ -61,9 +63,13 @@ import request from '@/utils/serverRequest'
     Alert,
     Button,
     vSelect
+  },
+  computed: {
+    ...mapState('user', ['state'])
   }
 })
 export default class UserPage extends Vue {
+  state?:UserState
   userlocal:UserState = JSON.parse(JSON.stringify(user.state)) 
   isOpen = false
   message = ''
@@ -94,8 +100,7 @@ export default class UserPage extends Vue {
   }
 
   checkLogin():boolean {
-    const sample = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    if (this.userlocal.login.search(sample) !== -1 || this.userlocal.login.length === 0) return true;
+    if (this.userlocal.login.search(loginSample) !== -1 || this.userlocal.login.length === 0) return true;
     return false;
   }
 
@@ -117,7 +122,7 @@ export default class UserPage extends Vue {
       if (!this.checkCard()) { this.alert('wrong payment card data', 'error'); return; }
     }
     this.$store.commit('user/setUser', this.userlocal)
-    request(`users/${this.$store.state.user.id}`, this.userlocal, 'PATCH')
+    request(`users/${this.state?.id}`, this.userlocal, 'PATCH')
     this.alert('Success !', 'success')
   }
 }
