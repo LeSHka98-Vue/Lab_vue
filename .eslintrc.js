@@ -24,7 +24,8 @@ module.exports = {
     'lines-between-class-members': 0,
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-param-reassign': 0,
-    'max-len': 0
+    'max-len': 0,
+    'no-shadow': 0
   },
   overrides: [
     {

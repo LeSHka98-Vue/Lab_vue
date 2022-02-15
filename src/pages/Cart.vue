@@ -26,11 +26,17 @@
       <td class="table__cell">{{ product.releaseDate }}</td>
       <td class="table__cell">{{ product.price }}</td>
       <td>
-        <Button type="info-outline" @click="removeProduct(product.id)">Remove</Button>
+        <Button type="error" @click="removeProduct(product.id)">Remove</Button>
       </td>
     </tr>
   </table>
-  <h3 v-if="cartProducts.length">Total cost : {{ totalCost }} $</h3>
+  <div v-if="cartProducts.length">
+      <h3 >Total cost : {{ totalCost }} $</h3>
+      <router-link to="/checkout" class="table__router-link">
+        <Button type="info">CheckOut</Button>
+      </router-link>
+  </div>
+  
   <h2 v-else>Cart is empty</h2>
 </template>
 

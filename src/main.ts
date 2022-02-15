@@ -1,5 +1,7 @@
 import '@/class-component-hooks';
 import { createApp } from 'vue';
+import Maska from 'maska'
+import UUID from 'vue-uuid'
 import App from './App.vue';
 import router from '@/router/router';
 import store from './store/store';
@@ -22,4 +24,8 @@ app.config.warnHandler = (msg, vm, info) => {
   else store.commit('setErrorLogger', warningLogger.slice(warningLogger.length - 5))
 }
 
-app.use(router).use(store).mount('#app');
+app.use(router)
+  .use(store)
+  .use(Maska)
+  .use(UUID)
+  .mount('#app');

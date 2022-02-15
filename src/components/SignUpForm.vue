@@ -62,22 +62,18 @@ export default class SignUpForm extends Vue {
 
   @Watch('login')
   onEmailChange() {
-    if (checkLogin(this.login)) this.emailError = false;
-    else this.emailError = true;
+    this.emailError = !checkLogin(this.login)
   }
 
   @Watch('password')
   onPasswordChange() {
-    if (checkPassword(this.password)) this.passwordError = false;
-    else this.passwordError = true;
-    if (checkConfirmPassword(this.password, this.confirmPassword)) this.confirmPasswordError = false;
-    else this.confirmPasswordError = true;
+    this.passwordError = !checkPassword(this.password)
+    this.confirmPasswordError = !checkConfirmPassword(this.password, this.confirmPassword)
   }
 
   @Watch('confirmPassword')
   onConfirmPasswordChange() {
-    if (checkConfirmPassword(this.password, this.confirmPassword)) this.confirmPasswordError = false;
-    else this.confirmPasswordError = true;
+    this.confirmPasswordError = !checkConfirmPassword(this.password, this.confirmPassword)
   }
 
   async submit() {

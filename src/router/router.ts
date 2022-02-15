@@ -9,6 +9,7 @@ import PS5 from '@/pages/products/PS5.vue'
 import ProductPage from '@/pages/products/ProductPage.vue'
 import UserPage from '@/pages/UserPage.vue'
 import Cart from '@/pages/Cart.vue'
+import CheckOut from '@/pages/CheckOut.vue'
 
 const routes:Array<RouteRecordRaw> = [
   {
@@ -46,6 +47,10 @@ const routes:Array<RouteRecordRaw> = [
   {
     path: '/cart',
     component: Cart
+  },
+  {
+    path: '/checkout',
+    component: CheckOut
   },
   {
     path: '/:pathMatch(.*)*',

@@ -14,7 +14,7 @@
       <th class="table__th">Current data</th>
       <th class="table__th">New data</th>
     </tr>
-    <tr v-for="(value, name) in this.$store.state.user" :key="name">
+    <tr v-for="(value, name) in getState" :key="name">
         <td v-if="name !== 'id'" class="table__cell">{{ name }}</td>
         <td v-if="name !== 'id'" class="table__cell">{{ value }}</td>
         <v-select 
@@ -43,7 +43,7 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import vSelect from 'vue-select'
 import Input from '@/ui/Input.vue'
 import Alert from '@/alerts/Alert.vue'
@@ -65,10 +65,12 @@ import { loginSample } from '@/constants'
     vSelect
   },
   computed: {
-    ...mapState('user', ['state'])
+    ...mapState('user', ['state']),
+    ...mapGetters('user', ['getState'])
   }
 })
 export default class UserPage extends Vue {
+  getState?:UserState
   state?:UserState
   userlocal:UserState = JSON.parse(JSON.stringify(user.state)) 
   isOpen = false
