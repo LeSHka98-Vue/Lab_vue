@@ -40,16 +40,6 @@ export default class Products extends Vue {
 
   async mounted() {
     this.$store.commit('setLoading', true)
-    // request('products')
-    //   .then((products) => { this.products = products; })
-    //   .then(() => {
-    //     this.productsCopy = this.products
-    //     this.copy1 = this.products
-    //     this.copy2 = this.products
-    //   })
-    //   .then(() => {
-    //     this.$store.commit('setLoading', false)
-    //   })
     this.products = await request('products');
     this.productsCopy = this.products
     this.copy1 = this.products
@@ -69,15 +59,17 @@ export default class Products extends Vue {
 
   filtration(criteria:string, field:number|string) {
     this.$store.commit('setLoading', true)
-
+    console.log(field);
+    
     this.productsCopy = this.products
-
+    if (!criteria || !field) { this.$store.commit('setLoading', false); return }
+    
     if (criteria === 'genre') {
-      if (field === 'all') this.copy1 = this.products 
+      if (field === 'All') this.copy1 = this.products 
       else this.copy1 = this.products.filter((product) => product[criteria] === field)
     }
     if (criteria === 'price') {
-      if (field === 'all') this.copy2 = this.products 
+      if (field === 'All') this.copy2 = this.products 
       else this.copy2 = this.products.filter((product) => product[criteria] > field)
     } 
     this.productsCopy = this.copy1.filter((elem) => this.copy2.includes(elem))  

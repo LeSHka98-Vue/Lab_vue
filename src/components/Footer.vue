@@ -59,6 +59,7 @@ export default class App extends Vue {
         bottom:0;
         right: 0;
         left:0;
+        z-index: 1;
 
         &__slogan {
             color: $white;

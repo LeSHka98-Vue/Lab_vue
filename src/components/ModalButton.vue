@@ -34,8 +34,6 @@ export default class ModalButton extends Vue {
   @Prop(Number) id: number | undefined;
   @Prop(String) buttonName: string|undefined;
 
-  // modalShown = false;
-
   showModal(id:number) {
     console.log('showModal ', id);
     this.$store.commit('showModal', id)

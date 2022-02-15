@@ -19,6 +19,10 @@ import Button from '@/ui/Button.vue'
 import Alert from '@/alerts/Alert.vue'
 import request from '@/utils/serverRequest'
 import UserState from '@/store/user/interface'
+import { 
+  emailErrorMessage, passwordErrorMessage, nouserError, successMessage 
+} from '@/constants'
+import { checkLogin, checkPassword } from '@/utils/checks'
 
 @Options({
   components: {
@@ -36,10 +40,10 @@ export default class SignUpForm extends Vue {
   error = false;
   emailError = false;
   passwordError = false;
-  emailErrorMessage = 'wrong Email !';
-  passwordErrorMessage = 'password is too short !';
-  successMessage = 'Success!';
-  errorMessage = 'there is no such User !';
+  emailErrorMessage = emailErrorMessage;
+  passwordErrorMessage = passwordErrorMessage;
+  successMessage = successMessage;
+  errorMessage = nouserError;
 
   users:Array<any> = [];
 
@@ -54,16 +58,18 @@ export default class SignUpForm extends Vue {
 
   @Watch('login')
   onEmailChange() {
-    this.checkLogin();
+    if (checkLogin(this.login)) this.emailError = false;
+    else this.emailError = true;
   }
 
   @Watch('password')
   onPasswordChange() {
-    this.checkPassword();
+    if (checkPassword(this.password)) this.passwordError = false;
+    else this.passwordError = true;
   }
 
   async submit() {
-    const user:UserState = this.users.find((item) => item.login === this.login)
+    const user:UserState = this.users.find((item) => item.login === this.login && item.password === this.password)
     if (user) { 
       this.success = true;
       this.$store.commit('setAuthorization', true);
@@ -74,29 +80,9 @@ export default class SignUpForm extends Vue {
       }, 2000);
       return;
     }
-
+    
     this.error = true;
     setTimeout(() => { this.error = false; }, 2000);
-  }
-
-  checkLogin():boolean {
-    // Doesn't allow numbers in the domain name and doesn't allow for top level domains that are less than 2 or more than 3 letters 
-    // (which is fine until they allow more). Doesn't handle multiple &quot;.&quot; in the domain (joe@abc.co.uk)
-    const sample = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    if (this.login.search(sample) !== -1 || this.login.length === 0) {
-      this.emailError = false;
-      return true;
-    }
-    this.emailError = true;
-    return false;
-  }
-  checkPassword():boolean {
-    if (this.password.length > 4 || this.password.length === 0) {
-      this.passwordError = false;
-      return true;
-    }
-    this.passwordError = true;
-    return false
   }
 }
 </script>

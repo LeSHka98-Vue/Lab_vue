@@ -15,25 +15,20 @@
     </v-select>
     <h2>Filter</h2>
     <p>Genre</p>
-    <hr>   
-    <input type="radio" value="all" id="1" v-model="genre">
-    <label for="1"> All genres </label><br>   
-    <input type="radio" value="shooter" id="2" v-model="genre">
-    <label for="2"> shooter </label><br>   
-    <input type="radio" value="racing" id="3" v-model="genre">
-    <label for="3"> racing </label><br>
-    <input type="radio" value="RPG" id="4" v-model="genre">
-    <label for="4"> RPG </label>
+    <v-select 
+      class="style-chooser"
+      v-model="genre"
+      placeholder="Genre" 
+      :options="['All','shooter','racing', 'RPG']">
+    </v-select>
     <p>Price</p>
-    <hr>
-    <input type="radio" value="all" id="5" v-model="price">
-    <label for="5">All prices </label><br> 
-    <input type="radio" :value="5" id="6" v-model="price">
-    <label for="6"> > 5$ </label><br> 
-    <input type="radio" :value="10" id="7" v-model="price">
-    <label for="7"> > 10$ </label><br> 
-    <input type="radio" :value="15" id="8" v-model="price">
-    <label for="8"> > 15$ </label><br> 
+    <v-select 
+      class="style-chooser"
+      v-model="price"
+      placeholder="Price" 
+      :options="priceOptions"
+      :reduce="elem => elem.value">
+    </v-select>
   </aside>
 </template>
 
@@ -52,6 +47,12 @@ export default class SideBar extends Vue {
   type = ''
   genre = ''
   price = 0
+  priceOptions = [
+    { label: 'All prices', value: 'All' },
+    { label: '> 5$', value: 5 },
+    { label: '> 10$', value: 10 },
+    { label: '> 15$', value: 15 },
+  ]
 
   @Watch('criteria')
   @Watch('type')
@@ -88,7 +89,7 @@ export default class SideBar extends Vue {
   color: $select-color;
   text-transform: lowercase;
   font-variant: small-caps;
-  margin:5px 0;
+  margin: 5px 0;
   }
 
   .style-chooser .vs__clear,

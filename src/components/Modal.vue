@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-if="this.$store.state.modalShown === id">
+  <div class="modal" v-if="modalShown === id">
     <div class="modal__content">
       <div class="modal__header">
         <span class="close" @click="this.$store.commit('showModal', 0)">&times;</span>
@@ -12,11 +12,18 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
+import { mapState } from 'vuex'
 
+@Options({
+  computed: {
+    ...mapState({ modalShown: 'modalShown' })
+  }
+})
 export default class Modal extends Vue {
   @Prop(Number) id: number | undefined;
+  modalShown?:boolean
 }
 </script>
 

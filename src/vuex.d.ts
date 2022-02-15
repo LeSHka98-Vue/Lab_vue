@@ -3,6 +3,8 @@ import { Store } from 'vuex'
 declare module '@vue/runtime-core' {
   // declare your own store states
   interface State {
+    isAuthorized: any;
+    cart: any;
     user: any;
     count: number
   }

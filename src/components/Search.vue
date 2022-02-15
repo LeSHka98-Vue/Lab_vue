@@ -1,6 +1,6 @@
 <template>
   <section section class="main">
-    <Input type="text" v-model:search="search"/>
+    <Input type="text" placeholder="Search" v-model:search="search"/>
     <div class="break"></div>
     <Section caption="Search results">
       <div class="search-result" v-if="products.length">
