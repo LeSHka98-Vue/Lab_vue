@@ -10,6 +10,7 @@ import ProductPage from '@/pages/products/ProductPage.vue'
 import UserPage from '@/pages/UserPage.vue'
 import Cart from '@/pages/Cart.vue'
 import CheckOut from '@/pages/CheckOut.vue'
+import Thanks from '@/pages/Thanks.vue'
 
 const routes:Array<RouteRecordRaw> = [
   {
@@ -51,6 +52,10 @@ const routes:Array<RouteRecordRaw> = [
   {
     path: '/checkout',
     component: CheckOut
+  },
+  {
+    path: '/order/thanks/:orderId',
+    component: Thanks
   },
   {
     path: '/:pathMatch(.*)*',

@@ -81,6 +81,7 @@ export default class Cart extends Vue {
   .table {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     border-collapse:collapse;
+    margin: auto;
     width: 70%;
 
     &__first-column {
@@ -100,7 +101,7 @@ export default class Cart extends Vue {
     }
     &__cell {
       padding: 12px 10px;
-      color: $table-color;
+      // color: $table-color;
       text-align: left;
     }
     &__image-block {

@@ -124,5 +124,19 @@
       "category": "xbox"
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "orderId": "d7697c40-8e5d-11ec-aafc-650cf846d1a5",
+      "userId": 2,
+      "productList": [
+        1
+      ],
+      "name": "Bob",
+      "surName": "Marley",
+      "phoneNumber": "+375(44)333-22-11",
+      "deliveryDate": "12.12.2022",
+      "status": "pending",
+      "id": 1
+    }
+  ]
 }

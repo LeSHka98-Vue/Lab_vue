@@ -37,8 +37,21 @@ interface Product {
   systemRequirements?: systemRequirements
 }
 
+interface Order {
+  orderId: string,
+  userId: number,
+  productList: Array<number>,
+  name: string,
+  surName: string,
+  phoneNumber: string,
+  deliveryDate: string,
+  status?: string,
+  id?: number
+}
+
 export {
   Category,
   Product,
-  RootState
+  RootState, 
+  Order
 }

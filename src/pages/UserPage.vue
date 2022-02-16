@@ -130,7 +130,7 @@ export default class UserPage extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .line {
     display: flex;
     justify-content: center;

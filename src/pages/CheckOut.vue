@@ -78,7 +78,7 @@ export default class CheckOut extends Vue {
     }
     return true;
   }
-  orderData() {
+  get orderData() {
     return {
       orderId: uuid.v1(),
       userId: this.getUserId,
@@ -86,16 +86,18 @@ export default class CheckOut extends Vue {
       name: this.name,
       surName: this.surname,
       phoneNumber: this.phoneNumber,
-      deliveryDate: this.deliveryDate
+      deliveryDate: this.deliveryDate,
+      status: 'pending'
     }
   }
-  submit() {
+  async submit() {
     if (this.checkLength(this.name) 
      && this.checkLength(this.surname)
      && this.checkLength(this.phoneNumber)
      && this.checkLength(this.deliveryDate)) {
-      request('orders', this.orderData(), 'POST')
+      await request('orders', this.orderData, 'POST')
       this.alert(true, 'success', 'success', 2000)
+      this.$router.push(`/order/thanks/${this.orderData.orderId}`)
     } else this.alert(true, 'error', 'sumbit failed', 2000)
   }
 

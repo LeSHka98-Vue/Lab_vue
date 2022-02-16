@@ -23,7 +23,7 @@ function checkPhoneNumber(phone:string) {
 
 function checkDate(date:string) {
   if (date.search(dateRule) === -1) return false;
-  const today = new Date().toLocaleDateString()
+  const today = new Date().toISOString().slice(0, 10)
   const deliveryDate = date.split('.').reverse().join('.')
   return new Date(today) <= new Date(deliveryDate)
 }

@@ -3,6 +3,7 @@ type ButtonType = 'success'| 'warning' | 'info' | 'error'|'success-outline'| 'wa
 type InputType = 'text'| 'number' | 'email' | 'password' | 'date';
 type Edition = 'regular'| 'gold';
 type Sex = 'male'|'female'
+type Status = 'pending' | 'processing' | 'ready'
 
 type PriceOption = { label:string, value:string|number }
 
@@ -12,5 +13,6 @@ export {
   InputType,
   Edition,
   Sex,
-  PriceOption
+  PriceOption,
+  Status
 }
