@@ -3,6 +3,7 @@
       <input 
         class="block__input"
         :type="type"
+        v-maska="mask"
         :placeholder="placeholder" 
         :value="search" 
         @input="$emit('update:search', $event.target.value)"
@@ -22,9 +23,10 @@ import { Prop } from 'vue-property-decorator'
 import { InputType } from '@/store/types/types'
 
 export default class Input extends Vue {
-  @Prop(String as () => InputType) type:InputType| undefined;
-  @Prop(String) search:string| undefined;
-  @Prop(String) placeholder:string| undefined;
+  @Prop(String as () => InputType) type:InputType | undefined;
+  @Prop(String) search:string | undefined;
+  @Prop(String) placeholder:string | undefined;
+  @Prop(String) mask:string | undefined;
 
   onImageLoadFailure(e) {
     e.target.src = '/images/default_cross.png';

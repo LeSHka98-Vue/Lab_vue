@@ -36,6 +36,7 @@
 import { Vue, Options } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
 import vSelect from 'vue-select'
+import { PriceOption } from '@/store/types/types'
 
 @Options({
   components: {
@@ -47,7 +48,7 @@ export default class SideBar extends Vue {
   type = ''
   genre = ''
   price = 0
-  priceOptions = [
+  priceOptions: PriceOption[] = [
     { label: 'All prices', value: 'All' },
     { label: '> 5$', value: 5 },
     { label: '> 10$', value: 10 },
