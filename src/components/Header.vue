@@ -4,7 +4,8 @@
         <router-link class="header__name" to="/">
           <h1>Game Market</h1>
         </router-link>
-        <router-link class="header__router-link" to="/user" v-if="isAuthorized">{{ login }}</router-link>
+        <router-link class="header__router-link" to="/user" v-if="isAuthorized">{{ getLogin }}</router-link>
+        <router-link class="header__router-link" to="/admin" v-if="isAuthorized && getRole === 'admin'">admin</router-link>
       </div>
         <div class="header__nav-block">
             <router-link class="header__router-link" to="/"> Home</router-link>
@@ -17,7 +18,7 @@
                 </div>
             </div>
             <router-link class="header__router-link" to="/about">About</router-link>
-            <router-link class="header__router-link" to="/cart">
+            <router-link class="header__router-link" to="/cart" v-if="isAuthorized">
               <span class="header__cart-amount">{{ products.length }}</span>
               <img src="/images/shopping.png" alt="cart">
             </router-link>
@@ -39,18 +40,19 @@
                     <SignInForm />
                 </template>  
             </ModalButton>
-            <Button v-else type="info-outline" @click="logout">Log out</Button>
+            <Button v-else type="info-outline" @click="this.logout">Log out</Button>
         </div>
     </header>
 </template>
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import ModalButton from '@/components/ModalButton.vue'
 import Button from '@/ui/Button.vue'
 import SignInForm from '@/components/SignInForm.vue'
 import SignUpForm from '@/components/SignUpForm.vue'
+import { Role } from '@/store/types/types'
 
 @Options({
   components: {
@@ -61,17 +63,20 @@ import SignUpForm from '@/components/SignUpForm.vue'
   },
   computed: {
     ...mapState({ isAuthorized: 'isAuthorized' }),
-    ...mapState('user', ['login']),
+    ...mapGetters('user', ['getLogin', 'getRole']),
     ...mapState('cart', ['products'])
   }
 })
 export default class App extends Vue {
-  isAuthorized?:boolean;
-  login?:string;
+  isAuthorized?:boolean
+  getLogin?:string
+  getRole?:Role
   products?: number[]
 
   logout() {
     this.$store.commit('setAuthorization', false)
+    this.$store.commit('user/setUser', null)
+    this.$store.commit('cart/CleanCart')
     this.$router.push('/')
   }
 }
@@ -87,11 +92,12 @@ export default class App extends Vue {
     .header__nav-left {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      width: 28%;
       margin-left: 3%;
     }
     .header__name {
         text-decoration: none;
-        margin-right: 15px;
         h1 {
           color: $white;
         }

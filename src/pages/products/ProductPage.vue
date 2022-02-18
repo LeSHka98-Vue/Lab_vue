@@ -1,6 +1,7 @@
 <template>
+  <Alert v-if="isAlert"/>
   <div class="main-block">
-    <img :src="SRC" :alt="product.name" class="img">
+    <img :src="SRC" :alt="product.name" class="img" @error="onImageLoadFailure">
     <div class="table-block">
       <table class="table">
         <colgroup>
@@ -16,7 +17,7 @@
         </tr>
       </table>
       <div class="table-block__buttons-block">
-        <Button type="info">Add to cart</Button>
+        <Button type="info" @click="addToCart">{{ buttonName }}</Button>
         <router-link v-if="+$route.params.id > 1"
           class="page-link" 
           :to="`/products/${+$route.params.id - 1}`"
@@ -37,15 +38,32 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
+import { mapState, mapMutations } from 'vuex'
 import { Product } from '@/store/types/interfaces'
 import Button from '@/ui/Button.vue'
+import Alert from '@/alerts/Alert.vue'
+import { AlertType } from '@/store/types/types'
+import request from '@/utils/serverRequest'
 
 @Options({
   components: {
-    Button
+    Button,
+    Alert
+  },
+  computed: {
+    ...mapState('cart', ['products']),
+    ...mapState(['isAuthorized', 'isAlert'])
+  },
+  methods: {
+    ...mapMutations(['Alert'])
   }
 })
 export default class ProductPage extends Vue {
+  isAuthorized?:boolean
+  isAlert?:boolean
+  products?: number[]
+  Alert!: (arg0: {show:boolean, type:AlertType, message:string, delay?:number}) => void
+
   product:Product = {
     id: 0,
     image: '',
@@ -60,39 +78,33 @@ export default class ProductPage extends Vue {
       VIDEO_CARD: ''
     }
   }; 
-  
   pagesAmount = 0
 
+  onImageLoadFailure(e) {
+    e.target.src = '/images/default_320x400.png';
+  }
   get SRC() {
     return `/images/games/${this.product.image}`
   }
+  get buttonName() {
+    if (this.products?.includes(+this.$route.params.id)) return 'Remove from cart'
+    return 'Add to cart'
+  }
+  addToCart() {
+    if (this.isAuthorized) {
+      if (this.products?.includes(+this.$route.params.id)) this.$store.commit('cart/RemoveProduct', +this.$route.params.id)
+      else this.$store.commit('cart/AddProduct', +this.$route.params.id)
+      this.Alert({ show: true, type: 'success', message: 'success', delay: 2000 })
+    } else this.Alert({ show: true, type: 'error', message: 'Log in/ Register first !', delay: 2000 })
+  }
 
   async created() {
-    await this.request('products', +this.$route.params.id);
-    this.pagesAmount = await this.request('products');
+    this.product = await request(`products/${+this.$route.params.id}`)
+    this.pagesAmount = (await request('products')).length;
   }
 
   async beforeRouteUpdate(to) {
-    await this.request('products', to.params.id);
-  }
-
-  request(list:string, page?:number|string[]):Promise<any> {
-    const query:string = page
-      ? `${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${list}/${page}`
-      : `${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${list}`;
-    return fetch(query)
-      .then((response) => response.json())
-      .then((data) => { 
-        if (page) {
-          this.product = data;
-          return this.product;
-        }
-        this.pagesAmount = data.length;
-        return this.pagesAmount;
-      })
-      .catch((error) => {
-        console.error(error.message);
-      })
+    this.product = await request(`products/${to.params.id}`)
   }
 }
 </script>
@@ -141,7 +153,6 @@ export default class ProductPage extends Vue {
     }
     &__cell {
       padding: 12px 10px;
-      color: $table-color;
       text-align: left;
     }
   }

@@ -29,13 +29,12 @@ import SignInForm from '@/components/SignInForm.vue'
   }
 })
 export default class ModalButton extends Vue {
-  @Prop(Boolean) isAuthorized: boolean | undefined;
+  // @Prop(Boolean) isAuthorized: boolean | undefined;
   @Prop(String as () => ButtonType) type: string | undefined;
   @Prop(Number) id: number | undefined;
   @Prop(String) buttonName: string|undefined;
 
   showModal(id:number) {
-    console.log('showModal ', id);
     this.$store.commit('showModal', id)
   }
 }

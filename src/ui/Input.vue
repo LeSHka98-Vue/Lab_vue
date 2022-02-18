@@ -40,7 +40,7 @@ export default class Input extends Vue {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    margin: 10px 0;
+    margin: 5px 0;
     width: 350px;
     border-radius: 10px;
     border: 2px solid $dark-gray;

@@ -11,6 +11,12 @@ const getters: GetterTree<UserState, RootState> = {
   },
   getUserName(state) {
     return state.firstName
+  },
+  getRole(state) {
+    return state.role
+  },
+  getLogin(state) {
+    return state.login
   }
 }
 

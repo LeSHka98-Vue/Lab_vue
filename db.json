@@ -3,23 +3,23 @@
     {
       "id": 1,
       "login": "admin@gmail.com",
-      "role": "ADMIN",
-      "first_name": "Bob",
-      "last_name": "Marley",
+      "role": "admin",
+      "firstName": "Bob",
+      "lastName": "Marley",
       "password": "232323",
       "sex": "MALE"
     },
     {
       "login": "qqq@qq.qq",
       "password": "qqqqq",
-      "age": 21,
-      "firstName": "Bob",
-      "lastName": "Marley",
+      "age": "22",
+      "firstName": "Snoop",
+      "lastName": "Dogg",
       "id": 2,
-      "sex": "female",
-      "address": "qweqweqwe",
-      "shipping_address": "",
-      "payment_card": "0000111122223333"
+      "sex": "male",
+      "address": "erverv",
+      "paymentCard": "0000111122223333",
+      "shippingAddress": "ervervvrrr"
     },
     {
       "login": "www@ww.ww",
@@ -29,7 +29,7 @@
       "lastName": "safsaf",
       "sex": "male",
       "address": "safaf",
-      "shipping_address": "",
+      "shippingAddress": "",
       "age": "7"
     }
   ],
@@ -48,7 +48,7 @@
       "image": "crysis.jpg",
       "name": "Crysis",
       "genre": "shooter",
-      "rating": 9,
+      "rating": "9",
       "description": "Crysis is a first-person shooter video game series created by German developer Crytek.",
       "price": 15,
       "publisher": "Crytek",
@@ -124,19 +124,5 @@
       "category": "xbox"
     }
   ],
-  "orders": [
-    {
-      "orderId": "d7697c40-8e5d-11ec-aafc-650cf846d1a5",
-      "userId": 2,
-      "productList": [
-        1
-      ],
-      "name": "Bob",
-      "surName": "Marley",
-      "phoneNumber": "+375(44)333-22-11",
-      "deliveryDate": "12.12.2022",
-      "status": "pending",
-      "id": 1
-    }
-  ]
+  "orders": []
 }

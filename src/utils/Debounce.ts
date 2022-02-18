@@ -1,9 +1,16 @@
-export default function debounce<T extends(...params: any[]) => void>(func:T, delay = 300) {
+export default function debounce<T extends(...params: any[]) => any>(func:T, delay = 300) {
   let timeout:number;
-  return function (...args: any) {
+  return async function (...args: any) {
+    let result
+    // console.log(timeout)
     clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      func(...args) 
-    }, delay);
+    console.log(timeout)
+    await new Promise((resolve) => { 
+      timeout = setTimeout(async () => { 
+        result = await func(...args); return resolve(1) 
+      }, delay)
+    })
+    // setTimeout(() => { func(...args) }, delay);
+    return result
   };
 }

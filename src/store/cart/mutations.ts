@@ -8,6 +8,10 @@ const mutations: MutationTree<CartState> = {
   },
   RemoveProduct(state, productId:number) {
     state.products = state.products.filter((id) => id !== productId)
+  },
+  CleanCart(state) {
+    state.products = []
+    console.log(state.products)
   }
 }
 

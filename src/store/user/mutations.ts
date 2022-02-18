@@ -1,10 +1,23 @@
 import { MutationTree } from 'vuex';
 import UserState from '@/store/user/interface';
-import { Sex } from '@/store/types/types'
+import { Sex, Role } from '@/store/types/types'
 
 const mutations: MutationTree<UserState> = {
-  setUser(state, payload:UserState) {
-    state = Object.assign(state, payload)
+  setUser(state, payload:UserState | null) {
+    if (payload === null) { 
+      state = Object.assign(state, {
+        login: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        sex: 'male',
+        age: undefined,
+        address: '',
+        shippingAddress: '',
+        paymentCard: undefined,
+        role: undefined
+      })
+    } else state = Object.assign(state, payload)
   },
   setLogin(state, payload: string) {
     state.login = payload
@@ -24,7 +37,7 @@ const mutations: MutationTree<UserState> = {
   setSex(state, payload: Sex) {
     state.sex = payload
   },
-  setRole(state, payload: string) {
+  setRole(state, payload: Role) {
     state.role = payload
   },
   setAge(state, payload: number) {

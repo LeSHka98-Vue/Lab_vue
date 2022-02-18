@@ -1,4 +1,5 @@
 <template>
+<Alert v-if="isAlert"/>
     <div class="wrapper">
       <div class="product-card">
         <div class="product-card__front">
@@ -28,7 +29,6 @@
             <router-link :to="`/products/${id}`">more</router-link>
           </p>
           <Button type="info-outline" @click="addToCart">{{ buttonName }}</Button>
-          <Alert v-if="note" :type="type" :message="message"/>
         </div>
       </div>
     </div>
@@ -37,8 +37,9 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import Alert from '@/alerts/Alert.vue'
+import { AlertType } from '@/store/types/types'
 import Button from '@/ui/Button.vue'
 
 @Options({
@@ -48,7 +49,10 @@ import Button from '@/ui/Button.vue'
   },
   computed: {
     ...mapState('cart', ['products']),
-    ...mapState({ isAuthorized: 'isAuthorized' })
+    ...mapState(['isAuthorized', 'isAlert'])
+  },
+  methods: {
+    ...mapMutations(['Alert'])
   }
 })
 export default class ProductCard extends Vue {
@@ -61,11 +65,9 @@ export default class ProductCard extends Vue {
   @Prop(Number) price: number|undefined
 
   isAuthorized?:boolean
+  isAlert?:boolean
   products?: number[]
-
-  note = false
-  message = ''
-  type = 'error'
+  Alert!: (arg0: {show:boolean, type:AlertType, message:string, delay?:number}) => void
 
   onImageLoadFailure(e) {
     e.target.src = '/images/default.png';
@@ -80,15 +82,8 @@ export default class ProductCard extends Vue {
     if (this.isAuthorized) {
       if (this.products?.includes(this.id)) this.$store.commit('cart/RemoveProduct', this.id)
       else this.$store.commit('cart/AddProduct', this.id)
-      this.alert('success', 'Success !')
-    } else this.alert('error', 'Log in first !')
-  }
-
-  alert(type:string, message:string) {
-    this.note = true
-    this.type = type
-    this.message = message
-    setTimeout(() => { this.note = false }, 2000)
+      this.Alert({ show: true, type: 'success', message: 'success', delay: 2000 })
+    } else this.Alert({ show: true, type: 'error', message: 'Log in/ Register first !', delay: 2000 })
   }
 }
 </script>

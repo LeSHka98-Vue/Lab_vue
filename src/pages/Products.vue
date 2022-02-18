@@ -59,18 +59,14 @@ export default class Products extends Vue {
 
   filtration(criteria:string, field:number|string) {
     this.$store.commit('setLoading', true)
-    console.log(field);
-    
-    this.productsCopy = this.products
-    if (!criteria || !field) { this.$store.commit('setLoading', false); return }
-    
+
     if (criteria === 'genre') {
-      if (field === 'All') this.copy1 = this.products 
+      if (field === null || field === 'All') this.copy1 = this.products
       else this.copy1 = this.products.filter((product) => product[criteria] === field)
     }
     if (criteria === 'price') {
-      if (field === 'All') this.copy2 = this.products 
-      else this.copy2 = this.products.filter((product) => product[criteria] > field)
+      if (field === null || field === 'All') this.copy2 = this.products
+      else this.copy2 = this.products.filter((product) => product[criteria] > field) 
     } 
     this.productsCopy = this.copy1.filter((elem) => this.copy2.includes(elem))  
 

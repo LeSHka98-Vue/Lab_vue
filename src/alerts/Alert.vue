@@ -7,34 +7,41 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { mapState } from 'vuex'
 import { AlertType } from '@/store/types/types';
 
 @Options({
-  props: {
-    type: {
-      type: String as () => AlertType,
-      required: true
-    },
-    message: {
-      type: String
-    }
+  // props: {
+  //   type: {
+  //     type: String as () => AlertType,
+  //     required: true
+  //   },
+  //   message: {
+  //     type: String
+  //   }
+  // },
+  computed: {
+    ...mapState(['message', 'type'])
   }
 })
 
-export default class Alert extends Vue {}
+export default class Alert extends Vue {
+  message?:string
+  type?:AlertType
+}
 
 </script>
 
 <style lang="scss" scoped>
     .alert {
-        // position: absolute;
-        top: 1%;
+        position: absolute;
+        top: 90px;
         left: 0;
         right:0;
         z-index: 1000;
         box-sizing: border-box;
         margin: auto;
-        max-width: 100%;
+        max-width: 90%;
         padding: 20px;
         border: {
             width:1px;

@@ -13,7 +13,8 @@ const state: UserState = {
   age: undefined,
   address: '',
   shippingAddress: '',
-  paymentCard: undefined
+  paymentCard: undefined,
+  role: undefined
 }
 
 const user: Module<UserState, RootState> = {

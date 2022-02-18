@@ -25,7 +25,8 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-param-reassign': 0,
     'max-len': 0,
-    'no-shadow': 0
+    'no-shadow': 0,
+    'object-curly-newline': 0
   },
   overrides: [
     {

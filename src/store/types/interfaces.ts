@@ -1,9 +1,15 @@
+import { AlertType } from '@/store/types/types'
+
 interface RootState {
   isAuthorized:boolean | undefined,
   isLoading:boolean | undefined,
   modalShown:number | undefined,
   errorLogger:any[],
-  warningLogger:any[]
+  warningLogger:any[],
+  isAlert: boolean,
+  type: AlertType,
+  message: string,
+  delay: number
 }
 
 interface Category {
@@ -21,7 +27,7 @@ interface systemRequirements {
 }
 
 interface Product {
-  id: number,
+  id?: number,
   image: string,
   name:string,
   genre: string,

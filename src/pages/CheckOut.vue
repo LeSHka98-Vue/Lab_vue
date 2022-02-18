@@ -6,6 +6,7 @@
     <Input placeholder="surname" v-model:search="surname"/>
     <Input placeholder="phone number" :mask="phoneMask" v-model:search="phoneNumber"/>
     <Input placeholder="delivery date" :mask="dateMask" v-model:search="deliveryDate"/>
+    <Input placeholder="delivery address"  v-model:search="deliveryAdress"/>
     <Button type="success" @click="submit">Submit</Button>
   </div>
 </template>
@@ -53,6 +54,7 @@ export default class CheckOut extends Vue {
   surname = ''
   phoneNumber = ''
   deliveryDate = ''
+  deliveryAdress = ''
   
   mounted() {
     if (this.firstName) this.name = this.firstName
@@ -94,7 +96,8 @@ export default class CheckOut extends Vue {
     if (this.checkLength(this.name) 
      && this.checkLength(this.surname)
      && this.checkLength(this.phoneNumber)
-     && this.checkLength(this.deliveryDate)) {
+     && this.checkLength(this.deliveryDate)
+     && this.checkLength(this.deliveryAdress)) {
       await request('orders', this.orderData, 'POST')
       this.alert(true, 'success', 'success', 2000)
       this.$router.push(`/order/thanks/${this.orderData.orderId}`)

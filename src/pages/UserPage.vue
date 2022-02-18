@@ -15,15 +15,15 @@
       <th class="table__th">New data</th>
     </tr>
     <tr v-for="(value, name) in getState" :key="name">
-        <td v-if="name !== 'id'" class="table__cell">{{ name }}</td>
-        <td v-if="name !== 'id'" class="table__cell">{{ value }}</td>
+        <td v-if="name !== 'id'  && name !=='role'" class="table__cell">{{ name }}</td>
+        <td v-if="name !== 'id'  && name !=='role'" class="table__cell">{{ value }}</td>
         <v-select 
           v-if="name == 'sex'"  
           v-model="userlocal[name]"
           :options="['male','female']">
         </v-select>
         <Input 
-          v-if="name !== 'id' && name !== 'password' && name !== 'sex'" 
+          v-if="name !== 'id' && name !== 'password' && name !== 'sex'  && name !=='role'" 
           :type="(name=='age' || name =='payment_card')? 'number':'text'" 
           v-model:search="userlocal[name]"/>
         <ModalButton 
@@ -66,16 +66,21 @@ import { loginSample } from '@/constants'
   },
   computed: {
     ...mapState('user', ['state']),
-    ...mapGetters('user', ['getState'])
+    ...mapGetters('user', ['getState', 'getUserId'])
   }
 })
 export default class UserPage extends Vue {
-  getState?:UserState
+  getState!:UserState
+  getUserId!:number
   state?:UserState
   userlocal:UserState = JSON.parse(JSON.stringify(user.state)) 
   isOpen = false
   message = ''
   type = ''
+
+  mounted() {
+    this.userlocal = this.getState
+  }
 
   @Watch('userlocal.login')
   onlogin() {
@@ -85,19 +90,19 @@ export default class UserPage extends Vue {
   onAgeChange() {
     if (!this.checkAge()) this.alert('wrong age', 'error')
   }
-  @Watch('userlocal.payment_card')
+  @Watch('userlocal.paymentCard')
   onCardChange() {
     if (!this.checkCard()) this.alert('wrong payment card data', 'error')
   }
 
   checkCard():boolean {
-    const card = this.userlocal.paymentCard?.toString()
+    const card = this.userlocal?.paymentCard?.toString()
     if (card?.length !== 16) return false;
     return true;
   }
 
   checkAge():boolean {
-    if (this.userlocal.age! < 0 || this.userlocal.age! > 1000) return false;
+    if (this.userlocal!.age! < 0 || this.userlocal!.age! > 1000) return false;
     return true;
   }
 
@@ -124,7 +129,7 @@ export default class UserPage extends Vue {
       if (!this.checkCard()) { this.alert('wrong payment card data', 'error'); return; }
     }
     this.$store.commit('user/setUser', this.userlocal)
-    request(`users/${this.state?.id}`, this.userlocal, 'PATCH')
+    request(`users/${this.getUserId}`, this.userlocal, 'PATCH')
     this.alert('Success !', 'success')
   }
 }

@@ -15,5 +15,6 @@ export default async function request(path:string, body?, method = 'GET'): Promi
     .then((r) => r.json())
     .catch((error) => console.log('REQUEST FAILED', error.message))
     .finally(() => store.commit('setLoading', false));
+  // console.log(response);
   return response;
 }

@@ -28,10 +28,25 @@ function checkDate(date:string) {
   return new Date(today) <= new Date(deliveryDate)
 }
 
+function checkImagePath(image:string) {
+  const imgends = ['jpg', 'png', 'svg', 'gif']
+  const pathEnd = image.split('.')[1]
+  console.log(pathEnd)
+  if (!imgends.find((elem) => elem === pathEnd)) return false;
+  return true
+}
+
+function checkRange(rating:number, min:number, max:number) {
+  if (rating < min || rating > max) return false
+  return true
+}
+
 export {
   checkLogin,
   checkPassword,
   checkConfirmPassword,
   checkPhoneNumber,
-  checkDate
+  checkDate,
+  checkImagePath,
+  checkRange
 }
