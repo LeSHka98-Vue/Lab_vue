@@ -1,4 +1,4 @@
-import { AlertType } from '@/store/types/types'
+import { AlertType, Genre } from '@/store/types/types'
 
 interface RootState {
   isAuthorized:boolean | undefined,
@@ -30,7 +30,7 @@ interface Product {
   id?: number,
   image: string,
   name:string,
-  genre: string,
+  genre: Genre,
   rating: number,
   description: string,
   price: number,

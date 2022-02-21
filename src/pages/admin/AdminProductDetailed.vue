@@ -49,9 +49,9 @@ import request from '@/utils/serverRequest'
 import { Product } from '@/store/types/interfaces'
 import Button from '@/ui/Button.vue'
 import Input from '@/ui/Input.vue'
-import { successMessage, priceError, ratingError, imageError, invalidfields } from '@/constants/textConstants'
-import { checkImagePath, checkRange } from '@/utils/checks'
-import { productDefault, platformsAll } from '@/constants/defaultValues'
+import { successMessage, priceError, ratingError, imageError, invalidfields, genreError } from '@/constants/textConstants'
+import { checkImagePath, checkRange, checkGenre } from '@/utils/checks'
+import { platformsAll, productDefault } from '@/constants/defaultValues'
 import { minRating, maxRating, minPrice, maxPrice } from '@/constants/numeralConsts'
 import { AlertType } from '@/store/types/types'
 
@@ -95,7 +95,7 @@ export default class AdminProductDetailedPage extends Vue {
 
   get checkfields() {
     return checkImagePath(this.product.image) && checkRange(+this.product.rating, minRating, maxRating) 
-    && checkRange(+this.product.price, minPrice, maxPrice) && this.checkLength(this.product)
+    && checkRange(+this.product.price, minPrice, maxPrice) && checkGenre(this.product.genre) && this.checkLength(this.product)
   }
 
   @Watch('product.image')
@@ -110,7 +110,12 @@ export default class AdminProductDetailedPage extends Vue {
 
   @Watch('product.price')
   onPriceChange() {
-    if (checkRange(+this.product.price, minPrice, maxPrice)) this.Alert({ type: 'error', message: priceError, delay: 2000 });
+    if (!checkRange(+this.product.price, minPrice, maxPrice)) this.Alert({ type: 'error', message: priceError, delay: 2000 });
+  }
+
+  @Watch('product.genre')
+  onGenreChange() {
+    if (!checkGenre(this.product.genre)) this.Alert({ type: 'error', message: genreError, delay: 2000 });
   }
 
   checkLength(product) {

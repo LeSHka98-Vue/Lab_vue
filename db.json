@@ -18,7 +18,7 @@
       "id": 2,
       "sex": "male",
       "address": "ervervdvdvdv",
-      "paymentCard": "0000111122223333",
+      "paymentCard": "1111-2222-3333-4444",
       "shippingAddress": "ervervv"
     },
     {
@@ -30,6 +30,7 @@
       "sex": "male",
       "address": "safaf",
       "shippingAddress": "",
+      "paymentCard": "0000-1111-2222-4444",
       "age": "7"
     }
   ],

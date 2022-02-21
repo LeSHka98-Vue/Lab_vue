@@ -1,5 +1,6 @@
 const phoneMask = '+###(##)###-##-##';
 const dateMask = '##.##.####';
+const cardMask = '####-####-####-####';
 
 const successMessage = 'Success!';
 const passwordErrorMessage = 'password is too short !';
@@ -13,6 +14,7 @@ const emptyFieldMessage = "field shouldn't be empty";
 const loginFirst = 'Log in/ Register first !';
 const imageError = 'wrong image path';
 const priceError = 'wrong price';
+const genreError = 'wrong genre';
 const ratingError = 'wrong rating';
 const phoneError = 'wrong phone number';
 const dateError = 'wrong date';
@@ -42,5 +44,7 @@ export {
   dateError,
   submitFailed,
   ageError,
-  cardError
+  cardError,
+  cardMask,
+  genreError
 };

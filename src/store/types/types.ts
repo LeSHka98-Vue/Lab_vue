@@ -4,6 +4,7 @@ type InputType = 'text'| 'number' | 'email' | 'password' | 'date' | 'file';
 type Role = 'admin'| 'user';
 type Sex = 'male'|'female'
 type Status = 'pending' | 'processing' | 'ready'
+type Genre = 'shooter' | 'racing' | 'rpg';
 
 type PriceOption = { label:string, value:string|number }
 
@@ -14,5 +15,6 @@ export {
   Role,
   Sex,
   PriceOption,
-  Status
+  Status,
+  Genre
 }

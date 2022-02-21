@@ -40,8 +40,12 @@ function checkRange(value:number, min:number, max:number) {
 }
 
 function checkCard(card):boolean {
-  if (card?.toString()?.length !== 16) return false;
+  if (card?.length !== 19) return false;
   return true;
+}
+function checkGenre(genre):boolean {
+  const genreLow = genre.toLowerCase()
+  return genreLow === 'shooter' || genreLow === 'racing' || genreLow === 'rpg'
 }
 
 export {
@@ -52,5 +56,6 @@ export {
   checkDate,
   checkImagePath,
   checkRange,
-  checkCard
+  checkCard,
+  checkGenre
 }

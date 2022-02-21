@@ -1,7 +1,9 @@
-const productDefault = {
+import { Product } from '@/store/types/interfaces'
+
+const productDefault:Product = {
   image: '',
   name: '',
-  genre: '',
+  genre: 'shooter',
   rating: 0,
   description: '',
   price: 0,

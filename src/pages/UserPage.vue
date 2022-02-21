@@ -20,8 +20,13 @@
         class="style-chooser">
       </v-select>
       <Input 
-        v-if="name !== 'password' && name !== 'sex'" 
-        :type="(name=='age' || name =='payment_card')? 'number':'text'" 
+        v-else-if="name !== 'password' && name !=='paymentCard' " 
+        :type="name=='age'? 'number':'text'" 
+        v-model:search="userlocal[name]"/>
+      <Input 
+        v-else 
+        type="text"
+        :mask="cardMask" 
         v-model:search="userlocal[name]"/>
     </tr>
   </table>
@@ -51,7 +56,7 @@ import UserState from '@/store/user/interface'
 import ConfirmPassword from '@/components/ConfPassword.vue'
 import request from '@/utils/serverRequest'
 import { checkLogin, checkRange, checkCard } from '@/utils/checks'
-import { successMessage, emailErrorMessage, cardError, ageError, invalidfields } from '@/constants/textConstants'
+import { successMessage, emailErrorMessage, cardError, ageError, invalidfields, cardMask } from '@/constants/textConstants'
 
 @Options({
   components: {
@@ -81,8 +86,9 @@ export default class UserPage extends Vue {
   state?:UserState
   login?:string
   age?:number
-  paymentCard?:number
-  userlocal:UserState = JSON.parse(JSON.stringify(user.state)) 
+  paymentCard?:string
+  userlocal:UserState = JSON.parse(JSON.stringify(user.state))
+  cardMask = cardMask 
 
   mounted() {
     this.userlocal = this.getState
