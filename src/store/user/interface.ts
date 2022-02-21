@@ -1,10 +1,10 @@
-import { Sex } from '@/store/types/types'
+import { Sex, Role } from '@/store/types/types'
 
 interface UserState {
   id?: number,
   login: string,
   password: string,
-  role?: string, // !!!!!!!!!!!!!!!!!
+  role?: Role,
   firstName?: string,
   lastName?: string,
   sex?: Sex,  

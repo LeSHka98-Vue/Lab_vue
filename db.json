@@ -3,23 +3,23 @@
     {
       "id": 1,
       "login": "admin@gmail.com",
-      "role": "ADMIN",
-      "first_name": "Bob",
-      "last_name": "Marley",
+      "role": "admin",
+      "firstName": "Bob",
+      "lastName": "Marley",
       "password": "232323",
       "sex": "MALE"
     },
     {
       "login": "qqq@qq.qq",
       "password": "qqqqq",
-      "age": 21,
-      "firstName": "Bob",
-      "lastName": "Marley",
+      "age": "22",
+      "firstName": "Snoopp",
+      "lastName": "Dogg",
       "id": 2,
-      "sex": "female",
-      "address": "qweqweqwe",
-      "shipping_address": "",
-      "payment_card": "0000111122223333"
+      "sex": "male",
+      "address": "ervervdvdvdv",
+      "paymentCard": "1111-2222-3333-4444",
+      "shippingAddress": "ervervv"
     },
     {
       "login": "www@ww.ww",
@@ -29,7 +29,8 @@
       "lastName": "safsaf",
       "sex": "male",
       "address": "safaf",
-      "shipping_address": "",
+      "shippingAddress": "",
+      "paymentCard": "0000-1111-2222-4444",
       "age": "7"
     }
   ],
@@ -48,7 +49,7 @@
       "image": "crysis.jpg",
       "name": "Crysis",
       "genre": "shooter",
-      "rating": 9,
+      "rating": "9",
       "description": "Crysis is a first-person shooter video game series created by German developer Crytek.",
       "price": 15,
       "publisher": "Crytek",
@@ -61,7 +62,11 @@
         "CPU": "Core 2 Duo 2.2 GHz/Athlon X2 4400+ or better",
         "RAM": "2 GB",
         "VIDEO_CARD": "Supported chipsets: NVIDIA GeForce 8800 GTS with 640MB RAM or similar"
-      }
+      },
+      "platform": [
+        "pc",
+        "xbox"
+      ]
     },
     {
       "id": 2,
@@ -81,7 +86,12 @@
         "CPU": "Pentium III or Athlon XP",
         "RAM": "256 MB",
         "VIDEO_CARD": "AGP Video Card with 32 MB and a DirectX 8.1 compatible driver (GeForce2+ /Radeon 7500+)"
-      }
+      },
+      "platform": [
+        "pc",
+        "ps5",
+        "xbox"
+      ]
     },
     {
       "id": 3,
@@ -101,7 +111,10 @@
         "CPU": "1.8 GHz Intel Core2 Duo, 2.4 GHz AMD Athlon 64 X2 or better",
         "RAM": "2 GB",
         "VIDEO_CARD": "256 MB DirectX 9.0 compliant video card with Shader Model 3.0 or better"
-      }
+      },
+      "platform": [
+        "pc"
+      ]
     }
   ],
   "categories": [
@@ -124,5 +137,18 @@
       "category": "xbox"
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "id": "c6fbb430-92f5-11ec-8cb4-7b025e7a67a5",
+      "userId": 1,
+      "productList": [
+        1
+      ],
+      "name": "Bob",
+      "surName": "Marley",
+      "phoneNumber": "+375(33)222-11-11",
+      "deliveryDate": "22.12.2022",
+      "status": "pending"
+    }
+  ]
 }

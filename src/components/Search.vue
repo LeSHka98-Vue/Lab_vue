@@ -1,5 +1,5 @@
 <template>
-  <section section class="main">
+  <section class="main">
     <Input type="text" placeholder="Search" v-model:search="search"/>
     <div class="break"></div>
     <Section caption="Search results">
@@ -28,6 +28,7 @@ import ProductCard from '@/components/ProductCard.vue'
 import Section from '@/components/Section.vue'
 import { Product } from '@/store/types/interfaces'
 import debounce from '@/utils/Debounce'
+import request from '@/utils/serverRequest'
 
 @Options({
   components: {
@@ -39,27 +40,16 @@ import debounce from '@/utils/Debounce'
 export default class Search extends Vue {
   search = '';
   products:Product[] = [];
-  debouncedWatch!: (...args: any) => void
+  debouncedWatch!: (...args: any) => any
 
   async created() {
-    await this.request('products', this.search);
-    this.debouncedWatch = debounce(this.request);
+    this.products = await request(`products/?name_like=${this.search}`);
+    this.debouncedWatch = debounce(request);
   }
 
   @Watch('search')
-  onSearchChanged(value:string) {
-    this.debouncedWatch('products', value)
-  }
-
-  async request(param:string, value:string) {
-    this.$store.commit('setLoading', true)
-    await fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}?name_like=${value}`)
-      .then((response) => response.json())
-      .then((data) => { this.products = data })
-      .catch((error) => {
-        console.error(error.message);
-      })
-    this.$store.commit('setLoading', false)
+  async onSearchChanged(value:string) {
+    this.products = await this.debouncedWatch(`products/?name_like=${value}`)
   }
 }
 </script>
@@ -71,17 +61,17 @@ export default class Search extends Vue {
     flex-wrap: wrap;
     width: 100%;
   }
-    .search-result {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 4%;
-      width: 100%;
-    }
-    .alt-search-result {
-      color: $white;
-    }
-    .break {
-      width: 100%;
-    }
+  .search-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4%;
+    width: 100%;
+  }
+  .alt-search-result {
+    color: $white;
+  }
+  .break {
+    width: 100%;
+  }
 </style>

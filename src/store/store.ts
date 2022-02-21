@@ -3,6 +3,7 @@ import VuexPersistence from 'vuex-persist'
 import { RootState } from '@/store/types/interfaces'
 import user from '@/store/user/state'
 import cart from '@/store/cart/state'
+import { AlertType } from '@/store/types/types'
 
 const vuexLocal = new VuexPersistence<RootState>({
   storage: window.localStorage
@@ -14,9 +15,26 @@ const store = createStore<RootState>({
     isLoading: false,
     modalShown: 0,
     errorLogger: [],
-    warningLogger: []
+    warningLogger: [],
+    isAlert: false,
+    type: 'error',
+    message: '',
+    delay: 0
   },
   mutations: {
+    Alert(state, payload:{show?:boolean, type:AlertType, message:string, delay?:number}) {
+      const { 
+        show = true, type, message, delay
+      } = payload
+      state.type = type;
+      state.message = message;
+      if (delay) {
+        state.isAlert = true;
+        setTimeout(() => {
+          state.isAlert = false;
+        }, delay)
+      } else state.isAlert = show;
+    },
     setAuthorization(state, payload:boolean) {
       state.isAuthorized = payload
     },

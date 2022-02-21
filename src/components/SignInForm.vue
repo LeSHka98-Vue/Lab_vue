@@ -1,11 +1,8 @@
 <template>
   <form>
-      <p class="caption">SignIn</p>
-      <Alert type="success" :message="successMessage" v-if="success"/>
-      <Alert type="error" :message="errorMessage" v-if="error"/>
-      <Alert type="error" :message="emailErrorMessage" v-if="emailError"/>
+    <p class="caption">SignIn</p>
+    <Alert v-if="isAlert"/>
     <Input type="email" placeholder="Email" v-model:search="login"/>
-      <Alert type="error" :message="passwordErrorMessage" v-if="passwordError"/>
     <Input type="password" placeholder="Password" v-model:search="password"/>
     <Button type="success" @click="submit" :disabled="isDisabled">Submit</Button>
   </form>
@@ -13,15 +10,16 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
-import { Watch, Prop } from 'vue-property-decorator'
+import { Watch } from 'vue-property-decorator'
+import { mapState, mapMutations } from 'vuex'
 import Input from '@/ui/Input.vue'
 import Button from '@/ui/Button.vue'
 import Alert from '@/alerts/Alert.vue'
+import { AlertType } from '@/store/types/types'
 import request from '@/utils/serverRequest'
 import UserState from '@/store/user/interface'
-import { 
-  emailErrorMessage, passwordErrorMessage, nouserError, successMessage 
-} from '@/constants'
+import { emailErrorMessage, passwordErrorMessage, nouserError, successMessage, submitFailed } from '@/constants/textConstants'
+import { closeModal } from '@/constants/numeralConsts'
 import { checkLogin, checkPassword } from '@/utils/checks'
 
 @Options({
@@ -29,21 +27,24 @@ import { checkLogin, checkPassword } from '@/utils/checks'
     Button,
     Input, 
     Alert
+  },
+  computed: {
+    ...mapState(['isAlert'])
+  },
+  methods: {
+    ...mapMutations(['Alert', 'showModal', 'setAuthorization']),
+    ...mapMutations('user', ['setUser'])
   }
 })
 export default class SignUpForm extends Vue {
-  @Prop(Boolean) modalShown:boolean | undefined
+  isAlert?:boolean
+  Alert!: (arg0: {show?:boolean, type:AlertType, message:string, delay?:number}) => void
+  showModal!: (arg0: number) => void
+  setAuthorization!: (arg0: boolean) => void
+  setUser!: (arg0: null | UserState) => void
+
   login = '';
   password = '';
-  
-  success = false;
-  error = false;
-  emailError = false;
-  passwordError = false;
-  emailErrorMessage = emailErrorMessage;
-  passwordErrorMessage = passwordErrorMessage;
-  successMessage = successMessage;
-  errorMessage = nouserError;
 
   users:Array<any> = [];
 
@@ -52,46 +53,45 @@ export default class SignUpForm extends Vue {
   }
 
   get isDisabled() {
-    if (!this.login || !this.password) return true;
-    return this.emailError || this.passwordError;
+    return !this.checkFields;
   }
 
   @Watch('login')
   onEmailChange() {
-    this.emailError = !checkLogin(this.login)
+    if (!checkLogin(this.login)) this.Alert({ type: 'error', message: emailErrorMessage, delay: 2000 })
   }
 
   @Watch('password')
   onPasswordChange() {
-    this.passwordError = !checkPassword(this.password)
+    if (!checkPassword(this.password)) this.Alert({ type: 'error', message: passwordErrorMessage, delay: 2000 })
+  }
+
+  get checkFields() {
+    return checkLogin(this.login) && checkPassword(this.password)
   }
 
   async submit() {
+    if (!this.checkFields) { this.Alert({ type: 'error', message: submitFailed, delay: 2000 }); return }
     const user:UserState = this.users.find((item) => item.login === this.login && item.password === this.password)
     if (user) { 
-      this.success = true;
-      this.$store.commit('setAuthorization', true);
-      this.$store.commit('user/setUser', user);
-      setTimeout(() => { 
-        this.success = false;
-        this.$store.commit('showModal', 0)
-      }, 2000);
-      return;
+      this.setAuthorization(true)
+      this.setUser(user)
+      this.Alert({ type: 'success', message: successMessage, delay: 2000 })
+      this.showModal(closeModal)
+      return
     }
-    
-    this.error = true;
-    setTimeout(() => { this.error = false; }, 2000);
+    this.Alert({ type: 'error', message: nouserError, delay: 2000 })
   }
 }
 </script>
 
 <style lang="scss">
-.caption {
-  margin: 0;
-  text-align: left;
-  font: {
-    weight:bold;
-    size:20px;
+  .caption {
+    margin: 0;
+    text-align: left;
+    font: {
+      weight: bold;
+      size: 20px;
+    }
   }
-}
 </style>

@@ -1,14 +1,13 @@
-import { 
-  loginSample, belarusPhoneNumber, dateRule, minPasswordLength
-} from '@/constants'
+import { loginSample, belarusPhoneNumber, dateRule } from '@/constants/regExpressions'
+import { minPasswordLength } from '@/constants/numeralConsts'
 
 function checkLogin(login:string):boolean {
-  if (login.search(loginSample) !== -1 || login.length === 0) return true;
+  if (login.search(loginSample) !== -1) return true;
   return false;
 }
 
 function checkPassword(password:string):boolean {
-  if (password.length >= minPasswordLength || password.length === 0) return true;
+  if (password.length >= minPasswordLength) return true;
   return false
 }
 
@@ -23,9 +22,30 @@ function checkPhoneNumber(phone:string) {
 
 function checkDate(date:string) {
   if (date.search(dateRule) === -1) return false;
-  const today = new Date().toLocaleDateString()
+  const today = new Date().toISOString().slice(0, 10)
   const deliveryDate = date.split('.').reverse().join('.')
   return new Date(today) <= new Date(deliveryDate)
+}
+
+function checkImagePath(image:string) {
+  const imgends = ['jpg', 'png', 'svg', 'gif']
+  const pathEnd = image.split('.')[1]
+  if (!imgends.find((elem) => elem === pathEnd)) return false;
+  return true
+}
+
+function checkRange(value:number, min:number, max:number) {
+  if (value < min || value > max) return false
+  return true
+}
+
+function checkCard(card):boolean {
+  if (card?.length !== 19) return false;
+  return true;
+}
+function checkGenre(genre):boolean {
+  const genreLow = genre.toLowerCase()
+  return genreLow === 'shooter' || genreLow === 'racing' || genreLow === 'rpg'
 }
 
 export {
@@ -33,5 +53,9 @@ export {
   checkPassword,
   checkConfirmPassword,
   checkPhoneNumber,
-  checkDate
+  checkDate,
+  checkImagePath,
+  checkRange,
+  checkCard,
+  checkGenre
 }

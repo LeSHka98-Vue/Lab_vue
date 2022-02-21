@@ -45,6 +45,7 @@ export default class Card extends Vue {
     &:active {
         background: $light-purple;
     }
+    
     &__signature {
       color: $dark-gray;
       font-weight: 100;

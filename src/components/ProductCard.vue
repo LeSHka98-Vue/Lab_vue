@@ -1,4 +1,5 @@
 <template>
+<Alert v-if="isAlert"/>
     <div class="wrapper">
       <div class="product-card">
         <div class="product-card__front">
@@ -10,7 +11,7 @@
               @error="onImageLoadFailure"
             >
           </div>
-          <div class="product-card__name">
+          <div class="product-card__info">
             <div class="product-card__left-block">
               <span>{{ name }}</span><br>
               <span class="product-card__genre">{{ genre }}</span>
@@ -28,7 +29,6 @@
             <router-link :to="`/products/${id}`">more</router-link>
           </p>
           <Button type="info-outline" @click="addToCart">{{ buttonName }}</Button>
-          <Alert v-if="note" :type="type" :message="message"/>
         </div>
       </div>
     </div>
@@ -37,9 +37,12 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import Alert from '@/alerts/Alert.vue'
+import { AlertType } from '@/store/types/types'
 import Button from '@/ui/Button.vue'
+import { Product } from '@/store/types/interfaces'
+import { successMessage, loginFirst } from '@/constants/textConstants'
 
 @Options({
   components: {
@@ -48,10 +51,15 @@ import Button from '@/ui/Button.vue'
   },
   computed: {
     ...mapState('cart', ['products']),
-    ...mapState({ isAuthorized: 'isAuthorized' })
+    ...mapState(['isAuthorized', 'isAlert'])
+  },
+  methods: {
+    ...mapMutations(['Alert']),
+    ...mapMutations('cart', ['AddProduct', 'RemoveProduct'])
   }
 })
 export default class ProductCard extends Vue {
+  @Prop(Object as () => Product) product!: Product
   @Prop(Number) id!: number
   @Prop(String) image: string|undefined
   @Prop(String) name: string|undefined
@@ -60,12 +68,14 @@ export default class ProductCard extends Vue {
   @Prop(Number) rating: number|undefined
   @Prop(Number) price: number|undefined
 
+  // { id, image, name, genre, description, rating, price } = this.product
+
   isAuthorized?:boolean
   products?: number[]
-
-  note = false
-  message = ''
-  type = 'error'
+  isAlert?:boolean
+  Alert!: (arg0: {show?:boolean, type:AlertType, message:string, delay?:number}) => void
+  AddProduct!: (arg0: number) => void
+  RemoveProduct!: (arg0: number) => void
 
   onImageLoadFailure(e) {
     e.target.src = '/images/default.png';
@@ -78,17 +88,10 @@ export default class ProductCard extends Vue {
 
   addToCart() {
     if (this.isAuthorized) {
-      if (this.products?.includes(this.id)) this.$store.commit('cart/RemoveProduct', this.id)
-      else this.$store.commit('cart/AddProduct', this.id)
-      this.alert('success', 'Success !')
-    } else this.alert('error', 'Log in first !')
-  }
-
-  alert(type:string, message:string) {
-    this.note = true
-    this.type = type
-    this.message = message
-    setTimeout(() => { this.note = false }, 2000)
+      if (this.products?.includes(this.id)) this.RemoveProduct(this.id)
+      else this.AddProduct(this.id)
+      this.Alert({ type: 'success', message: successMessage, delay: 2000 })
+    } else this.Alert({ type: 'error', message: loginFirst, delay: 2000 })
   }
 }
 </script>
@@ -135,24 +138,24 @@ export default class ProductCard extends Vue {
       background: $white;
     }
     &__description {
-        padding: 7px;
-        text-align: justify;
+      padding: 7px;
+      text-align: justify;
     }
 
     &__image {
       width: 220px;
       height: 235px;
     }
-    &__name {
+    &__info {
       display: flex;
       justify-content: space-between;
       padding: 8px;
     }
     &__left-block {
-        text-align: left;
+      text-align: left;
     }
     &__right-block {
-        text-align: right;
+      text-align: right;
     }
     &__genre {
       color: $gray;

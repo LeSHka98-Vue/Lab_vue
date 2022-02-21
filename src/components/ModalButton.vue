@@ -1,5 +1,5 @@
 <template>
-  <Button :type="type" @click="showModal(id)">
+  <Button :type="type" @click="this.showModal(id)">
     {{ buttonName }}
   </Button>
   <teleport to="#modals">
@@ -14,6 +14,7 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
+import { mapMutations } from 'vuex'
 import { ButtonType } from '@/store/types/types'
 import Button from '@/ui/Button.vue'
 import Modal from '@/components/Modal.vue'
@@ -26,18 +27,17 @@ import SignInForm from '@/components/SignInForm.vue'
     Modal,
     SignUpForm,
     SignInForm
+  },
+  methods: {
+    ...mapMutations(['showModal'])
   }
 })
 export default class ModalButton extends Vue {
-  @Prop(Boolean) isAuthorized: boolean | undefined;
   @Prop(String as () => ButtonType) type: string | undefined;
   @Prop(Number) id: number | undefined;
   @Prop(String) buttonName: string|undefined;
 
-  showModal(id:number) {
-    console.log('showModal ', id);
-    this.$store.commit('showModal', id)
-  }
+  showModal!: (arg0: number) => void
 }
 </script>
 

@@ -1,0 +1,39 @@
+.table {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  border-collapse:collapse;
+
+  &__first-column {
+    background: $table-first-column;
+  }
+
+  &__th:first-child,
+  &__cell:first-child {
+    color: $table-first-column-text;
+    border-left: none;
+  }
+  &__th {
+    font-weight: normal;
+    border-bottom: 2px solid $table-yellow-line;
+    padding: 8px 10px;
+    text-align: left;
+  }
+  &__cell {
+    padding: 12px 10px;
+    text-align: left;
+  }
+  &__image-block,
+  &__button-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  &__router-link {
+    text-decoration: none;
+    color: $black;
+  }
+}
