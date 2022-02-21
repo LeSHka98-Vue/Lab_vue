@@ -17,7 +17,8 @@ import Button from '@/ui/Button.vue'
 import Alert from '@/alerts/Alert.vue'
 import { AlertType } from '@/store/types/types'
 import request from '@/utils/serverRequest'
-import { passwordErrorMessage, confirmPasswordErrorMessage, passwordChanged } from '@/constants'
+import { passwordErrorMessage, confirmPasswordErrorMessage, passwordChanged, successMessage, invalidfields } from '@/constants/textConstants'
+import { closeModal } from '@/constants/numeralConsts'
 import { checkPassword, checkConfirmPassword } from '@/utils/checks'
 import UserState from '@/store/user/interface'
 
@@ -35,7 +36,8 @@ import UserState from '@/store/user/interface'
     ...mapState(['isAuthorized', 'isAlert'])
   },
   methods: {
-    ...mapMutations(['Alert'])
+    ...mapMutations(['Alert', 'showModal']),
+    ...mapMutations('user', ['setPassword'])
   }
 })
 export default class ConfirmPassword extends Vue {
@@ -44,38 +46,40 @@ export default class ConfirmPassword extends Vue {
   storePassword!:string
 
   isAlert?:boolean
-  Alert!: (arg0: {show:boolean, type:AlertType, message:string, delay?:number}) => void
+  Alert!: (arg0: {show?:boolean, type:AlertType, message:string, delay?:number}) => void
+  showModal!: (arg0: number) => void
+  setPassword!: (arg0: string) => void
 
   password = '';
   confirmPassword = '';
-  
-  passwordError = false;
-  confirmPasswordError = false;
 
   get isDisabled() {
-    if (!this.password || !this.confirmPassword) return true;
-    return !checkConfirmPassword(this.password, this.storePassword) || !checkPassword(this.confirmPassword)
+    return !this.checkFields
+  }
+
+  get checkFields() {
+    return checkConfirmPassword(this.password, this.storePassword) && checkPassword(this.confirmPassword)
   }
 
   @Watch('password')
   onPasswordChange() {
-    if (checkConfirmPassword(this.password, this.storePassword)) this.Alert({ show: true, type: 'success', message: 'success', delay: 2000 })
-    else this.Alert({ show: true, type: 'error', message: confirmPasswordErrorMessage, delay: 2000 })
+    if (checkConfirmPassword(this.password, this.storePassword)) this.Alert({ type: 'success', message: successMessage, delay: 2000 })
+    else this.Alert({ type: 'error', message: confirmPasswordErrorMessage, delay: 2000 })
   }
 
   @Watch('confirmPassword')
   onConfirmPasswordChange() {
-    if (checkPassword(this.confirmPassword)) this.Alert({ show: true, type: 'success', message: 'success', delay: 2000 })
-    else this.Alert({ show: true, type: 'error', message: passwordErrorMessage, delay: 2000 })
+    if (checkPassword(this.confirmPassword)) this.Alert({ type: 'success', message: successMessage, delay: 2000 })
+    else this.Alert({ type: 'error', message: passwordErrorMessage, delay: 2000 })
   }
+
   async submit() {
-    await request(`users/${this.id}`, { password: this.confirmPassword }, 'PATCH');
-    this.$store.commit('user/setPassword', this.confirmPassword);
-    this.Alert({ show: true, type: 'success', message: passwordChanged, delay: 2000 })
-    this.userlocal.password = this.confirmPassword;
-    setTimeout(() => { 
-      this.$store.commit('showModal', 0)
-    }, 2000);
+    if (!this.checkFields) { this.Alert({ type: 'error', message: invalidfields, delay: 2000 }); return }
+    await request(`users/${this.id}`, { password: this.confirmPassword }, 'PATCH')
+    this.setPassword(this.confirmPassword)
+    this.userlocal.password = this.confirmPassword
+    this.Alert({ type: 'success', message: passwordChanged, delay: 2000 })
+    this.showModal(closeModal)
   }
 }
 </script>

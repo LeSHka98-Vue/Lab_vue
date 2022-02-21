@@ -73,29 +73,28 @@ export default class SideBar extends Vue {
 </script>
 
 <style lang="scss">
-.sidebar {
-  padding: 1% 1% 3%;
-  background-color: $section-background;
-  border-radius: 10px;
-  width: 20%;
-  color:$white;
-  text-align: left;
-}
+  .sidebar {
+    padding: 1% 1% 3%;
+    background-color: $section-background;
+    border-radius: 10px;
+    width: 20%;
+    color:$white;
+    text-align: left;
+  }
 
-.style-chooser .vs__search::placeholder,
-.style-chooser .vs__dropdown-toggle,
-.style-chooser .vs__dropdown-menu {
-  background: $select-background;
-  border: none;
-  color: $select-color;
-  text-transform: lowercase;
-  font-variant: small-caps;
-  margin: 5px 0;
+  .style-chooser .vs__search::placeholder,
+  .style-chooser .vs__dropdown-toggle,
+  .style-chooser .vs__dropdown-menu {
+    background: $select-background;
+    border: none;
+    color: $select-color;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    margin: 5px 0;
   }
 
   .style-chooser .vs__clear,
   .style-chooser .vs__open-indicator {
     fill: $select-color;
- }
-
+  }
 </style>

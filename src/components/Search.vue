@@ -1,5 +1,5 @@
 <template>
-  <section section class="main">
+  <section class="main">
     <Input type="text" placeholder="Search" v-model:search="search"/>
     <div class="break"></div>
     <Section caption="Search results">
@@ -45,25 +45,12 @@ export default class Search extends Vue {
   async created() {
     this.products = await request(`products/?name_like=${this.search}`);
     this.debouncedWatch = debounce(request);
-    // console.log(this.debouncedWatch(`products/?name_like=${this.search}`))
   }
 
   @Watch('search')
   async onSearchChanged(value:string) {
-    // console.log(this.debouncedWatch(`products/?name_like=${value}`))
     this.products = await this.debouncedWatch(`products/?name_like=${value}`)
   }
-
-  // async request(param:string, value:string) {
-  //   this.$store.commit('setLoading', true)
-  //   await fetch(`${process.env.VUE_APP_DEV_PATH}:${process.env.VUE_APP_PORT}/api/${param}?name_like=${value}`)
-  //     .then((response) => response.json())
-  //     .then((data) => { this.products = data })
-  //     .catch((error) => {
-  //       console.error(error.message);
-  //     })
-  //   this.$store.commit('setLoading', false)
-  // }
 }
 </script>
 
@@ -74,17 +61,17 @@ export default class Search extends Vue {
     flex-wrap: wrap;
     width: 100%;
   }
-    .search-result {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 4%;
-      width: 100%;
-    }
-    .alt-search-result {
-      color: $white;
-    }
-    .break {
-      width: 100%;
-    }
+  .search-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4%;
+    width: 100%;
+  }
+  .alt-search-result {
+    color: $white;
+  }
+  .break {
+    width: 100%;
+  }
 </style>

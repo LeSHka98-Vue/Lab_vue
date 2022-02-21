@@ -11,7 +11,6 @@ const mutations: MutationTree<CartState> = {
   },
   CleanCart(state) {
     state.products = []
-    console.log(state.products)
   }
 }
 

@@ -1,11 +1,7 @@
 <template>
   <h1>User info</h1>
+  <Alert v-if="isAlert"/>
   <table class="table">
-    <tr>
-      <td colspan="3">
-        <Alert v-if="isOpen" :type="type" :message="message"/>
-      </td>
-    </tr>
     <colgroup>
       <col class="table__first-column">
     </colgroup>
@@ -14,46 +10,48 @@
       <th class="table__th">Current data</th>
       <th class="table__th">New data</th>
     </tr>
-    <tr v-for="(value, name) in getState" :key="name">
-        <td v-if="name !== 'id'  && name !=='role'" class="table__cell">{{ name }}</td>
-        <td v-if="name !== 'id'  && name !=='role'" class="table__cell">{{ value }}</td>
-        <v-select 
-          v-if="name == 'sex'"  
-          v-model="userlocal[name]"
-          :options="['male','female']">
-        </v-select>
-        <Input 
-          v-if="name !== 'id' && name !== 'password' && name !== 'sex'  && name !=='role'" 
-          :type="(name=='age' || name =='payment_card')? 'number':'text'" 
-          v-model:search="userlocal[name]"/>
-        <ModalButton 
-          v-else-if="name === 'password'"
-          type="info-outline"
-          buttonName="Change password"
-          :id="3">
-          <template #aim>
-            <ConfirmPassword :userlocal="userlocal"/>
-          </template>
-        </ModalButton>
+    <tr v-for="(value, name) in changableUser" :key="name">
+      <td class="table__cell">{{ name }}</td>
+      <td class="table__cell">{{ value }}</td>
+      <v-select 
+        v-if="name == 'sex'"  
+        v-model="userlocal[name]"
+        :options="['male','female']"
+        class="style-chooser">
+      </v-select>
+      <Input 
+        v-if="name !== 'password' && name !== 'sex'" 
+        :type="(name=='age' || name =='payment_card')? 'number':'text'" 
+        v-model:search="userlocal[name]"/>
     </tr>
   </table>
-  <Button type="success" @click="submit">Save changes</Button>
+  <ModalButton 
+    type="info"
+    buttonName="Change password"
+    :id="3">
+    <template #aim>
+      <ConfirmPassword :userlocal="userlocal"/>
+    </template>
+  </ModalButton>
+  <Button type="success" @click="submit" :disabled="isDisabled" class="passwordButton">Save changes</Button>
 </template>
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import vSelect from 'vue-select'
 import Input from '@/ui/Input.vue'
 import Alert from '@/alerts/Alert.vue'
+import { AlertType } from '@/store/types/types'
 import Button from '@/ui/Button.vue'
 import ModalButton from '@/components/ModalButton.vue'
 import user from '@/store/user/state'
 import UserState from '@/store/user/interface'
 import ConfirmPassword from '@/components/ConfPassword.vue'
 import request from '@/utils/serverRequest'
-import { loginSample } from '@/constants'
+import { checkLogin, checkRange, checkCard } from '@/utils/checks'
+import { successMessage, emailErrorMessage, cardError, ageError, invalidfields } from '@/constants/textConstants'
 
 @Options({
   components: {
@@ -65,105 +63,96 @@ import { loginSample } from '@/constants'
     vSelect
   },
   computed: {
-    ...mapState('user', ['state']),
+    ...mapState('user', ['state', 'login', 'age', 'paymentCard']),
+    ...mapState(['isAlert']),
     ...mapGetters('user', ['getState', 'getUserId'])
+  },
+  methods: {
+    ...mapMutations(['Alert']),
+    ...mapMutations('user', ['setUser'])
   }
 })
 export default class UserPage extends Vue {
+  isAlert?:boolean
+  Alert!: (arg0: {show?:boolean, type:AlertType, message:string, delay?:number}) => void
+  setUser!: (arg0: null | UserState) => void
   getState!:UserState
   getUserId!:number
   state?:UserState
+  login?:string
+  age?:number
+  paymentCard?:number
   userlocal:UserState = JSON.parse(JSON.stringify(user.state)) 
-  isOpen = false
-  message = ''
-  type = ''
 
   mounted() {
     this.userlocal = this.getState
   }
 
+  get changableUser() {
+    const userdata = {}
+    for (const [key, value] of Object.entries(this.getState)) {
+      if (key !== 'id' && key !== 'role' && key !== 'password') {
+        userdata[key] = value
+      }
+    }
+    return userdata
+  }
+  get isDisabled() {
+    return !this.checkFields
+  }
+
+  get checkFields() {
+    return checkLogin(this.userlocal.login) && checkRange(this.userlocal!.age!, 0, 200) && checkCard(this.userlocal?.paymentCard);
+  }
+
   @Watch('userlocal.login')
   onlogin() {
-    if (!this.checkLogin()) this.alert('wrong login', 'error')
+    if (!checkLogin(this.userlocal.login)) this.Alert({ type: 'error', message: emailErrorMessage, delay: 2000 })
   }
   @Watch('userlocal.age')
   onAgeChange() {
-    if (!this.checkAge()) this.alert('wrong age', 'error')
+    if (!checkRange(this.userlocal!.age!, 0, 200)) this.Alert({ type: 'error', message: ageError, delay: 2000 })
   }
   @Watch('userlocal.paymentCard')
   onCardChange() {
-    if (!this.checkCard()) this.alert('wrong payment card data', 'error')
+    if (!checkCard(this.userlocal?.paymentCard)) this.Alert({ type: 'error', message: cardError, delay: 2000 })
   }
 
-  checkCard():boolean {
-    const card = this.userlocal?.paymentCard?.toString()
-    if (card?.length !== 16) return false;
-    return true;
-  }
-
-  checkAge():boolean {
-    if (this.userlocal!.age! < 0 || this.userlocal!.age! > 1000) return false;
-    return true;
-  }
-
-  checkLogin():boolean {
-    if (this.userlocal.login.search(loginSample) !== -1 || this.userlocal.login.length === 0) return true;
-    return false;
-  }
-
-  alert(message:string, type:string) {
-    this.isOpen = true
-    this.message = message
-    this.type = type
-    setTimeout(() => { this.isOpen = false }, 3000)
-  }
-
-  submit() {
-    if (this.userlocal.login !== this.$store.state.user.login) {
-      if (!this.checkLogin()) { this.alert('wrong login', 'error'); return; }
-    }
-    if (this.userlocal.age !== this.$store.state.user.age) {
-      if (!this.checkAge()) { this.alert('wrong age', 'error'); return; }
-    }
-    if (this.userlocal.paymentCard !== this.$store.state.user.paymentCard) {
-      if (!this.checkCard()) { this.alert('wrong payment card data', 'error'); return; }
-    }
-    this.$store.commit('user/setUser', this.userlocal)
-    request(`users/${this.getUserId}`, this.userlocal, 'PATCH')
-    this.alert('Success !', 'success')
+  async submit() {
+    if (!this.checkFields) { this.Alert({ type: 'error', message: invalidfields, delay: 2000 }); return; }
+    this.setUser(this.userlocal)
+    await request(`users/${this.getUserId}`, this.userlocal, 'PATCH')
+    this.Alert({ type: 'success', message: successMessage, delay: 2000 })
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .line {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-    .table {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    border-collapse:collapse;
+  @import '@/assets/_table.scss';
+  .table {
     margin: 0 auto;
 
-    &__first-column {
-      background: $table-first-column;
-    }
-    &__th {
-      font-weight: normal;
-      border-bottom: 2px solid $table-yellow-line;
-      padding: 8px 10px;
-      text-align: left;
-    }
-    &__th:first-child,
-    &__cell:first-child {
-      color: $table-first-column-text;
-      border-left: none;
-    }
     &__cell {
-      padding: 12px 10px;
       color: $table-color;
-      text-align: left;
     }
   }
+  .style-chooser .vs__search::placeholder,
+  .style-chooser .vs__dropdown-toggle,
+  .style-chooser .vs__dropdown-menu {
+    background: $select-background;
+    border: none;
+    color: $select-color;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    margin: 5px 0;
+  }
+
+  .style-chooser .vs__clear,
+  .style-chooser .vs__open-indicator {
+    fill: $select-color;
+ }
+
+ .passwordButton {
+   margin-left: 100px ;
+ }
 </style>

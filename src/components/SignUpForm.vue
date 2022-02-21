@@ -1,13 +1,9 @@
 <template>
   <form>
     <p class="caption">SignUp</p>
-      <Alert type="success" :message="userCreatedMessage" v-if="success"/>
-      <Alert type="error" :message="errorMessage" v-if="error"/>
-      <Alert type="error" :message="emailErrorMessage" v-if="emailError"/>
+    <Alert v-if="isAlert"/>
     <Input type="email" placeholder="Email" v-model:search="login"/>
-      <Alert type="error" :message="passwordErrorMessage" v-if="passwordError"/>
     <Input type="password" placeholder="Password" v-model:search="password"/>
-      <Alert type="error" :message="confirmPasswordErrorMessage" v-if="confirmPasswordError"/>
     <Input type="password" placeholder="Confirm Password" v-model:search="confirmPassword"/>
     <Button type="success" @click="submit" :disabled="isDisabled">Submit</Button>
   </form>
@@ -16,14 +12,18 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
+import { mapState, mapMutations } from 'vuex'
 import Input from '@/ui/Input.vue'
 import Button from '@/ui/Button.vue'
 import Alert from '@/alerts/Alert.vue'
+import { AlertType } from '@/store/types/types'
+import UserState from '@/store/user/interface'
 import request from '@/utils/serverRequest'
 import { 
-  loginSample, emailErrorMessage, passwordErrorMessage, confirmPasswordErrorMessage,
-  userCreatedMessage, userExistsMessage 
-} from '@/constants'
+  emailErrorMessage, passwordErrorMessage, confirmPasswordErrorMessage,
+  userCreatedMessage, userExistsMessage, submitFailed 
+} from '@/constants/textConstants'
+import { closeModal } from '@/constants/numeralConsts'
 import { checkLogin, checkPassword, checkConfirmPassword } from '@/utils/checks'
 
 @Options({
@@ -31,23 +31,25 @@ import { checkLogin, checkPassword, checkConfirmPassword } from '@/utils/checks'
     Button,
     Input, 
     Alert
+  },
+  computed: {
+    ...mapState(['isAlert'])
+  },
+  methods: {
+    ...mapMutations(['Alert', 'showModal', 'setAuthorization']),
+    ...mapMutations('user', ['setUser'])
   }
 })
 export default class SignUpForm extends Vue {
+  isAlert?:boolean
+  Alert!: (arg0: {show?:boolean, type:AlertType, message:string, delay?:number}) => void
+  showModal!: (arg0: number) => void
+  setAuthorization!: (arg0: boolean) => void
+  setUser!: (arg0: null | UserState) => void
+
   login = '';
   password = '';
   confirmPassword = '';
-  
-  success = false;
-  error = false;
-  emailError = false;
-  passwordError = false;
-  confirmPasswordError = false;
-  emailErrorMessage = emailErrorMessage;
-  passwordErrorMessage = passwordErrorMessage;
-  confirmPasswordErrorMessage = confirmPasswordErrorMessage;
-  userCreatedMessage = userCreatedMessage;
-  errorMessage = userExistsMessage;
 
   users:Array<any> = [];
 
@@ -56,52 +58,55 @@ export default class SignUpForm extends Vue {
   }
 
   get isDisabled() {
-    if (!this.login || !this.password || !this.confirmPassword) return true;
-    return this.emailError || this.passwordError || this.confirmPasswordError
+    return !this.checkFields
+  }
+  get checkFields() {
+    return checkLogin(this.login) && checkPassword(this.password) && checkConfirmPassword(this.password, this.confirmPassword)
   }
 
   @Watch('login')
   onEmailChange() {
-    this.emailError = !checkLogin(this.login)
+    if (!checkLogin(this.login)) this.Alert({ type: 'error', message: emailErrorMessage, delay: 2000 })
   }
 
   @Watch('password')
   onPasswordChange() {
-    this.passwordError = !checkPassword(this.password)
-    this.confirmPasswordError = !checkConfirmPassword(this.password, this.confirmPassword)
+    if (!checkPassword(this.password)) this.Alert({ type: 'error', message: passwordErrorMessage, delay: 2000 })
+    if (!checkConfirmPassword(this.password, this.confirmPassword)) { 
+      this.Alert({ type: 'error', message: confirmPasswordErrorMessage, delay: 2000 }) 
+    }
   }
 
   @Watch('confirmPassword')
   onConfirmPasswordChange() {
-    this.confirmPasswordError = !checkConfirmPassword(this.password, this.confirmPassword)
+    if (!checkConfirmPassword(this.password, this.confirmPassword)) { 
+      this.Alert({ type: 'error', message: confirmPasswordErrorMessage, delay: 2000 }) 
+    }
   }
 
   async submit() {
+    if (!this.checkFields) { this.Alert({ type: 'error', message: submitFailed, delay: 2000 }); return; }
     if (this.users.find((item) => item.login === this.login)) { 
-      this.error = true;
-      setTimeout(() => { this.error = false; }, 2000);
+      this.Alert({ type: 'error', message: userExistsMessage, delay: 2000 })
       return;
     }
     const newUser = { login: this.login, password: this.password }
     await request('users', newUser, 'POST');
-    this.success = true;
-    this.$store.commit('setAuthorization', true);
-    this.$store.commit('user/setUser', { ...newUser, id: this.users.length });
-    setTimeout(() => { 
-      this.success = false;
-      this.$store.commit('showModal', 0);
-    }, 2000);
+    this.setAuthorization(true);
+    this.setUser({ ...newUser, id: this.users.length });
+    this.Alert({ type: 'success', message: userCreatedMessage, delay: 2000 })
+    this.showModal(closeModal)
   }
 }
 </script>
 
 <style lang="scss">
-.caption {
-  margin: 0;
-  text-align: left;
-  font: {
-    weight:bold;
-    size:20px;
+  .caption {
+    margin: 0;
+    text-align: left;
+    font: {
+      weight:bold;
+      size:20px;
+    }
   }
-}
 </style>

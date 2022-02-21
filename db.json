@@ -13,13 +13,13 @@
       "login": "qqq@qq.qq",
       "password": "qqqqq",
       "age": "22",
-      "firstName": "Snoop",
+      "firstName": "Snoopp",
       "lastName": "Dogg",
       "id": 2,
       "sex": "male",
-      "address": "erverv",
+      "address": "ervervdvdvdv",
       "paymentCard": "0000111122223333",
-      "shippingAddress": "ervervvrrr"
+      "shippingAddress": "ervervv"
     },
     {
       "login": "www@ww.ww",
@@ -61,7 +61,11 @@
         "CPU": "Core 2 Duo 2.2 GHz/Athlon X2 4400+ or better",
         "RAM": "2 GB",
         "VIDEO_CARD": "Supported chipsets: NVIDIA GeForce 8800 GTS with 640MB RAM or similar"
-      }
+      },
+      "platform": [
+        "pc",
+        "xbox"
+      ]
     },
     {
       "id": 2,
@@ -81,7 +85,12 @@
         "CPU": "Pentium III or Athlon XP",
         "RAM": "256 MB",
         "VIDEO_CARD": "AGP Video Card with 32 MB and a DirectX 8.1 compatible driver (GeForce2+ /Radeon 7500+)"
-      }
+      },
+      "platform": [
+        "pc",
+        "ps5",
+        "xbox"
+      ]
     },
     {
       "id": 3,
@@ -101,7 +110,10 @@
         "CPU": "1.8 GHz Intel Core2 Duo, 2.4 GHz AMD Athlon 64 X2 or better",
         "RAM": "2 GB",
         "VIDEO_CARD": "256 MB DirectX 9.0 compliant video card with Shader Model 3.0 or better"
-      }
+      },
+      "platform": [
+        "pc"
+      ]
     }
   ],
   "categories": [
@@ -124,5 +136,18 @@
       "category": "xbox"
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "id": "c6fbb430-92f5-11ec-8cb4-7b025e7a67a5",
+      "userId": 1,
+      "productList": [
+        1
+      ],
+      "name": "Bob",
+      "surName": "Marley",
+      "phoneNumber": "+375(33)222-11-11",
+      "deliveryDate": "22.12.2022",
+      "status": "pending"
+    }
+  ]
 }

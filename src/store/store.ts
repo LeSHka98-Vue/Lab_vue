@@ -22,9 +22,9 @@ const store = createStore<RootState>({
     delay: 0
   },
   mutations: {
-    Alert(state, payload:{show:boolean, type:AlertType, message:string, delay?:number}) {
+    Alert(state, payload:{show?:boolean, type:AlertType, message:string, delay?:number}) {
       const { 
-        show, type, message, delay
+        show = true, type, message, delay
       } = payload
       state.type = type;
       state.message = message;

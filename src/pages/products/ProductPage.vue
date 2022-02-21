@@ -1,6 +1,6 @@
 <template>
   <Alert v-if="isAlert"/>
-  <div class="main-block">
+  <div class="main-block" v-if="this.product.id">
     <img :src="SRC" :alt="product.name" class="img" @error="onImageLoadFailure">
     <div class="table-block">
       <table class="table">
@@ -19,21 +19,22 @@
       <div class="table-block__buttons-block">
         <Button type="info" @click="addToCart">{{ buttonName }}</Button>
         <router-link v-if="+$route.params.id > 1"
-          class="page-link" 
+          class="table-block__page-link" 
           :to="`/products/${+$route.params.id - 1}`"
           >
             <Button type="info">Previous</Button>
         </router-link>
         <router-link v-if="+$route.params.id < pagesAmount"
-          class="page-link" 
+          class="table-block__page-link" 
           :to="`/products/${+$route.params.id + 1}`"
           >
             <Button type="info">Next</Button>
         </router-link>
       </div>
     </div>
-    <p class="description">{{ product.description }}</p>
+    <p class="main-block__description">{{ product.description }}</p>
   </div>
+  <h2 v-else>Content has not been loaded</h2>
 </template>
 
 <script lang="ts">
@@ -44,6 +45,8 @@ import Button from '@/ui/Button.vue'
 import Alert from '@/alerts/Alert.vue'
 import { AlertType } from '@/store/types/types'
 import request from '@/utils/serverRequest'
+import { successMessage, loginFirst } from '@/constants/textConstants'
+import { productDefault } from '@/constants/defaultValues'
 
 @Options({
   components: {
@@ -55,36 +58,26 @@ import request from '@/utils/serverRequest'
     ...mapState(['isAuthorized', 'isAlert'])
   },
   methods: {
-    ...mapMutations(['Alert'])
+    ...mapMutations(['Alert']),
+    ...mapMutations('cart', ['AddProduct', 'RemoveProduct'])
   }
 })
 export default class ProductPage extends Vue {
   isAuthorized?:boolean
   isAlert?:boolean
   products?: number[]
-  Alert!: (arg0: {show:boolean, type:AlertType, message:string, delay?:number}) => void
+  Alert!: (arg0: {show?:boolean, type:AlertType, message:string, delay?:number}) => void
+  AddProduct!: (arg0: number) => void
+  RemoveProduct!: (arg0: number) => void
 
-  product:Product = {
-    id: 0,
-    image: '',
-    name: '',
-    genre: '',
-    rating: 0,
-    description: '',
-    price: 0,
-    systemRequirements: {
-      CPU: '',
-      RAM: '',
-      VIDEO_CARD: ''
-    }
-  }; 
+  product:Product = productDefault 
   pagesAmount = 0
 
   onImageLoadFailure(e) {
     e.target.src = '/images/default_320x400.png';
   }
   get SRC() {
-    return `/images/games/${this.product.image}`
+    return `/images/games/${this.product?.image}`
   }
   get buttonName() {
     if (this.products?.includes(+this.$route.params.id)) return 'Remove from cart'
@@ -92,10 +85,10 @@ export default class ProductPage extends Vue {
   }
   addToCart() {
     if (this.isAuthorized) {
-      if (this.products?.includes(+this.$route.params.id)) this.$store.commit('cart/RemoveProduct', +this.$route.params.id)
-      else this.$store.commit('cart/AddProduct', +this.$route.params.id)
-      this.Alert({ show: true, type: 'success', message: 'success', delay: 2000 })
-    } else this.Alert({ show: true, type: 'error', message: 'Log in/ Register first !', delay: 2000 })
+      if (this.products?.includes(+this.$route.params.id)) this.RemoveProduct(+this.$route.params.id)
+      else this.AddProduct(+this.$route.params.id)
+      this.Alert({ type: 'success', message: successMessage, delay: 2000 })
+    } else this.Alert({ show: true, type: 'error', message: loginFirst, delay: 2000 })
   }
 
   async created() {
@@ -118,49 +111,28 @@ export default class ProductPage extends Vue {
     flex-wrap: wrap;
     padding: 10px;
     gap: 1.5%;
+
+    &__description {
+      max-width: 70%;
+      text-shadow: 2px 4px 3px $descryption-text;
+    }
   }
   .table-block {
     max-width: 70%;
+
     &__buttons-block {
       margin: 10px auto;
       display: flex;
       justify-content: center;
       gap: 10px;
     }
+    &__page-link {
+      text-decoration: none;
+    }
   }
   .img {
     min-height: 400px;
     max-height: 400px;
   }
-  .table {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    border-collapse:collapse;
-
-    &__first-column {
-      background: $table-first-column;
-    }
-
-    &__th:first-child,
-    &__cell:first-child {
-      color: $table-first-column-text;
-      border-left: none;
-    }
-    &__th {
-      font-weight: normal;
-      border-bottom: 2px solid $table-yellow-line;
-      padding: 8px 10px;
-      text-align: left;
-    }
-    &__cell {
-      padding: 12px 10px;
-      text-align: left;
-    }
-  }
-  .description {
-    max-width: 70%;
-    text-shadow: 2px 4px 3px $descryption-text;
-  }
-  .page-link {
-    text-decoration: none;
-  }
+  @import '@/assets/_table.scss'
 </style>

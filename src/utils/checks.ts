@@ -1,14 +1,13 @@
-import { 
-  loginSample, belarusPhoneNumber, dateRule, minPasswordLength
-} from '@/constants'
+import { loginSample, belarusPhoneNumber, dateRule } from '@/constants/regExpressions'
+import { minPasswordLength } from '@/constants/numeralConsts'
 
 function checkLogin(login:string):boolean {
-  if (login.search(loginSample) !== -1 || login.length === 0) return true;
+  if (login.search(loginSample) !== -1) return true;
   return false;
 }
 
 function checkPassword(password:string):boolean {
-  if (password.length >= minPasswordLength || password.length === 0) return true;
+  if (password.length >= minPasswordLength) return true;
   return false
 }
 
@@ -31,14 +30,18 @@ function checkDate(date:string) {
 function checkImagePath(image:string) {
   const imgends = ['jpg', 'png', 'svg', 'gif']
   const pathEnd = image.split('.')[1]
-  console.log(pathEnd)
   if (!imgends.find((elem) => elem === pathEnd)) return false;
   return true
 }
 
-function checkRange(rating:number, min:number, max:number) {
-  if (rating < min || rating > max) return false
+function checkRange(value:number, min:number, max:number) {
+  if (value < min || value > max) return false
   return true
+}
+
+function checkCard(card):boolean {
+  if (card?.toString()?.length !== 16) return false;
+  return true;
 }
 
 export {
@@ -48,5 +51,6 @@ export {
   checkPhoneNumber,
   checkDate,
   checkImagePath,
-  checkRange
+  checkRange,
+  checkCard
 }

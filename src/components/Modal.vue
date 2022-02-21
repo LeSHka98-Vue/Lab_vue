@@ -2,7 +2,7 @@
   <div class="modal" v-if="modalShown === id">
     <div class="modal__content">
       <div class="modal__header">
-        <span class="close" @click="this.$store.commit('showModal', 0)">&times;</span>
+        <span class="modal__close" @click="this.showModal(closeModal)">&times;</span>
       </div>
       <div>
         <slot name="aim"></slot>
@@ -14,16 +14,22 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+import { closeModal } from '@/constants/numeralConsts'
 
 @Options({
   computed: {
     ...mapState({ modalShown: 'modalShown' })
+  },
+  methods: {
+    ...mapMutations(['showModal'])
   }
 })
 export default class Modal extends Vue {
   @Prop(Number) id: number | undefined;
   modalShown?:boolean
+  showModal!: (arg0: number) => void
+  closemdal = closeModal
 }
 </script>
 
@@ -51,12 +57,14 @@ export default class Modal extends Vue {
       display: flex;
       justify-content: flex-end;
     }
-  }
-  .close {
-    font-size: 30px;
 
-    &:hover {
-      cursor: pointer;
+    &__close {
+      font-size: 30px;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
+  
 </style>

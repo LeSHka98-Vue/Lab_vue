@@ -32,16 +32,16 @@
   </table>
   <div v-if="cartProducts.length">
       <h3 >Total cost : {{ totalCost }} $</h3>
-      <router-link to="/checkout" class="table__router-link">
+      <router-link to="/checkout" class="router-link">
         <Button type="info">CheckOut</Button>
       </router-link>
   </div>
-  
   <h2 v-else>Cart is empty</h2>
 </template>
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
+import { mapState, mapMutations } from 'vuex'
 import { Product } from '@/store/types/interfaces'
 import Button from '@/ui/Button.vue'
 import request from '@/utils/serverRequest'
@@ -49,77 +49,53 @@ import request from '@/utils/serverRequest'
 @Options({
   components: {
     Button
+  },
+  computed: {
+    ...mapState('cart', ['products'])
+  },
+  methods: {
+    ...mapMutations('cart', ['RemoveProduct'])
   }
 })
 export default class Cart extends Vue {
+  products?:number[]
   cartProducts:Product[] = []
+  RemoveProduct!: (arg0: number) => void
 
   async mounted() {
-    const products = await request('products')
-    this.cartProducts = products.filter((el) => this.$store.state.cart.products.includes(el.id))
+    this.cartProducts = (await request('products')).filter((el) => this.products?.includes(el.id))
   }
   onImageLoadFailure(e) {
-    e.target.src = '/images/default.png';
+    e.target.src = '/images/default3.png';
   }
 
   get totalCost() {
-    let total = 0
-    this.cartProducts.forEach((item) => {
-      total += item.price
-    })
-    return total
+    return this.cartProducts.reduce((current, item) => current + item.price, 0)
   }
 
   removeProduct(id:number) {
     this.cartProducts = this.cartProducts.filter((el) => el.id !== id)
-    this.$store.commit('cart/RemoveProduct', id)
+    this.RemoveProduct(id)
   }
 } 
 </script>
 
 <style lang="scss" scoped>
+  @import '@/assets/_table.scss';
   .table {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    border-collapse: collapse;
     margin: auto;
     width: 70%;
 
-    &__first-column {
-      background: $table-first-column;
-    }
-
-    &__th:first-child,
-    &__cell:first-child {
-      color: $table-first-column-text;
-      border-left: none;
-    }
-    &__th {
-      font-weight: normal;
-      border-bottom: 2px solid $table-yellow-line;
-      padding: 8px 10px;
-      text-align: left;
-    }
-    &__cell {
-      padding: 12px 10px;
-      text-align: left;
-    }
     &__image-block {
-      display: flex;
-      align-items: center;
       justify-content: space-around;
-    }
-    &__picture {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
     &__image {
       width: 60px;
       height:60px;
     }
-    &__router-link {
+  }
+  .router-link  {
       text-decoration: none;
       color: $gray;
-    }
   }
 </style>

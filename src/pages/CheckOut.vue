@@ -1,19 +1,19 @@
 <template>
   <h1>CheckOut</h1>
   <div class="checkout">
-    <Alert v-if="isalert" :type="type" :message="alertmessage"/>
+    <Alert v-if="isAlert"/>
     <Input placeholder="name" v-model:search="name"/>
     <Input placeholder="surname" v-model:search="surname"/>
     <Input placeholder="phone number" :mask="phoneMask" v-model:search="phoneNumber"/>
     <Input placeholder="delivery date" :mask="dateMask" v-model:search="deliveryDate"/>
     <Input placeholder="delivery address"  v-model:search="deliveryAdress"/>
-    <Button type="success" @click="submit">Submit</Button>
+    <Button type="success" @click="submit" :disabled="isDisabled">Submit</Button>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import { Watch } from 'vue-property-decorator'
 import { uuid } from 'vue-uuid' 
 import Alert from '@/alerts/Alert.vue'
@@ -22,7 +22,7 @@ import Input from '@/ui/Input.vue'
 import Section from '@/components/Section.vue'
 import request from '@/utils/serverRequest'
 import { checkPhoneNumber, checkDate } from '@/utils/checks'
-import { phoneMask, dateMask, emptyFieldMessage } from '@/constants'
+import { phoneMask, dateMask, phoneError, dateError, successMessage, submitFailed } from '@/constants/textConstants'
 import { AlertType } from '@/store/types/types'
 
 @Options({
@@ -34,21 +34,24 @@ import { AlertType } from '@/store/types/types'
   },
   computed: {
     ...mapState('user', ['firstName', 'lastName']),
+    ...mapState(['isAlert']),
     ...mapGetters('user', ['getUserId', 'getUserName']),
     ...mapGetters('cart', ['getCartProducts'])
+  },
+  methods: {
+    ...mapMutations(['Alert'])
   }
 })
 export default class CheckOut extends Vue {
   phoneMask = phoneMask
   dateMask = dateMask
 
-  isalert = false
-  type:AlertType = 'error'
-  alertmessage= ''
   getUserId!:number
   firstName?:string
   lastName?:string
   getCartProducts!:number[]
+  isAlert?:boolean
+  Alert!: (arg0: {show?:boolean, type:AlertType, message:string, delay?:number}) => void
 
   name = ''
   surname = ''
@@ -60,29 +63,36 @@ export default class CheckOut extends Vue {
     if (this.firstName) this.name = this.firstName
     if (this.lastName) this.surname = this.lastName
   }
+  get isDisabled() {
+    return !this.checkFields
+  }
+
+  get checkFields() {
+    return checkPhoneNumber(this.phoneNumber) && checkDate(this.deliveryDate)
+    && this.checkLength([this.name, this.surname, this.phoneNumber, this.deliveryDate, this.deliveryAdress])
+  }
 
   @Watch('phoneNumber')
   onphoneNumberChange() {
-    if (checkPhoneNumber(this.phoneNumber)) this.alert(true, 'success', 'success', 2000)
-    else this.alert(true, 'error', 'wrong phone number')
+    if (!checkPhoneNumber(this.phoneNumber)) this.Alert({ type: 'error', message: phoneError, delay: 2000 })
   }
 
   @Watch('deliveryDate')
   ondeliveryDateChange() {
-    if (checkDate(this.deliveryDate)) this.alert(true, 'success', 'success', 2000)
-    else this.alert(true, 'error', 'wrong date')
+    if (!checkDate(this.deliveryDate)) this.Alert({ type: 'error', message: dateError, delay: 2000 })
   }
 
-  checkLength(word:string) {
-    if (word.length === 0) { 
-      this.alert(true, 'error', emptyFieldMessage);
-      return false
-    }
+  checkLength(word) {
+    if (Array.isArray(word)) {
+      if (word.findIndex((elem) => !elem) !== -1) return false
+      return true
+    } 
+    if (!word) return false
     return true;
   }
   get orderData() {
     return {
-      orderId: uuid.v1(),
+      id: uuid.v1(),
       userId: this.getUserId,
       productList: this.getCartProducts,
       name: this.name,
@@ -93,26 +103,11 @@ export default class CheckOut extends Vue {
     }
   }
   async submit() {
-    if (this.checkLength(this.name) 
-     && this.checkLength(this.surname)
-     && this.checkLength(this.phoneNumber)
-     && this.checkLength(this.deliveryDate)
-     && this.checkLength(this.deliveryAdress)) {
+    if (this.checkFields) {
       await request('orders', this.orderData, 'POST')
-      this.alert(true, 'success', 'success', 2000)
-      this.$router.push(`/order/thanks/${this.orderData.orderId}`)
-    } else this.alert(true, 'error', 'sumbit failed', 2000)
-  }
-
-  alert(show:boolean, type:AlertType, message:string, delay?:number) {
-    this.type = type;
-    this.alertmessage = message;
-    if (delay) {
-      this.isalert = true;
-      setTimeout(() => {
-        this.isalert = false;
-      }, delay)
-    } else this.isalert = show;
+      this.Alert({ type: 'success', message: successMessage, delay: 2000 })
+      this.$router.push(`/order/thanks/${this.orderData.id}`)
+    } else this.Alert({ type: 'error', message: submitFailed, delay: 2000 })
   }
 }
 </script>

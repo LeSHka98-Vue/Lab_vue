@@ -24,6 +24,4 @@ export default class AdminEdit extends Vue {
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

@@ -1,5 +1,5 @@
 <template>
-<div v-if="isAuthorized">
+<div v-if="isAuthorized && orderData">
   <h1 class="header">Thank you for order! :)</h1>
   <img src="/images/success.png" alt="success" @error="onImageLoadFailure">
   <Section class="section">
@@ -21,7 +21,7 @@
     </table>
   </Section>
 </div>
-  <Alert v-else type="error" message="the order was not found"/>
+  <h2 v-else>the order was not found</h2>
   <router-link to="/">
     <Button class="button" type="success">Go to main page</Button>
   </router-link>
@@ -49,22 +49,17 @@ import request from '@/utils/serverRequest'
 })
 export default class Thanks extends Vue {
   isAuthorized?:boolean
-  orderData:Order| null = null 
+  orderData:Order | null = null 
   products!:number[]
   cartProducts:Product[] = []
 
   async mounted() {
-    this.orderData = await request(`orders?orderId=${this.$route.params.orderId}`)
-      .then((array) => array.find((el) => el.orderId === this.$route.params.orderId))
+    this.orderData = await request(`orders/${this.$route.params.orderId}`)
     this.cartProducts = await request('products').then((array) => array.filter((el) => this.products.includes(el.id)))
   }
 
   get totalCost() {
-    let total = 0
-    this.cartProducts.forEach((item) => {
-      total += item.price
-    })
-    return total
+    return this.cartProducts.reduce((current, item) => current + item.price, 0)
   }
 
   onImageLoadFailure(e) {
@@ -81,18 +76,13 @@ export default class Thanks extends Vue {
     margin:auto;
     margin-top: 15px;
   }
+  @import '@/assets/_table.scss';
   .table {
     color: $white;
     font-size: 20px;
 
     &__cell {
-      padding: 12px 10px;
       color: $table-color;
-      text-align: left;
-
-      &:first-child {
-        color: $table-first-column-text;
-      }
     }
 
     &__game {

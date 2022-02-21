@@ -4,10 +4,7 @@
   <router-link :to="`/admin/products/newProduct`" class="table__router-link">
     <Button type="success">Create new product</Button>
   </router-link>
-  <table class="table">
-    <colgroup>
-      <col class="table__first-column">
-    </colgroup>
+  <table class="table" v-if="this.products.length">
     <tr v-for="product in products" :key="product.id">
       <td class="table__cell">
         <div class="table__image-block">
@@ -20,18 +17,17 @@
             >
           </div>
           <router-link :to="`/products/${product.id}`" class="table__router-link">{{ product.name }}</router-link>
-        </div>
-      </td>
-      <td class="table__cell">
-        <div class="table__button-block">
           <router-link :to="`/admin/products/edit-${product.id}`" class="table__router-link">
             <Button type="warning">Edit</Button>
           </router-link>
-          <Button type="error" @click="removeProduct(product.id)">Remove</Button>
         </div>
+      </td>
+      <td class="table__cell">
+        <Button type="error" @click="removeProduct(product.id)">Remove</Button>
       </td>
     </tr>
   </table>
+  <h2 v-else>no products</h2>
 </template>
 
 <script lang="ts">
@@ -42,6 +38,7 @@ import { Product } from '@/store/types/interfaces'
 import Button from '@/ui/Button.vue'
 import Alert from '@/alerts/Alert.vue'
 import { AlertType } from '@/store/types/types'
+import { successMessage } from '@/constants/textConstants'
 
 @Options({
   components: {
@@ -57,7 +54,7 @@ import { AlertType } from '@/store/types/types'
 })
 export default class AdminProducts extends Vue {
   isAlert?:boolean
-  Alert!: (arg0: {show:boolean, type:AlertType, message:string, delay?:number}) => void
+  Alert!: (arg0: {show?:boolean, type:AlertType, message:string, delay?:number}) => void
   products:Product[] = []
 
   async mounted() {
@@ -67,48 +64,26 @@ export default class AdminProducts extends Vue {
   async removeProduct(id:number) {
     await request(`products/${id}`, null, 'DELETE')
     this.products = await request('products')
-    this.Alert({ show: true, type: 'success', message: 'success', delay: 2000 });
+    this.Alert({ type: 'success', message: successMessage, delay: 2000 });
+  }
+  onImageLoadFailure(e) {
+    e.target.src = '/images/default3.png';
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  @import '@/assets/_table.scss';
   .table {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    border-collapse: collapse;
     margin: auto;
     width: 55%;
 
-    // &__first-column {
-    //   background: $table-first-column;
-    // }
-    &__cell {
-      padding: 12px 10px;
-      text-align: left;
-    }
-    &__cell:first-child {
-      color: $table-first-column-text;
-      border-left: none;
-    }
-    &__image-block,
-    &__button-block {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    &__first-column {
+      background: none;
     }
     &__image {
-      width: 100px;
-      height: 100px;
-    }
-    &__picture {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    &__router-link {
-      text-decoration: none;
-      color: $black;
+      width: 80px;
+      height: 80px;
     }
   }
-
 </style>

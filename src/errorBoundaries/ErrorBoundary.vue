@@ -1,5 +1,5 @@
 <template>
-  <Alert type="error" :message="error.message" v-if="error"/>
+  <Alert v-if="error" :message="error.message" type="error"/>
   <slot v-else></slot>
 </template>
 
